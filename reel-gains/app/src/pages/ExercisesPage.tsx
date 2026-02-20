@@ -62,9 +62,9 @@ export function ExercisesPage() {
       <header>
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold font-display">Exercises</h1>
-          <Button variant="ghost" size="sm" onClick={toggleUnits} className="text-xs text-slate-400">
+          <Button variant="ghost" size="sm" onClick={toggleUnits} className="text-xs text-slate-400 uppercase">
             <Scale className="w-3 h-3 mr-1" />
-            {settings.units.toUpperCase()}
+            {settings.units}
           </Button>
         </div>
         

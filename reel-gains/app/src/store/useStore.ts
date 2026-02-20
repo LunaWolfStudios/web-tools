@@ -226,12 +226,13 @@ export const useStore = create<AppState>()(
     {
       name: 'reel-gains-storage',
       storage: createJSONStorage(() => localStorage),
-      // Merge initial state with persisted state to ensure new exercises are added
+      // Merge initial state with persisted state to ensure new exercises are added and settings are updated
       merge: (persistedState: any, currentState) => {
         return {
           ...currentState,
           ...persistedState,
           exercises: currentState.exercises, // Always use the latest exercises list from code
+          settings: { ...currentState.settings, ...(persistedState.settings || {}) }, // Merge settings to ensure new keys like 'units' exist
         };
       },
     }

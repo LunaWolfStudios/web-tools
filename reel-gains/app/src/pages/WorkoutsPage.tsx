@@ -32,9 +32,9 @@ export function WorkoutsPage() {
           <p className="text-slate-400 text-sm">Track your progress</p>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={toggleUnits} className="text-xs text-slate-400">
+          <Button variant="ghost" size="sm" onClick={toggleUnits} className="text-xs text-slate-400 uppercase">
             <Scale className="w-3 h-3 mr-1" />
-            {settings.units.toUpperCase()}
+            {settings.units}
           </Button>
           <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
             <span className="font-display font-bold text-cyan-400">RG</span>
