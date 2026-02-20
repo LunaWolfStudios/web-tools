@@ -141,8 +141,8 @@ export function PlansPage() {
           </div>
         </div>
 
-        <div className="fixed bottom-20 left-0 right-0 p-4 flex gap-4 max-w-md mx-auto pointer-events-none">
-          <Button className="w-full pointer-events-auto shadow-lg" size="lg" onClick={handleSavePlan}>
+        <div className="fixed bottom-20 md:bottom-24 left-0 right-0 p-4 bg-slate-950/90 backdrop-blur-lg border-t border-white/10 flex gap-4 max-w-md mx-auto z-10">
+          <Button className="w-full" size="lg" onClick={handleSavePlan}>
             Save Plan
           </Button>
         </div>

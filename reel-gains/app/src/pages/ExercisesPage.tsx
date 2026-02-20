@@ -1,40 +1,33 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
 import { Card } from '../components/ui/Card';
-import { Search, TrendingUp, Calendar, Dumbbell, Filter } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { Search, TrendingUp, Calendar, Dumbbell, Filter, Scale } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { format } from 'date-fns';
 import { useWeight } from '../hooks/useWeight';
-import { cn } from '../lib/utils';
 
 export function ExercisesPage() {
-  const { exercises, workouts } = useStore();
-  const { formatWeight, toDisplay, unit } = useWeight();
+  const { exercises, workouts, settings, toggleUnits } = useStore();
   const [search, setSearch] = useState('');
   const [selectedExerciseId, setSelectedExerciseId] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [filterCategory, setFilterCategory] = useState<string | null>(null);
   const [showHistoryOnly, setShowHistoryOnly] = useState(false);
 
-  // Get list of exercises that have history
-  const exercisesWithHistory = new Set<string>();
-  workouts.forEach(w => {
-    w.exercises.forEach(e => exercisesWithHistory.add(e.exerciseId));
-  });
-
   const filteredExercises = exercises.filter(e => {
-    const matchesSearch = 
-      e.name.toLowerCase().includes(search.toLowerCase()) || 
+    const matchesSearch = e.name.toLowerCase().includes(search.toLowerCase()) || 
       e.muscleGroups.some(mg => mg.toLowerCase().includes(search.toLowerCase())) ||
       e.category.toLowerCase().includes(search.toLowerCase());
     
-    const matchesCategory = selectedCategory === 'all' || e.category === selectedCategory;
-    const matchesHistory = !showHistoryOnly || exercisesWithHistory.has(e.id);
+    const matchesCategory = filterCategory ? e.category === filterCategory : true;
+    
+    const matchesHistory = showHistoryOnly ? workouts.some(w => w.exercises.some(ex => ex.exerciseId === e.id)) : true;
 
     return matchesSearch && matchesCategory && matchesHistory;
   });
 
   const getExerciseHistory = (exerciseId: string) => {
-    const history: { date: string; volume: number; maxWeight: number; displayMaxWeight: number }[] = [];
+    const history: { date: string; volume: number; maxWeight: number }[] = [];
     
     // Sort workouts by date ascending
     const sortedWorkouts = [...workouts].sort((a, b) => a.startTime - b.startTime);
@@ -47,8 +40,7 @@ export function ExercisesPage() {
         history.push({
           date: format(new Date(w.startTime), 'MMM d'),
           volume,
-          maxWeight,
-          displayMaxWeight: Math.round(toDisplay(maxWeight) || 0)
+          maxWeight
         });
       }
     });
@@ -61,62 +53,54 @@ export function ExercisesPage() {
     return history[history.length - 1];
   };
 
-  const categories = [
-    { id: 'all', label: 'All' },
-    { id: 'upper_body', label: 'Upper' },
-    { id: 'lower_body', label: 'Lower' },
-    { id: 'core', label: 'Core' },
-    { id: 'cardio', label: 'Cardio' },
-  ];
+  const categories = ['upper_body', 'lower_body', 'core', 'cardio'];
 
   return (
     <div className="space-y-6 pb-20">
       <header>
-        <h1 className="text-2xl font-bold font-display mb-4">Exercises</h1>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold font-display">Exercises</h1>
+          <Button variant="ghost" size="sm" onClick={toggleUnits} className="text-xs text-slate-400">
+            <Scale className="w-3 h-3 mr-1" />
+            {settings.units.toUpperCase()}
+          </Button>
+        </div>
         
-        <div className="space-y-3">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-            <input
-              type="text"
-              placeholder="Search exercises..."
-              className="w-full bg-slate-900/50 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-cyan-500 transition-colors"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+          <input
+            type="text"
+            placeholder="Search exercises..."
+            className="w-full bg-slate-900/50 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-cyan-500 transition-colors"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
 
-          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-            {categories.map(cat => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={cn(
-                  "px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors border",
-                  selectedCategory === cat.id
-                    ? "bg-cyan-500/20 text-cyan-400 border-cyan-500/50"
-                    : "bg-slate-900 text-slate-400 border-slate-800 hover:border-slate-700"
-                )}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-2">
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setShowHistoryOnly(!showHistoryOnly)}
+            className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+              showHistoryOnly 
+                ? 'bg-cyan-500/20 border-cyan-500 text-cyan-400' 
+                : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-600'
+            }`}
+          >
+            History Only
+          </button>
+          {categories.map(cat => (
             <button
-              onClick={() => setShowHistoryOnly(!showHistoryOnly)}
-              className={cn(
-                "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border",
-                showHistoryOnly
-                  ? "bg-purple-500/20 text-purple-400 border-purple-500/50"
-                  : "bg-slate-900 text-slate-400 border-slate-800 hover:border-slate-700"
-              )}
+              key={cat}
+              onClick={() => setFilterCategory(filterCategory === cat ? null : cat)}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors capitalize ${
+                filterCategory === cat
+                  ? 'bg-cyan-500/20 border-cyan-500 text-cyan-400' 
+                  : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-600'
+              }`}
             >
-              <Filter className="w-3 h-3" />
-              Performed Only
+              {cat.replace('_', ' ')}
             </button>
-          </div>
+          ))}
         </div>
       </header>
 
@@ -133,6 +117,17 @@ export function ExercisesPage() {
             const exercise = exercises.find(e => e.id === selectedExerciseId);
             const recentStats = getRecentStats(selectedExerciseId);
             const history = getExerciseHistory(selectedExerciseId);
+            
+            // Convert history data for chart if needed
+            const chartData = history.map(h => {
+              const weight = useWeight(h.maxWeight);
+              return {
+                ...h,
+                displayWeight: weight.value
+              };
+            });
+            
+            const recentMax = useWeight(recentStats?.maxWeight);
 
             return (
               <>
@@ -151,7 +146,7 @@ export function ExercisesPage() {
                         <span className="text-xs font-bold uppercase">Recent Max</span>
                       </div>
                       <div className="text-3xl font-display font-bold text-white">
-                        {recentStats.displayMaxWeight}<span className="text-sm text-slate-400 ml-1">{unit}</span>
+                        {recentMax.value}<span className="text-sm text-slate-400 ml-1">{recentMax.unit}</span>
                       </div>
                     </Card>
                     <Card className="bg-slate-800/50">
@@ -175,16 +170,17 @@ export function ExercisesPage() {
                     <h3 className="text-sm font-bold text-slate-400 mb-4 uppercase">Progress Over Time</h3>
                     <div className="h-64 w-full">
                       <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={history}>
+                        <LineChart data={chartData}>
                           <XAxis dataKey="date" stroke="#475569" fontSize={12} />
                           <YAxis stroke="#475569" fontSize={12} />
                           <Tooltip 
                             contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b' }}
                             itemStyle={{ color: '#06b6d4' }}
+                            formatter={(value: number) => [`${value} ${settings.units}`, 'Max Weight']}
                           />
                           <Line 
                             type="monotone" 
-                            dataKey="displayMaxWeight" 
+                            dataKey="displayWeight" 
                             stroke="#06b6d4" 
                             strokeWidth={3}
                             dot={{ fill: '#06b6d4', r: 4 }}
@@ -193,7 +189,6 @@ export function ExercisesPage() {
                         </LineChart>
                       </ResponsiveContainer>
                     </div>
-                    <p className="text-center text-xs text-slate-500 mt-2">Max Weight ({unit}) over time</p>
                   </Card>
                 )}
               </>
@@ -219,12 +214,14 @@ export function ExercisesPage() {
                   ))}
                 </div>
               </div>
-              <TrendingUp className={cn(
-                "w-4 h-4",
-                exercisesWithHistory.has(exercise.id) ? "text-cyan-400" : "text-slate-700"
-              )} />
+              <TrendingUp className="w-4 h-4 text-slate-600" />
             </Card>
           ))}
+          {filteredExercises.length === 0 && (
+            <div className="text-center py-10 text-slate-500">
+              <p>No exercises found.</p>
+            </div>
+          )}
         </div>
       )}
     </div>

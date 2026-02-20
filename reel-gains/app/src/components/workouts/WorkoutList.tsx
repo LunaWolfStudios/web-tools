@@ -1,14 +1,14 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { Dumbbell, Calendar, Clock, Trash2 } from 'lucide-react';
+import { Dumbbell, Calendar, Clock, Trash2, Edit2 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
-import { useWeight } from '../../hooks/useWeight';
+import { useNavigate } from 'react-router-dom';
 
 export function WorkoutList() {
   const { workouts, deleteWorkout } = useStore();
-  const { formatWeight, toDisplay } = useWeight();
+  const navigate = useNavigate();
 
   if (workouts.length === 0) {
     return (
@@ -29,11 +29,9 @@ export function WorkoutList() {
         const duration = workout.endTime 
           ? Math.round((workout.endTime - workout.startTime) / 60000) 
           : 0;
-        
-        const displayVolume = toDisplay(totalVolume);
 
         return (
-          <Card key={workout.id} hoverEffect className="flex justify-between items-center group relative pr-12">
+          <Card key={workout.id} hoverEffect className="flex justify-between items-center group relative pr-20">
             <div>
               <h3 className="font-display font-bold text-lg text-slate-100 group-hover:text-cyan-400 transition-colors">
                 {workout.name}
@@ -51,19 +49,32 @@ export function WorkoutList() {
                 )}
               </div>
               <div className="mt-2 text-xs text-slate-500">
-                {workout.exercises.length} Exercises • {Math.round(displayVolume || 0).toLocaleString()} {useWeight().unit} Vol
+                {workout.exercises.length} Exercises • {totalVolume.toLocaleString()}kg Vol
               </div>
             </div>
             
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                if(window.confirm('Delete this workout?')) deleteWorkout(workout.id);
-              }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-600 hover:text-red-500 transition-colors opacity-100 md:opacity-0 md:group-hover:opacity-100"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/workout/edit/${workout.id}`);
+                }}
+                className="p-2 text-slate-600 hover:text-cyan-400 transition-colors"
+                title="Edit Workout"
+              >
+                <Edit2 className="w-4 h-4" />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if(window.confirm('Delete this workout?')) deleteWorkout(workout.id);
+                }}
+                className="p-2 text-slate-600 hover:text-red-500 transition-colors"
+                title="Delete Workout"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
           </Card>
         );
       })}

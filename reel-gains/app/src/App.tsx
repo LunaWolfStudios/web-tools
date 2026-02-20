@@ -9,6 +9,7 @@ import { WorkoutsPage } from './pages/WorkoutsPage';
 import { PlansPage } from './pages/PlansPage';
 import { ExercisesPage } from './pages/ExercisesPage';
 import { ActiveWorkoutPage } from './pages/ActiveWorkoutPage';
+import { EditWorkoutPage } from './pages/EditWorkoutPage';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="exercises" element={<ExercisesPage />} />
         </Route>
         <Route path="/workout/active" element={<ActiveWorkoutPage />} />
+        <Route path="/workout/edit/:id" element={<EditWorkoutPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
