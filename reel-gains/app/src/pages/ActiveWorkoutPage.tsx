@@ -18,7 +18,8 @@ export function ActiveWorkoutPage() {
     removeSetFromActiveExercise,
     updateSetInActiveExercise,
     updateActiveWorkout,
-    exercises: allExercises
+    exercises: allExercises,
+    settings
   } = useStore();
   
   const navigate = useNavigate();
