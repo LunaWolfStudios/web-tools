@@ -73,9 +73,9 @@ export function WorkoutsPage() {
       )}
 
       {showStartModal && (
-        <div className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
-          <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-2xl animate-in slide-in-from-bottom-10 fade-in duration-200">
-            <div className="flex justify-between items-center mb-2">
+        <div className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-2xl animate-in zoom-in-95 fade-in duration-200 max-h-[90vh] flex flex-col">
+            <div className="flex justify-between items-center mb-2 shrink-0">
               <h2 className="text-xl font-bold">Start Workout</h2>
               <button onClick={() => setShowStartModal(false)} className="text-slate-400 hover:text-white">
                 <X className="w-6 h-6" />
@@ -83,7 +83,7 @@ export function WorkoutsPage() {
             </div>
 
             <Button 
-              className="w-full h-14 text-lg" 
+              className="w-full h-14 text-lg shrink-0" 
               onClick={handleStartEmpty}
             >
               <Plus className="w-5 h-5 mr-2" />
@@ -91,9 +91,9 @@ export function WorkoutsPage() {
             </Button>
 
             {plans.length > 0 && (
-              <div className="space-y-2">
-                <div className="text-xs text-slate-500 uppercase font-bold mt-4 mb-2">Or start from a plan</div>
-                <div className="max-h-60 overflow-y-auto space-y-2 pr-1">
+              <div className="space-y-2 flex-1 overflow-hidden flex flex-col">
+                <div className="text-xs text-slate-500 uppercase font-bold mt-4 mb-2 shrink-0">Or start from a plan</div>
+                <div className="overflow-y-auto space-y-2 pr-1">
                   {plans.map(plan => (
                     <Card 
                       key={plan.id} 

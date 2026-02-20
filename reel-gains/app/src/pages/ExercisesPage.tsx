@@ -122,14 +122,31 @@ export function ExercisesPage() {
             
             // Convert history data for chart if needed
             const chartData = history.map(h => {
-              const weight = useWeight(h.maxWeight);
+              // We can't call useWeight inside a callback/loop if it's a hook.
+              // Assuming useWeight is a hook that accesses store/context.
+              // Instead, we should use a helper function or calculate it directly based on settings.
+              // Since we have settings from useStore at the top level:
+              let displayWeight = h.maxWeight;
+              if (settings.units === 'lb') {
+                displayWeight = Math.round(h.maxWeight * 2.20462);
+              }
+              
               return {
                 ...h,
-                displayWeight: weight.value
+                displayWeight
               };
             });
             
-            const recentMax = useWeight(recentStats?.maxWeight);
+            let recentMaxDisplay = 0;
+            let recentMaxUnit = settings.units;
+            
+            if (recentStats?.maxWeight) {
+               if (settings.units === 'lb') {
+                 recentMaxDisplay = Math.round(recentStats.maxWeight * 2.20462);
+               } else {
+                 recentMaxDisplay = recentStats.maxWeight;
+               }
+            }
 
             return (
               <>
@@ -148,7 +165,7 @@ export function ExercisesPage() {
                         <span className="text-xs font-bold uppercase">Recent Max</span>
                       </div>
                       <div className="text-3xl font-display font-bold text-white">
-                        {recentMax.value}<span className="text-sm text-slate-400 ml-1">{recentMax.unit}</span>
+                        {recentMaxDisplay}<span className="text-sm text-slate-400 ml-1">{recentMaxUnit}</span>
                       </div>
                     </Card>
                     <Card className="bg-slate-800/50">
