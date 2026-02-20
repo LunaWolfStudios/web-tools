@@ -70,12 +70,26 @@ export function EditWorkoutPage() {
              />
            </div>
            <div>
-             <label className="text-xs text-slate-500 uppercase font-bold block mb-1">Date & Time</label>
+             <label className="text-xs text-slate-500 uppercase font-bold block mb-1">Start Time</label>
              <input
                type="datetime-local"
                className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-white focus:border-cyan-500 outline-none"
                value={new Date(workout.startTime).toISOString().slice(0, 16)}
                onChange={handleDateChange}
+             />
+           </div>
+           <div>
+             <label className="text-xs text-slate-500 uppercase font-bold block mb-1">End Time</label>
+             <input
+               type="datetime-local"
+               className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-white focus:border-cyan-500 outline-none"
+               value={workout.endTime ? new Date(workout.endTime).toISOString().slice(0, 16) : ''}
+               onChange={(e) => {
+                 const date = new Date(e.target.value);
+                 if (!isNaN(date.getTime())) {
+                   setWorkout(prev => prev ? { ...prev, endTime: date.getTime() } : null);
+                 }
+               }}
              />
            </div>
         </Card>

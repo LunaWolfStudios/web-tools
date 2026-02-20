@@ -36,13 +36,13 @@ export function ExercisesPage() {
 
     sortedWorkouts.forEach(w => {
       const ex = w.exercises.find(e => e.exerciseId === exerciseId);
-      if (ex) {
+      if (ex && ex.sets.length > 0) {
         const maxWeight = Math.max(...ex.sets.map(s => s.weight || 0));
         const volume = ex.sets.reduce((acc, s) => acc + (s.weight || 0) * (s.reps || 0), 0);
         history.push({
           date: format(new Date(w.startTime), 'MMM d'),
           volume,
-          maxWeight
+          maxWeight: maxWeight === -Infinity ? 0 : maxWeight
         });
       }
     });
