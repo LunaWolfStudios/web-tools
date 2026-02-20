@@ -47,4 +47,5 @@ export interface UserSettings {
   theme: 'dark' | 'light'; // default dark
   animations: boolean;
   units: 'kg' | 'lb';
+  userName?: string;
 }

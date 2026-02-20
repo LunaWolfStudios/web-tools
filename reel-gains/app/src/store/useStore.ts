@@ -33,6 +33,8 @@ interface AppState {
   addExercise: (exercise: Exercise) => void;
   updateExercise: (id: string, exercise: Partial<Exercise>) => void;
   toggleUnits: () => void;
+  setUserName: (name: string) => void;
+  importData: (data: AppState) => void;
 }
 
 export const useStore = create<AppState>()(
@@ -41,8 +43,23 @@ export const useStore = create<AppState>()(
       workouts: [],
       plans: [],
       exercises: defaultExercises,
-      settings: { theme: 'dark', animations: true, units: 'kg' },
+      settings: { theme: 'dark', animations: true, units: 'lb' },
       activeWorkout: null,
+
+      setUserName: (name) =>
+        set((state) => ({
+          settings: { ...state.settings, userName: name },
+        })),
+
+      importData: (data) => {
+        set({
+          workouts: data.workouts || [],
+          plans: data.plans || [],
+          exercises: data.exercises || defaultExercises,
+          settings: data.settings || { theme: 'dark', animations: true, units: 'lb' },
+          activeWorkout: null, // Reset active workout on import to avoid conflicts
+        });
+      },
 
       toggleUnits: () =>
         set((state) => ({

@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Heatmap } from '../components/workouts/Heatmap';
 import { WorkoutList } from '../components/workouts/WorkoutList';
 import { BodyWeightChart } from '../components/workouts/BodyWeightChart';
 import { Button } from '../components/ui/Button';
-import { Plus, X, Play, Scale } from 'lucide-react';
+import { Plus, X, Play, Scale, User, Download, Upload, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { Card } from '../components/ui/Card';
 
 export function WorkoutsPage() {
   const navigate = useNavigate();
-  const { startWorkout, activeWorkout, plans, settings, toggleUnits } = useStore();
+  const { startWorkout, activeWorkout, plans, settings, toggleUnits, setUserName, importData } = useStore();
   const [showStartModal, setShowStartModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleStartEmpty = () => {
     startWorkout();
@@ -21,6 +23,44 @@ export function WorkoutsPage() {
   const handleStartPlan = (planId: string) => {
     startWorkout(planId);
     navigate('/workout/active');
+  };
+
+  const handleExport = () => {
+    const state = useStore.getState();
+    const dataStr = JSON.stringify({
+      workouts: state.workouts,
+      plans: state.plans,
+      exercises: state.exercises,
+      settings: state.settings
+    }, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `reel-gains-backup-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const data = JSON.parse(event.target?.result as string);
+        if (window.confirm('This will replace all your current data. Are you sure?')) {
+          importData(data);
+          alert('Data imported successfully!');
+          setShowProfileModal(false);
+        }
+      } catch (error) {
+        alert('Failed to import data. Invalid JSON file.');
+      }
+    };
+    reader.readAsText(file);
   };
 
   return (
@@ -37,11 +77,83 @@ export function WorkoutsPage() {
             <Scale className="w-3 h-3 mr-1" />
             {settings.units}
           </Button>
-          <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
-            <span className="font-display font-bold text-cyan-400">RG</span>
-          </div>
+          <button 
+            onClick={() => setShowProfileModal(true)}
+            className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center hover:border-cyan-500 transition-colors overflow-hidden"
+          >
+            {settings.userName ? (
+              <span className="font-display font-bold text-cyan-400 text-sm">
+                {settings.userName.slice(0, 2).toUpperCase()}
+              </span>
+            ) : (
+              <User className="w-5 h-5 text-slate-400" />
+            )}
+          </button>
         </div>
       </header>
+
+      {/* ... (rest of the component) ... */}
+
+      {showProfileModal && (
+        <div className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-2xl animate-in zoom-in-95 fade-in duration-200">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <Settings className="w-5 h-5 text-cyan-400" />
+                Settings
+              </h2>
+              <button onClick={() => setShowProfileModal(false)} className="text-slate-400 hover:text-white">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="text-xs text-slate-500 uppercase font-bold block mb-2">Display Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter your name"
+                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-cyan-500 outline-none transition-colors"
+                  value={settings.userName || ''}
+                  onChange={(e) => setUserName(e.target.value)}
+                />
+              </div>
+
+              <div className="pt-4 border-t border-slate-800 space-y-3">
+                <label className="text-xs text-slate-500 uppercase font-bold block mb-2">Data Management</label>
+                
+                <Button variant="outline" className="w-full justify-start" onClick={handleExport}>
+                  <Download className="w-4 h-4 mr-2" />
+                  Export Data (Backup)
+                </Button>
+
+                <div className="relative">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImport}
+                    accept=".json"
+                    className="hidden"
+                  />
+                  <Button variant="outline" className="w-full justify-start" onClick={() => fileInputRef.current?.click()}>
+                    <Upload className="w-4 h-4 mr-2" />
+                    Import Data (Restore)
+                  </Button>
+                </div>
+                <p className="text-xs text-slate-500 mt-2">
+                  Importing will replace all current workouts and settings.
+                </p>
+              </div>
+            </div>
+            
+            <div className="pt-2">
+              <Button className="w-full" onClick={() => setShowProfileModal(false)}>
+                Done
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <section>
         <h2 className="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wider">Consistency</h2>

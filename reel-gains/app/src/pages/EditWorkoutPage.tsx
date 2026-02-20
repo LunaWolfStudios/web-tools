@@ -36,6 +36,98 @@ export function EditWorkoutPage() {
     }
   };
 
+  const updateSet = (exerciseId: string, setId: string, updates: any) => {
+    setWorkout(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        exercises: prev.exercises.map(e => {
+          if (e.id === exerciseId) {
+            return {
+              ...e,
+              sets: e.sets.map(s => s.id === setId ? { ...s, ...updates } : s)
+            };
+          }
+          return e;
+        })
+      };
+    });
+  };
+
+  const addSet = (exerciseId: string) => {
+    setWorkout(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        exercises: prev.exercises.map(e => {
+          if (e.id === exerciseId) {
+            const lastSet = e.sets[e.sets.length - 1];
+            return {
+              ...e,
+              sets: [...e.sets, {
+                id: uuidv4(),
+                reps: lastSet?.reps || 0,
+                weight: lastSet?.weight || 0,
+                completed: true
+              }]
+            };
+          }
+          return e;
+        })
+      };
+    });
+  };
+
+  const removeSet = (exerciseId: string, setId: string) => {
+    setWorkout(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        exercises: prev.exercises.map(e => {
+          if (e.id === exerciseId) {
+            return {
+              ...e,
+              sets: e.sets.filter(s => s.id !== setId)
+            };
+          }
+          return e;
+        })
+      };
+    });
+  };
+
+  const removeExercise = (exerciseId: string) => {
+    setWorkout(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        exercises: prev.exercises.filter(e => e.id !== exerciseId)
+      };
+    });
+  };
+
+  const addExercise = (exerciseDefId: string) => {
+    const newExercise: WorkoutExercise = {
+      id: uuidv4(),
+      exerciseId: exerciseDefId,
+      sets: [{ id: uuidv4(), reps: 0, weight: 0, completed: true }]
+    };
+    
+    setWorkout(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        exercises: [...prev.exercises, newExercise]
+      };
+    });
+    setIsAddingExercise(false);
+    setSearchQuery('');
+  };
+
+  const filteredExercises = allExercises.filter(e => 
+    e.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = new Date(e.target.value);
     if (!isNaN(date.getTime())) {
