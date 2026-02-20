@@ -5,9 +5,10 @@ import { useStore } from '../../store/useStore';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { useNavigate } from 'react-router-dom';
+import { useWeight } from '../../hooks/useWeight';
 
 export function WorkoutList() {
-  const { workouts, deleteWorkout } = useStore();
+  const { workouts, deleteWorkout, settings } = useStore();
   const navigate = useNavigate();
 
   if (workouts.length === 0) {
@@ -30,6 +31,8 @@ export function WorkoutList() {
           ? Math.round((workout.endTime - workout.startTime) / 60000) 
           : 0;
 
+        const bodyWeight = useWeight(workout.bodyWeight);
+
         return (
           <Card key={workout.id} hoverEffect className="flex justify-between items-center group relative pr-20">
             <div>
@@ -50,6 +53,9 @@ export function WorkoutList() {
               </div>
               <div className="mt-2 text-xs text-slate-500">
                 {workout.exercises.length} Exercises • {totalVolume.toLocaleString()}kg Vol
+                {workout.bodyWeight && (
+                  <span> • {bodyWeight.value} {bodyWeight.unit} BW</span>
+                )}
               </div>
             </div>
             

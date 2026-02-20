@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Heatmap } from '../components/workouts/Heatmap';
 import { WorkoutList } from '../components/workouts/WorkoutList';
+import { BodyWeightChart } from '../components/workouts/BodyWeightChart';
 import { Button } from '../components/ui/Button';
 import { Plus, X, Play, Scale } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -48,6 +49,8 @@ export function WorkoutsPage() {
           <Heatmap />
         </div>
       </section>
+
+      <BodyWeightChart />
 
       <section>
         <div className="flex justify-between items-center mb-4">
