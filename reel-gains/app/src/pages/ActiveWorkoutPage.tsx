@@ -83,7 +83,6 @@ export function ActiveWorkoutPage() {
             </div>
           </div>
         </div>
-        <Button size="sm" variant="danger" onClick={handleCancel}>Cancel</Button>
       </header>
 
       {/* Exercise List */}
@@ -162,11 +161,17 @@ export function ActiveWorkoutPage() {
                           <button
                             onClick={() => updateSetInActiveExercise(workoutExercise.id, set.id, { completed: !set.completed })}
                             className={cn(
-                              "w-full h-9 rounded-lg flex items-center justify-center transition-colors",
+                              "flex-1 h-9 rounded-lg flex items-center justify-center transition-colors",
                               set.completed ? "bg-green-500/20 text-green-500 border border-green-500/50" : "bg-slate-800 text-slate-400 hover:bg-slate-700"
                             )}
                           >
                             <Check className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => removeSetFromActiveExercise(workoutExercise.id, set.id)}
+                            className="w-9 h-9 rounded-lg flex items-center justify-center bg-slate-800 text-slate-400 hover:text-red-400 hover:bg-slate-700 transition-colors"
+                          >
+                            <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
                       </div>
@@ -197,10 +202,16 @@ export function ActiveWorkoutPage() {
       </div>
 
       {/* Footer Actions */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-slate-950/90 backdrop-blur-lg border-t border-white/10 flex gap-4 max-w-md mx-auto">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-slate-950/90 backdrop-blur-lg border-t border-white/10 flex flex-col gap-3 max-w-md mx-auto">
         <Button className="w-full shadow-[0_0_20px_rgba(6,182,212,0.4)]" size="lg" onClick={handleFinish}>
           <Save className="w-5 h-5 mr-2" /> Finish Workout
         </Button>
+        <button 
+          onClick={handleCancel}
+          className="w-full py-2 text-xs text-red-500 hover:text-red-400 transition-colors"
+        >
+          Cancel Workout
+        </button>
       </div>
 
       {/* Add Exercise Modal */}

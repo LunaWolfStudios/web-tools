@@ -44,7 +44,7 @@ export interface Plan {
 }
 
 export interface UserSettings {
-  theme: 'dark' | 'light';
+  theme: 'dark' | 'light'; // default dark
   animations: boolean;
-  unit: 'kg' | 'lbs';
+  units: 'kg' | 'lb';
 }

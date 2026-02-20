@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Heatmap } from '../components/workouts/Heatmap';
 import { WorkoutList } from '../components/workouts/WorkoutList';
 import { Button } from '../components/ui/Button';
-import { Plus, X, Play } from 'lucide-react';
+import { Plus, X, Play, Scale } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { Card } from '../components/ui/Card';
 
 export function WorkoutsPage() {
   const navigate = useNavigate();
-  const { startWorkout, activeWorkout, plans } = useStore();
+  const { startWorkout, activeWorkout, plans, settings, toggleUnits } = useStore();
   const [showStartModal, setShowStartModal] = useState(false);
 
   const handleStartEmpty = () => {
@@ -31,8 +31,14 @@ export function WorkoutsPage() {
           </h1>
           <p className="text-slate-400 text-sm">Track your progress</p>
         </div>
-        <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
-          <span className="font-display font-bold text-cyan-400">RG</span>
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="sm" onClick={toggleUnits} className="text-xs text-slate-400">
+            <Scale className="w-3 h-3 mr-1" />
+            {settings.units.toUpperCase()}
+          </Button>
+          <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
+            <span className="font-display font-bold text-cyan-400">RG</span>
+          </div>
         </div>
       </header>
 

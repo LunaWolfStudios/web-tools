@@ -1,34 +1,26 @@
 import { useStore } from '../store/useStore';
 
-export function useWeight() {
+export function useWeight(weight: number | undefined) {
   const { settings } = useStore();
   
-  const formatWeight = (weight: number | undefined) => {
-    if (weight === undefined || weight === null) return '-';
-    
-    // We assume data is stored in KG. 
-    // If unit is LBS, we convert.
-    if (settings.unit === 'lbs') {
-      return `${Math.round(weight * 2.20462)} lbs`;
-    }
-    
-    return `${weight} kg`;
-  };
+  if (weight === undefined) return { value: 0, unit: settings.units };
 
-  const toDisplay = (weight: number | undefined) => {
-    if (weight === undefined || weight === null) return '';
-    if (settings.unit === 'lbs') {
-      return Math.round(weight * 2.20462);
-    }
-    return weight;
-  };
+  if (settings.units === 'lb') {
+    return {
+      value: Math.round(weight * 2.20462),
+      unit: 'lb'
+    };
+  }
 
-  const fromDisplay = (displayWeight: number) => {
-    if (settings.unit === 'lbs') {
-      return displayWeight / 2.20462;
-    }
-    return displayWeight;
+  return {
+    value: weight,
+    unit: 'kg'
   };
+}
 
-  return { unit: settings.unit, formatWeight, toDisplay, fromDisplay };
+export function toKg(weight: number, unit: 'kg' | 'lb') {
+  if (unit === 'lb') {
+    return Math.round(weight / 2.20462);
+  }
+  return weight;
 }

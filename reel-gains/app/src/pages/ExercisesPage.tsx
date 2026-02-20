@@ -15,9 +15,11 @@ export function ExercisesPage() {
   const [showHistoryOnly, setShowHistoryOnly] = useState(false);
 
   const filteredExercises = exercises.filter(e => {
-    const matchesSearch = e.name.toLowerCase().includes(search.toLowerCase()) || 
-      e.muscleGroups.some(mg => mg.toLowerCase().includes(search.toLowerCase())) ||
-      e.category.toLowerCase().includes(search.toLowerCase());
+    const nameMatch = e.name?.toLowerCase().includes(search.toLowerCase()) ?? false;
+    const muscleMatch = e.muscleGroups?.some(mg => mg?.toLowerCase().includes(search.toLowerCase())) ?? false;
+    const categoryMatch = e.category?.toLowerCase().includes(search.toLowerCase()) ?? false;
+    
+    const matchesSearch = nameMatch || muscleMatch || categoryMatch;
     
     const matchesCategory = filterCategory ? e.category === filterCategory : true;
     

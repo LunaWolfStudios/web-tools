@@ -72,8 +72,8 @@ export function PlansPage() {
   };
 
   const filteredExercises = exercises.filter(e => 
-    e.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    e.category.toLowerCase().includes(searchQuery.toLowerCase())
+    e.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    e.category?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   if (isCreating) {
@@ -131,7 +131,7 @@ export function PlansPage() {
                       <div className={`font-medium ${isSelected ? 'text-cyan-400' : 'text-slate-200'}`}>
                         {exercise.name}
                       </div>
-                      <div className="text-xs text-slate-500 capitalize">{exercise.muscleGroups[0]}</div>
+                      <div className="text-xs text-slate-500 capitalize">{exercise.muscleGroups?.[0] || 'Other'}</div>
                     </div>
                     {isSelected && <Check className="w-4 h-4 text-cyan-400" />}
                   </div>

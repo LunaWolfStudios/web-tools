@@ -12,7 +12,6 @@ interface AppState {
   activeWorkout: Workout | null;
 
   // Actions
-  toggleUnit: () => void;
   addWorkout: (workout: Workout) => void;
   updateWorkout: (id: string, workout: Partial<Workout>) => void;
   deleteWorkout: (id: string) => void;
@@ -33,6 +32,7 @@ interface AppState {
   
   addExercise: (exercise: Exercise) => void;
   updateExercise: (id: string, exercise: Partial<Exercise>) => void;
+  toggleUnits: () => void;
 }
 
 export const useStore = create<AppState>()(
@@ -41,14 +41,14 @@ export const useStore = create<AppState>()(
       workouts: [],
       plans: [],
       exercises: defaultExercises,
-      settings: { theme: 'dark', animations: true, unit: 'kg' },
+      settings: { theme: 'dark', animations: true, units: 'kg' },
       activeWorkout: null,
 
-      toggleUnit: () =>
+      toggleUnits: () =>
         set((state) => ({
           settings: {
             ...state.settings,
-            unit: state.settings.unit === 'kg' ? 'lbs' : 'kg',
+            units: state.settings.units === 'kg' ? 'lb' : 'kg',
           },
         })),
 

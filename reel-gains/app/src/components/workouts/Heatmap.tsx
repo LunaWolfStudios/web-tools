@@ -1,5 +1,5 @@
 import React from 'react';
-import { eachDayOfInterval, subDays, format, isSameDay, startOfWeek, endOfWeek, eachWeekOfInterval, getDay, startOfMonth } from 'date-fns';
+import { eachDayOfInterval, subDays, format, isSameDay, startOfWeek, endOfWeek, eachWeekOfInterval, getDay } from 'date-fns';
 import { useStore } from '../../store/useStore';
 import { motion } from 'motion/react';
 
@@ -7,20 +7,12 @@ export function Heatmap() {
   const { workouts } = useStore();
   const today = new Date();
   
-  // Calculate total workouts
-  const totalWorkouts = workouts.length;
-
-  // Generate last ~4 months (16 weeks) to ensure it fits nicely
-  // We want to end on the current week
-  const endDate = endOfWeek(today);
-  const startDate = startOfWeek(subDays(today, 16 * 7)); // 16 weeks back
+  // Calculate the start date to show exactly 16 weeks (approx 4 months) ending today
+  // We want to start on a Sunday (or Monday depending on locale, but let's assume Sunday for visual consistency)
+  const endDate = today;
+  const startDate = subDays(today, 119); // 17 weeks * 7 days = 119 days roughly
 
   const days = eachDayOfInterval({
-    start: startDate,
-    end: endDate,
-  });
-
-  const weeks = eachWeekOfInterval({
     start: startDate,
     end: endDate,
   });
@@ -32,51 +24,86 @@ export function Heatmap() {
     return 'bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.6)]';
   };
 
-  // Group days by week for column-based rendering
-  const weeksData = weeks.map(weekStart => {
-    const weekDays = eachDayOfInterval({
-      start: weekStart,
-      end: endOfWeek(weekStart)
-    });
-    return {
-      start: weekStart,
-      days: weekDays
-    };
+  // Group days by weeks for better column alignment
+  const weeks = [];
+  let currentWeek = [];
+  
+  // Pad the beginning if startDate is not Sunday
+  const startDay = getDay(startDate);
+  for (let i = 0; i < startDay; i++) {
+    currentWeek.push(null);
+  }
+
+  days.forEach(day => {
+    currentWeek.push(day);
+    if (currentWeek.length === 7) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+    }
+  });
+  
+  if (currentWeek.length > 0) {
+    weeks.push(currentWeek);
+  }
+
+  // Generate month labels
+  const monthLabels = [];
+  let lastMonth = -1;
+  weeks.forEach((week, index) => {
+    const firstDayOfWeek = week.find(d => d !== null);
+    if (firstDayOfWeek) {
+      const month = firstDayOfWeek.getMonth();
+      if (month !== lastMonth) {
+        monthLabels.push({ index, label: format(firstDayOfWeek, 'MMM') });
+        lastMonth = month;
+      }
+    }
   });
 
   return (
-    <div className="w-full">
-      <div className="flex justify-between items-end mb-2 px-1">
-        <div className="text-xs text-slate-500">
-          <span className="text-cyan-400 font-bold text-lg mr-1">{totalWorkouts}</span>
-          workouts total
-        </div>
-      </div>
-
-      <div className="overflow-x-auto pb-2 scrollbar-hide">
-        <div className="flex gap-1 min-w-max mx-auto justify-center">
-          {weeksData.map((week, i) => {
-            const isNewMonth = i === 0 || format(week.start, 'MMM') !== format(weeksData[i-1].start, 'MMM');
-            
-            return (
-              <div key={week.start.toISOString()} className="flex flex-col gap-1 relative pt-4">
-                {isNewMonth && (
-                  <span className="absolute top-0 left-0 text-[9px] text-slate-500 font-medium uppercase">
-                    {format(week.start, 'MMM')}
-                  </span>
-                )}
-                {week.days.map((day) => (
-                  <motion.div
-                    key={day.toISOString()}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className={`w-3 h-3 rounded-sm ${getIntensity(day)}`}
-                    title={format(day, 'MMM d, yyyy')}
-                  />
+    <div className="w-full flex flex-col items-center">
+      <div className="w-full overflow-x-auto pb-2 flex justify-center">
+        <div className="flex flex-col gap-1">
+          <div className="flex gap-1 h-4 relative mb-1">
+            {monthLabels.map((m, i) => (
+              <span 
+                key={i} 
+                className="absolute text-[10px] text-slate-500 font-medium"
+                style={{ left: `${m.index * 14}px` }} // 12px width + 2px gap approx
+              >
+                {m.label}
+              </span>
+            ))}
+          </div>
+          <div className="flex gap-1">
+            {weeks.map((week, weekIndex) => (
+              <div key={weekIndex} className="flex flex-col gap-1">
+                {week.map((day, dayIndex) => (
+                  day ? (
+                    <motion.div
+                      key={day.toISOString()}
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className={`w-2.5 h-2.5 rounded-[2px] ${getIntensity(day)}`}
+                      title={format(day, 'MMM d, yyyy')}
+                    />
+                  ) : (
+                    <div key={`empty-${weekIndex}-${dayIndex}`} className="w-2.5 h-2.5" />
+                  )
                 ))}
               </div>
-            );
-          })}
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="flex justify-between w-full max-w-[300px] text-xs text-slate-500 mt-2 px-1">
+        <span>Total Workouts: <span className="text-cyan-400 font-bold">{workouts.length}</span></span>
+        <div className="flex items-center gap-1">
+          <span>Less</span>
+          <div className="w-2 h-2 bg-slate-800/50 rounded-[1px]" />
+          <div className="w-2 h-2 bg-cyan-900 rounded-[1px]" />
+          <div className="w-2 h-2 bg-cyan-500 rounded-[1px]" />
+          <span>More</span>
         </div>
       </div>
     </div>
