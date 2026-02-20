@@ -251,8 +251,14 @@ export function EditWorkoutPage() {
                           <input
                             type="number"
                             className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-center text-sm focus:border-cyan-500 outline-none"
-                            value={set.weight || ''}
-                            onChange={(e) => updateSet(workoutExercise.id, set.id, { weight: Number(e.target.value) })}
+                            value={settings.units === 'lb' && set.weight ? Math.round(set.weight * 2.20462) : (set.weight || '')}
+                            onChange={(e) => {
+                              let val = Number(e.target.value);
+                              if (settings.units === 'lb') {
+                                val = val / 2.20462;
+                              }
+                              updateSet(workoutExercise.id, set.id, { weight: val });
+                            }}
                           />
                         </div>
                         <div className="col-span-3">

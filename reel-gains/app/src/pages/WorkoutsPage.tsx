@@ -70,7 +70,7 @@ export function WorkoutsPage() {
           <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
             Reel Gains
           </h1>
-          <p className="text-slate-400 text-sm">Track your progress</p>
+          <p className="text-slate-400 text-sm">Track every rep. Catch every gain.</p>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={toggleUnits} className="text-xs text-slate-400 uppercase">

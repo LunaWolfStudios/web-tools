@@ -162,7 +162,7 @@ export function ExercisesPage() {
                     <Card className="bg-cyan-900/20 border-cyan-500/30">
                       <div className="flex items-center gap-2 text-cyan-400 mb-1">
                         <Dumbbell className="w-4 h-4" />
-                        <span className="text-xs font-bold uppercase">Recent Max</span>
+                        <span className="text-xs font-bold uppercase">Recent Workout</span>
                       </div>
                       <div className="text-3xl font-display font-bold text-white">
                         {recentMaxDisplay}<span className="text-sm text-slate-400 ml-1">{recentMaxUnit}</span>
