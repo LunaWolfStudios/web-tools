@@ -15,6 +15,7 @@ export function PlansPage() {
   const [planName, setPlanName] = useState('');
   const [selectedExercises, setSelectedExercises] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterCategory, setFilterCategory] = useState<string | null>(null);
 
   const handleStartCreate = () => {
     setIsCreating(true);
@@ -71,10 +72,14 @@ export function PlansPage() {
     );
   };
 
-  const filteredExercises = exercises.filter(e => 
-    e.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    e.category?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredExercises = exercises.filter(e => {
+    const matchesSearch = e.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      e.category?.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = filterCategory ? e.category === filterCategory : true;
+    return matchesSearch && matchesCategory;
+  });
+
+  const categories = ['upper_body', 'lower_body', 'core', 'cardio'];
 
   if (isCreating) {
     return (
@@ -112,6 +117,22 @@ export function PlansPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-2">
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setFilterCategory(filterCategory === cat ? null : cat)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors capitalize ${
+                    filterCategory === cat
+                      ? 'bg-cyan-500/20 border-cyan-500 text-cyan-400' 
+                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-600'
+                  }`}
+                >
+                  {cat.replace('_', ' ')}
+                </button>
+              ))}
             </div>
 
             <div className="h-96 overflow-y-auto space-y-2 pr-1">

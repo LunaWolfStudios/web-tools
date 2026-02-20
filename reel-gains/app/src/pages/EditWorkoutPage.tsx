@@ -151,15 +151,27 @@ export function EditWorkoutPage() {
            />
         </Card>
 
-        <Card className="p-3 bg-slate-900/50 border-slate-800">
-           <label className="text-xs text-slate-500 uppercase font-bold block mb-1">Notes</label>
-           <textarea
-             placeholder="Workout notes..."
-             className="w-full bg-transparent text-sm text-slate-300 placeholder:text-slate-600 focus:outline-none resize-none"
-             rows={2}
-             value={workout.notes || ''}
-             onChange={(e) => setWorkout({...workout, notes: e.target.value})}
-           />
+        <Card className="p-3 bg-slate-900/50 border-slate-800 space-y-3">
+           <div>
+             <label className="text-xs text-slate-500 uppercase font-bold block mb-1">Notes</label>
+             <textarea
+               placeholder="Workout notes..."
+               className="w-full bg-transparent text-sm text-slate-300 placeholder:text-slate-600 focus:outline-none resize-none"
+               rows={2}
+               value={workout.notes || ''}
+               onChange={(e) => setWorkout({...workout, notes: e.target.value})}
+             />
+           </div>
+           <div>
+             <label className="text-xs text-slate-500 uppercase font-bold block mb-1">Body Weight</label>
+             <input
+               type="number"
+               placeholder="0"
+               className="w-full bg-transparent text-sm text-slate-300 placeholder:text-slate-600 focus:outline-none"
+               value={workout.bodyWeight || ''}
+               onChange={(e) => setWorkout({...workout, bodyWeight: parseFloat(e.target.value) })}
+             />
+           </div>
         </Card>
 
         <AnimatePresence>

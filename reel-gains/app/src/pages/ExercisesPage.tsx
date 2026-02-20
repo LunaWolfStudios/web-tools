@@ -88,7 +88,7 @@ export function ExercisesPage() {
                 : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-600'
             }`}
           >
-            History Only
+            Recent
           </button>
           {categories.map(cat => (
             <button
