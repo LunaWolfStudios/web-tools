@@ -13,7 +13,7 @@ import { EditWorkoutPage } from './pages/EditWorkoutPage';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/reel-gains">
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<WorkoutsPage />} />

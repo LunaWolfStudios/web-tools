@@ -134,9 +134,9 @@ export function ExercisesPage() {
             return (
               <>
                 <div className="flex justify-between items-start">
-                  <h2 className="text-2xl font-bold font-display">{exercise?.name}</h2>
+                  <h2 className="text-2xl font-bold font-display">{exercise?.name || 'Unknown Exercise'}</h2>
                   <span className="text-xs text-slate-500 bg-slate-800 px-2 py-1 rounded-full uppercase">
-                    {exercise?.category.replace('_', ' ')}
+                    {exercise?.category?.replace('_', ' ') || 'Uncategorized'}
                   </span>
                 </div>
 

@@ -103,7 +103,7 @@ export function ActiveWorkoutPage() {
              <label className="text-xs text-slate-500 uppercase font-bold block mb-1">Body Weight ({settings.units})</label>
              <input
                type="number"
-               placeholder="0"
+               placeholder={`0 ${settings.units}`}
                className="w-full bg-transparent text-sm text-slate-300 placeholder:text-slate-600 focus:outline-none"
                value={activeWorkout.bodyWeight || ''}
                onChange={(e) => updateActiveWorkout({ bodyWeight: parseFloat(e.target.value) })}
@@ -136,7 +136,7 @@ export function ActiveWorkoutPage() {
                   {/* Sets Header */}
                   <div className="grid grid-cols-10 gap-2 mb-2 text-xs text-slate-500 uppercase font-bold text-center">
                     <div className="col-span-1">Set</div>
-                    <div className="col-span-3">kg</div>
+                    <div className="col-span-3">{settings.units}</div>
                     <div className="col-span-3">Reps</div>
                     <div className="col-span-3">Done</div>
                   </div>

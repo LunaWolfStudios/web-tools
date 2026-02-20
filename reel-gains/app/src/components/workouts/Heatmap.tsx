@@ -85,7 +85,7 @@ export function Heatmap() {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       className={`w-2.5 h-2.5 rounded-[2px] ${getIntensity(day)}`}
-                      title={format(day, 'MMM d, yyyy')}
+                      title={`${format(day, 'MMM d, yyyy')}: ${workouts.filter(w => isSameDay(new Date(w.startTime), day)).length} workouts`}
                     />
                   ) : (
                     <div key={`empty-${weekIndex}-${dayIndex}`} className="w-2.5 h-2.5" />

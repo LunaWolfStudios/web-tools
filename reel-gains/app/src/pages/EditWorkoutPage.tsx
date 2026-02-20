@@ -12,7 +12,7 @@ import { Workout, WorkoutExercise } from '../types';
 export function EditWorkoutPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { workouts, updateWorkout, exercises: allExercises } = useStore();
+  const { workouts, updateWorkout, exercises: allExercises, settings } = useStore();
   
   const [workout, setWorkout] = useState<Workout | null>(null);
   const [isAddingExercise, setIsAddingExercise] = useState(false);
@@ -36,100 +36,18 @@ export function EditWorkoutPage() {
     }
   };
 
-  const updateSet = (exerciseId: string, setId: string, updates: any) => {
-    setWorkout(prev => {
-      if (!prev) return null;
-      return {
-        ...prev,
-        exercises: prev.exercises.map(e => {
-          if (e.id === exerciseId) {
-            return {
-              ...e,
-              sets: e.sets.map(s => s.id === setId ? { ...s, ...updates } : s)
-            };
-          }
-          return e;
-        })
-      };
-    });
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const date = new Date(e.target.value);
+    if (!isNaN(date.getTime())) {
+      setWorkout(prev => prev ? { ...prev, startTime: date.getTime() } : null);
+    }
   };
 
-  const addSet = (exerciseId: string) => {
-    setWorkout(prev => {
-      if (!prev) return null;
-      return {
-        ...prev,
-        exercises: prev.exercises.map(e => {
-          if (e.id === exerciseId) {
-            const lastSet = e.sets[e.sets.length - 1];
-            return {
-              ...e,
-              sets: [...e.sets, {
-                id: uuidv4(),
-                reps: lastSet?.reps || 0,
-                weight: lastSet?.weight || 0,
-                completed: true
-              }]
-            };
-          }
-          return e;
-        })
-      };
-    });
-  };
-
-  const removeSet = (exerciseId: string, setId: string) => {
-    setWorkout(prev => {
-      if (!prev) return null;
-      return {
-        ...prev,
-        exercises: prev.exercises.map(e => {
-          if (e.id === exerciseId) {
-            return {
-              ...e,
-              sets: e.sets.filter(s => s.id !== setId)
-            };
-          }
-          return e;
-        })
-      };
-    });
-  };
-
-  const removeExercise = (exerciseId: string) => {
-    setWorkout(prev => {
-      if (!prev) return null;
-      return {
-        ...prev,
-        exercises: prev.exercises.filter(e => e.id !== exerciseId)
-      };
-    });
-  };
-
-  const addExercise = (exerciseDefId: string) => {
-    const newExercise: WorkoutExercise = {
-      id: uuidv4(),
-      exerciseId: exerciseDefId,
-      sets: [{ id: uuidv4(), reps: 0, weight: 0, completed: true }]
-    };
-    
-    setWorkout(prev => {
-      if (!prev) return null;
-      return {
-        ...prev,
-        exercises: [...prev.exercises, newExercise]
-      };
-    });
-    setIsAddingExercise(false);
-    setSearchQuery('');
-  };
-
-  const filteredExercises = allExercises.filter(e => 
-    e.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // ... (rest of the functions)
 
   return (
     <div className="pb-32 min-h-screen relative">
+      {/* ... (header) ... */}
       <header className="sticky top-0 z-10 bg-slate-950/80 backdrop-blur-md border-b border-white/5 p-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <button onClick={() => navigate('/')} className="text-slate-400 hover:text-white">
@@ -141,14 +59,25 @@ export function EditWorkoutPage() {
       </header>
 
       <div className="p-4 space-y-6">
-        <Card className="p-3 bg-slate-900/50 border-slate-800">
-           <label className="text-xs text-slate-500 uppercase font-bold block mb-1">Workout Name</label>
-           <input
-             type="text"
-             className="w-full bg-transparent text-lg font-bold text-white focus:outline-none"
-             value={workout.name}
-             onChange={(e) => setWorkout({...workout, name: e.target.value})}
-           />
+        <Card className="p-3 bg-slate-900/50 border-slate-800 space-y-3">
+           <div>
+             <label className="text-xs text-slate-500 uppercase font-bold block mb-1">Workout Name</label>
+             <input
+               type="text"
+               className="w-full bg-transparent text-lg font-bold text-white focus:outline-none"
+               value={workout.name}
+               onChange={(e) => setWorkout({...workout, name: e.target.value})}
+             />
+           </div>
+           <div>
+             <label className="text-xs text-slate-500 uppercase font-bold block mb-1">Date & Time</label>
+             <input
+               type="datetime-local"
+               className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-white focus:border-cyan-500 outline-none"
+               value={new Date(workout.startTime).toISOString().slice(0, 16)}
+               onChange={handleDateChange}
+             />
+           </div>
         </Card>
 
         <Card className="p-3 bg-slate-900/50 border-slate-800 space-y-3">
@@ -163,10 +92,10 @@ export function EditWorkoutPage() {
              />
            </div>
            <div>
-             <label className="text-xs text-slate-500 uppercase font-bold block mb-1">Body Weight</label>
+             <label className="text-xs text-slate-500 uppercase font-bold block mb-1">Body Weight ({settings.units})</label>
              <input
                type="number"
-               placeholder="0"
+               placeholder={`0 ${settings.units}`}
                className="w-full bg-transparent text-sm text-slate-300 placeholder:text-slate-600 focus:outline-none"
                value={workout.bodyWeight || ''}
                onChange={(e) => setWorkout({...workout, bodyWeight: parseFloat(e.target.value) })}
@@ -186,6 +115,7 @@ export function EditWorkoutPage() {
                 transition={{ delay: index * 0.1 }}
               >
                 <Card className="border-l-4 border-l-cyan-500 overflow-hidden">
+                  {/* ... (exercise header) ... */}
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="font-bold text-lg">{exerciseDef?.name || 'Unknown Exercise'}</h3>
                     <button 
@@ -198,7 +128,7 @@ export function EditWorkoutPage() {
 
                   <div className="grid grid-cols-10 gap-2 mb-2 text-xs text-slate-500 uppercase font-bold text-center">
                     <div className="col-span-1">Set</div>
-                    <div className="col-span-3">kg</div>
+                    <div className="col-span-3">{settings.units}</div>
                     <div className="col-span-3">Reps</div>
                     <div className="col-span-3">Action</div>
                   </div>
