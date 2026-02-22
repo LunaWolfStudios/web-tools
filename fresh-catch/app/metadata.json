@@ -1,0 +1,5 @@
+{
+  "name": "Fresh Catch",
+  "description": "A mobile-first, neon-themed shopping list app with gesture controls and offline persistence.",
+  "requestFramePermissions": []
+}
