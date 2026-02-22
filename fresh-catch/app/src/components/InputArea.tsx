@@ -112,7 +112,20 @@ export function AddItemInput({
     }
   };
 
-  const neonColors = ['#00ccff', '#ff00ff', '#00ff9d', '#bd00ff', '#faff00', '#ff5500', '#ffffff'];
+  const neonColors = [
+    '#00ccff', // Blue
+    '#ff00ff', // Pink
+    '#00ff9d', // Green
+    '#bd00ff', // Purple
+    '#faff00', // Yellow
+    '#ff5500', // Orange
+    '#ffffff', // White
+    '#ff3333', // Red
+    '#3366ff', // Royal Blue
+    '#00ffcc', // Teal
+    '#ccff00', // Lime
+    '#ff9900', // Amber
+  ];
 
   return (
     <div className="space-y-3 mb-6">

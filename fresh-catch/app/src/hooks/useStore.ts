@@ -9,10 +9,15 @@ const DEFAULT_DATA: AppData = {
       id: 'cat-1',
       name: 'Grocery',
       color: '#00ff9d', // Neon Green
-      items: []
+      items: [
+        { id: 'item-1', name: 'Bread', status: 'need', lastUsed: Date.now() },
+        { id: 'item-2', name: 'Milk', status: 'need', lastUsed: Date.now() },
+        { id: 'item-3', name: 'Eggs', status: 'need', lastUsed: Date.now() },
+        { id: 'item-4', name: 'Bacon', status: 'need', lastUsed: Date.now() },
+      ]
     }
   ],
-  recentItems: [],
+  recentItems: ['Bread', 'Milk', 'Eggs', 'Bacon'],
   settings: {
     sound: true,
     darkMode: true

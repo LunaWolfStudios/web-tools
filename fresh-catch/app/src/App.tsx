@@ -133,7 +133,11 @@ export default function App() {
               Need
             </h2>
             <button 
-              onClick={markAllPurchased}
+              onClick={() => {
+                if (confirm('Mark all items as purchased?')) {
+                  markAllPurchased();
+                }
+              }}
               className="text-[10px] font-bold uppercase tracking-wider text-neon-blue hover:text-white transition-colors flex items-center gap-1"
             >
               <CheckCheck size={14} /> All Done

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Item, Category, ItemStatus } from '../types';
 import { motion, PanInfo, AnimatePresence } from 'motion/react';
-import { Check, Trash2, CheckCheck, ChevronDown, ChevronRight } from 'lucide-react';
+import { Check, Trash2, CheckCheck, ChevronDown, ChevronRight, X } from 'lucide-react';
 
 interface ItemRowProps {
   item: Item;
@@ -71,9 +71,9 @@ export const ItemRow: React.FC<ItemRowProps> = ({ item, categoryColor, onMove, o
           e.stopPropagation();
           onDelete(item.id);
         }}
-        className="opacity-0 group-hover:opacity-100 p-2 text-gray-500 hover:text-red-400 transition-opacity"
+        className="p-2 text-gray-500 hover:text-red-400 transition-opacity"
       >
-        <Trash2 size={16} />
+        <X size={16} />
       </button>
     </motion.div>
   );
