@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Download, Upload, RotateCcw, Trash2, Menu, X, Copy } from 'lucide-react';
+import { Download, Upload, RotateCcw, Trash2, Menu, X, Copy, ClipboardPaste } from 'lucide-react';
 import { AppData } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -9,9 +9,10 @@ interface HeaderProps {
   onReset: () => void;
   onClearPurchased: () => void;
   onCopyList: () => void;
+  onPasteList: () => void;
 }
 
-export function Header({ onExport, onImport, onReset, onClearPurchased, onCopyList }: HeaderProps) {
+export function Header({ onExport, onImport, onReset, onClearPurchased, onCopyList, onPasteList }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -58,6 +59,16 @@ export function Header({ onExport, onImport, onReset, onClearPurchased, onCopyLi
                   className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white rounded-lg transition-colors"
                 >
                   <Copy size={16} /> Copy List
+                </button>
+                
+                <button
+                  onClick={() => {
+                    onPasteList();
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white rounded-lg transition-colors"
+                >
+                  <ClipboardPaste size={16} /> Paste List
                 </button>
 
                 <button

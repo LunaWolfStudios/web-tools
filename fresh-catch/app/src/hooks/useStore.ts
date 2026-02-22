@@ -205,6 +205,81 @@ export function useStore() {
     showToast('All items marked purchased');
   };
 
+  const pasteList = (text: string) => {
+    pushHistory();
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+    
+    setData(prev => {
+      // Deep clone categories to avoid mutation issues
+      const nextCategories = prev.categories.map(c => ({
+        ...c,
+        items: [...c.items]
+      }));
+      let nextRecents = [...prev.recentItems];
+      let currentCatId: string | null = null;
+
+      const colors = ['#00ccff', '#ff00ff', '#00ff9d', '#bd00ff', '#faff00', '#ff5500', '#ffffff'];
+
+      lines.forEach(line => {
+        if (line.endsWith(':')) {
+           const catName = line.slice(0, -1).trim();
+           // Find existing category (case-insensitive)
+           let cat = nextCategories.find(c => c.name.toLowerCase() === catName.toLowerCase());
+           
+           if (!cat) {
+               // Create new category
+               cat = {
+                   id: crypto.randomUUID(),
+                   name: catName,
+                   color: colors[Math.floor(Math.random() * colors.length)],
+                   items: []
+               };
+               nextCategories.push(cat);
+           }
+           currentCatId = cat.id;
+        } else {
+            // It's an item
+            const itemName = line.replace(/^-\s*/, '').trim();
+            if (!itemName) return;
+
+            // If no category selected yet, use the first one or create default
+            if (!currentCatId) {
+                if (nextCategories.length === 0) {
+                     const cat = {
+                        id: crypto.randomUUID(),
+                        name: 'Grocery',
+                        color: '#00ff9d',
+                        items: []
+                     };
+                     nextCategories.push(cat);
+                     currentCatId = cat.id;
+                } else {
+                    currentCatId = nextCategories[0].id;
+                }
+            }
+
+            const catIndex = nextCategories.findIndex(c => c.id === currentCatId);
+            if (catIndex > -1) {
+                nextCategories[catIndex].items.push({
+                    id: crypto.randomUUID(),
+                    name: itemName,
+                    status: 'need',
+                    lastUsed: Date.now()
+                });
+                
+                // Add to recents if not exists
+                if (!nextRecents.includes(itemName)) {
+                    nextRecents.unshift(itemName);
+                }
+            }
+        }
+      });
+
+      return { ...prev, categories: nextCategories, recentItems: nextRecents };
+    });
+    showToast('List pasted successfully');
+  };
+
   return {
     data,
     addItem,
@@ -214,6 +289,7 @@ export function useStore() {
     deleteCategory,
     updateCategory,
     importData,
+    pasteList,
     clearPurchased,
     markCategoryPurchased,
     markAllPurchased,

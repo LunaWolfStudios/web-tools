@@ -4,7 +4,7 @@ import { Header } from './components/Header';
 import { AddItemInput, QuickAddBar } from './components/InputArea';
 import { CategoryGroup } from './components/Lists';
 import { motion, AnimatePresence } from 'motion/react';
-import { Undo2, CheckCheck, Trash2 } from 'lucide-react';
+import { Undo2, CheckCheck, Trash2, X } from 'lucide-react';
 
 export default function App() {
   const {
@@ -16,6 +16,7 @@ export default function App() {
     deleteCategory,
     updateCategory,
     importData,
+    pasteList,
     clearPurchased,
     markCategoryPurchased,
     markAllPurchased,
@@ -27,6 +28,8 @@ export default function App() {
   } = useStore();
 
   const [selectedCatId, setSelectedCatId] = useState<string>('');
+  const [isPasteModalOpen, setIsPasteModalOpen] = useState(false);
+  const [pasteText, setPasteText] = useState('');
 
   // Initialize selectedCatId if empty and categories exist
   React.useEffect(() => {
@@ -59,6 +62,13 @@ export default function App() {
     } else {
         showToast('Nothing to copy!');
     }
+  };
+
+  const handlePasteList = () => {
+    if (!pasteText.trim()) return;
+    pasteList(pasteText);
+    setPasteText('');
+    setIsPasteModalOpen(false);
   };
 
   const handleExport = () => {
@@ -101,6 +111,7 @@ export default function App() {
         onReset={handleReset}
         onClearPurchased={clearPurchased}
         onCopyList={handleCopyList}
+        onPasteList={() => setIsPasteModalOpen(true)}
       />
 
       <QuickAddBar
@@ -196,6 +207,53 @@ export default function App() {
           </div>
         </section>
       </div>
+
+      {/* Paste Modal */}
+      <AnimatePresence>
+        {isPasteModalOpen && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-[#1a1a24] border border-white/10 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl"
+            >
+              <div className="p-4 border-b border-white/10 flex justify-between items-center">
+                <h3 className="text-lg font-bold text-white">Paste List</h3>
+                <button onClick={() => setIsPasteModalOpen(false)} className="text-gray-500 hover:text-white">
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="p-4">
+                <p className="text-sm text-gray-400 mb-3">
+                  Paste your list below. Use colons for categories (e.g. "Costco:").
+                </p>
+                <textarea
+                  value={pasteText}
+                  onChange={(e) => setPasteText(e.target.value)}
+                  className="w-full h-64 bg-black/30 border border-white/10 rounded-xl p-4 text-white font-mono text-sm focus:outline-none focus:border-neon-blue resize-none"
+                  placeholder={`Costco:\n- Eggs\n- Bacon\n\nGrocery:\nMilk\nBread`}
+                />
+              </div>
+              <div className="p-4 border-t border-white/10 flex justify-end gap-3">
+                <button
+                  onClick={() => setIsPasteModalOpen(false)}
+                  className="px-4 py-2 text-gray-400 hover:text-white transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handlePasteList}
+                  disabled={!pasteText.trim()}
+                  className="bg-neon-blue text-black font-bold px-6 py-2 rounded-xl hover:bg-neon-blue/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Import Items
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Toast & Undo */}
       <AnimatePresence>
