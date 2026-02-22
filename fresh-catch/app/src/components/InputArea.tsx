@@ -6,22 +6,36 @@ import { motion, AnimatePresence } from 'motion/react';
 interface QuickAddBarProps {
   recentItems: string[];
   onAdd: (name: string) => void;
+  onRemove: (name: string) => void;
 }
 
-export function QuickAddBar({ recentItems, onAdd }: QuickAddBarProps) {
+export function QuickAddBar({ recentItems, onAdd, onRemove }: QuickAddBarProps) {
   if (recentItems.length === 0) return null;
 
   return (
     <div className="w-full max-h-48 overflow-y-auto mb-4 no-scrollbar">
       <div className="flex flex-wrap gap-2 px-1">
         {recentItems.map((item, index) => (
-          <button
+          <div
             key={`${item}-${index}`}
-            onClick={() => onAdd(item)}
-            className="flex-shrink-0 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 hover:border-neon-blue hover:text-neon-blue transition-colors whitespace-nowrap"
+            className="flex-shrink-0 inline-flex items-center rounded-full bg-white/5 border border-white/10 text-sm text-gray-300 hover:bg-white/10 hover:border-neon-blue transition-colors whitespace-nowrap group"
           >
-            + {item}
-          </button>
+            <button
+              onClick={() => onAdd(item)}
+              className="pl-3 pr-2 py-1 hover:text-neon-blue"
+            >
+              + {item}
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onRemove(item);
+              }}
+              className="pr-2 pl-1 py-1 text-gray-500 hover:text-red-400 border-l border-white/5"
+            >
+              <X size={12} />
+            </button>
+          </div>
         ))}
       </div>
     </div>

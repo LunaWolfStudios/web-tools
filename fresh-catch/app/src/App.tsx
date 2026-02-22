@@ -19,9 +19,11 @@ export default function App() {
     clearPurchased,
     markCategoryPurchased,
     markAllPurchased,
+    removeRecentItem,
     undo,
     canUndo,
-    toast
+    toast,
+    showToast
   } = useStore();
 
   const [selectedCatId, setSelectedCatId] = useState<string>('');
@@ -35,6 +37,29 @@ export default function App() {
        setSelectedCatId(data.categories[0].id);
     }
   }, [data.categories, selectedCatId]);
+
+  const handleCopyList = () => {
+    const lines: string[] = [];
+    data.categories.forEach(cat => {
+      const needItems = cat.items.filter(i => i.status === 'need');
+      if (needItems.length > 0) {
+        lines.push(`${cat.name}:`);
+        needItems.forEach(item => {
+          lines.push(`- ${item.name}`);
+        });
+        lines.push('');
+      }
+    });
+    
+    const text = lines.join('\n').trim();
+    if (text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('List copied to clipboard');
+      });
+    } else {
+        showToast('Nothing to copy!');
+    }
+  };
 
   const handleExport = () => {
     const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
@@ -75,6 +100,7 @@ export default function App() {
         onImport={handleImport}
         onReset={handleReset}
         onClearPurchased={clearPurchased}
+        onCopyList={handleCopyList}
       />
 
       <QuickAddBar
@@ -86,6 +112,7 @@ export default function App() {
             addItem(name, data.categories[0].id);
           }
         }}
+        onRemove={removeRecentItem}
       />
 
       <AddItemInput

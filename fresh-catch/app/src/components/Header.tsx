@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Download, Upload, RotateCcw, Trash2, Menu, X } from 'lucide-react';
+import { Download, Upload, RotateCcw, Trash2, Menu, X, Copy } from 'lucide-react';
 import { AppData } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -8,9 +8,10 @@ interface HeaderProps {
   onImport: (file: File) => void;
   onReset: () => void;
   onClearPurchased: () => void;
+  onCopyList: () => void;
 }
 
-export function Header({ onExport, onImport, onReset, onClearPurchased }: HeaderProps) {
+export function Header({ onExport, onImport, onReset, onClearPurchased, onCopyList }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -49,6 +50,16 @@ export function Header({ onExport, onImport, onReset, onClearPurchased }: Header
               className="absolute right-0 top-full mt-2 w-48 bg-[#1a1a24] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden"
             >
               <div className="p-1">
+                <button
+                  onClick={() => {
+                    onCopyList();
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white rounded-lg transition-colors"
+                >
+                  <Copy size={16} /> Copy List
+                </button>
+
                 <button
                   onClick={() => {
                     onExport();

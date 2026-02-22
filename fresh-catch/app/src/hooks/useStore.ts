@@ -10,12 +10,6 @@ const DEFAULT_DATA: AppData = {
       name: 'Grocery',
       color: '#00ff9d', // Neon Green
       items: []
-    },
-    {
-      id: 'cat-2',
-      name: 'Home',
-      color: '#00ccff', // Neon Blue
-      items: []
     }
   ],
   recentItems: [],
@@ -85,6 +79,13 @@ export function useStore() {
       return { ...prev, categories: newCategories, recentItems: newRecents };
     });
     showToast(`Added ${name}`);
+  };
+
+  const removeRecentItem = (name: string) => {
+    setData(prev => ({
+      ...prev,
+      recentItems: prev.recentItems.filter(item => item !== name)
+    }));
   };
 
   const moveItem = (categoryId: string, itemId: string, toStatus: ItemStatus) => {
@@ -211,8 +212,10 @@ export function useStore() {
     clearPurchased,
     markCategoryPurchased,
     markAllPurchased,
+    removeRecentItem,
     undo,
     canUndo: history.length > 0,
-    toast
+    toast,
+    showToast
   };
 }
