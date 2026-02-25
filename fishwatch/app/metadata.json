@@ -1,0 +1,5 @@
+{
+  "name": "FishWatch",
+  "description": "A visually engaging aquatic-themed stopwatch and interval timer with neon glow effects, interval alerts, and a Green Light / Red Light mode.",
+  "requestFramePermissions": []
+}
