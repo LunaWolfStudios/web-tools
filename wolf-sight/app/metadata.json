@@ -1,0 +1,5 @@
+{
+  "name": "Wolf Sight",
+  "description": "A web-based analytics dashboard for leaderboard data with interactive charts and filters.",
+  "requestFramePermissions": []
+}
