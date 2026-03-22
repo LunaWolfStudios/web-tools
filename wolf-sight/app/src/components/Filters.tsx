@@ -72,6 +72,20 @@ export const Filters: React.FC<FiltersProps> = ({
     });
   };
 
+  const handleTimeTextChange = (e: React.ChangeEvent<HTMLInputElement>, index: 0 | 1) => {
+    let val = parseInt(e.target.value, 10);
+    if (isNaN(val)) return;
+    if (val < 0) val = 0;
+    if (val > 23) val = 23;
+    setFilters((prev) => {
+      const newRange = [...prev.timeRange] as [number, number];
+      newRange[index] = val;
+      if (index === 0 && newRange[0] > newRange[1]) newRange[1] = newRange[0];
+      if (index === 1 && newRange[1] < newRange[0]) newRange[0] = newRange[1];
+      return { ...prev, timeRange: newRange };
+    });
+  };
+
   return (
     <div className="p-6 border rounded-xl border-slate-700/50 bg-slate-800/30 backdrop-blur-md">
       <div className="flex items-center mb-6 space-x-2 text-cyan-400">
@@ -182,9 +196,30 @@ export const Filters: React.FC<FiltersProps> = ({
             <h3 className="text-sm font-medium">Time of Day (Hour)</h3>
           </div>
           <div className="space-y-4">
-            <div className="flex items-center justify-between text-xs text-slate-400">
-              <span>{filters.timeRange[0]}:00</span>
-              <span>{filters.timeRange[1]}:00</span>
+            <div className="flex items-center justify-between space-x-2 text-xs text-slate-400">
+              <div className="flex items-center space-x-1">
+                <input
+                  type="number"
+                  min={0}
+                  max={23}
+                  value={filters.timeRange[0]}
+                  onChange={(e) => handleTimeTextChange(e, 0)}
+                  className="w-16 px-2 py-1 border rounded bg-slate-900 border-slate-700 text-slate-200 focus:outline-none focus:border-purple-500"
+                />
+                <span>:00</span>
+              </div>
+              <span>to</span>
+              <div className="flex items-center space-x-1">
+                <input
+                  type="number"
+                  min={0}
+                  max={23}
+                  value={filters.timeRange[1]}
+                  onChange={(e) => handleTimeTextChange(e, 1)}
+                  className="w-16 px-2 py-1 border rounded bg-slate-900 border-slate-700 text-slate-200 focus:outline-none focus:border-purple-500"
+                />
+                <span>:00</span>
+              </div>
             </div>
             <div className="flex items-center space-x-4">
               <input

@@ -26,15 +26,39 @@ const COLORS = ['#00D4FF', '#7A5CFF', '#00FF9D', '#FF3366', '#FFD700'];
 
 const CustomTooltip = ({ active, payload, label, labelFormatter }: any) => {
   if (active && payload && payload.length) {
-    const displayLabel = labelFormatter ? labelFormatter(label) : label;
+    // For ScatterChart, label might be empty. Try to find the X-axis value in payload.
+    let rawLabel = label;
+    if (rawLabel === undefined || rawLabel === '') {
+      const timePayload = payload.find((p: any) => p.name === 'Time' || p.dataKey === 'timestampMs' || p.dataKey === 'time');
+      if (timePayload) {
+        rawLabel = timePayload.value;
+      }
+    }
+
+    const displayLabel = labelFormatter && rawLabel !== undefined && rawLabel !== '' ? labelFormatter(rawLabel) : rawLabel;
+
     return (
       <div className="p-3 border rounded-lg shadow-xl bg-slate-900/90 border-slate-700 backdrop-blur-md">
-        <p className="mb-2 font-semibold text-slate-200">{displayLabel}</p>
-        {payload.map((entry: any, index: number) => (
-          <p key={index} className="text-sm" style={{ color: entry.color }}>
-            {entry.name}: <span className="font-mono font-bold">{entry.value}</span>
-          </p>
-        ))}
+        {displayLabel && <p className="mb-2 font-semibold text-slate-200">{displayLabel}</p>}
+        {payload.map((entry: any, index: number) => {
+          // Skip the X-axis entry since it's used as the label
+          if (entry.name === 'Time' || entry.dataKey === 'timestampMs' || entry.dataKey === 'time' || entry.dataKey === 'label') return null;
+          
+          // For ScatterChart, the name might be 'Score', but we want to show the category
+          const name = entry.name === 'Score' && entry.payload?.category ? entry.payload.category : entry.name;
+          let val = entry.value;
+          if (Array.isArray(val)) {
+            val = val[1]; // Usually [x, y], we want y
+          } else if (typeof val === 'object' && val !== null) {
+            val = JSON.stringify(val);
+          }
+
+          return (
+            <p key={index} className="text-sm" style={{ color: entry.color }}>
+              {name}: <span className="font-mono font-bold">{val}</span>
+            </p>
+          );
+        })}
       </div>
     );
   }
@@ -73,14 +97,16 @@ export const Charts: React.FC<ChartsProps> = ({ entries, aggregatedData }) => {
     return d.toLocaleDateString([], { month: 'short', day: 'numeric' });
   };
 
-  const formatTimestamp = (val: number, mode: 'aggregate' | 'detailed') => {
+  const formatTimestamp = (val: number | string, mode: 'aggregate' | 'detailed') => {
+    const numVal = Number(val);
+    if (!numVal || isNaN(numVal)) return '';
     if (mode === 'aggregate') {
       const d = new Date();
       d.setHours(0, 0, 0, 0);
-      d.setMilliseconds(val);
+      d.setMilliseconds(numVal);
       return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
-    const d = new Date(val);
+    const d = new Date(numVal);
     const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     const dateStr = isSameMonth 
       ? d.toLocaleDateString([], { day: 'numeric' })
