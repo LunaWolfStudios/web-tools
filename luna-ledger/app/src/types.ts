@@ -6,6 +6,9 @@ export interface SalesRow {
   netUSD: number;
   withholdingTaxUSD: number;
   period: string; // YYYY-MM
+  platform: string;
+  refundUnits: number;
+  refundUSD: number;
 }
 
 export interface Dataset {

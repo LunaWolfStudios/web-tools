@@ -4,10 +4,10 @@
  */
 
 import React, { useState, useMemo, useCallback } from 'react';
-import { Upload, FileText, Trash2, Filter, BarChart3, LineChart, DollarSign, Package } from 'lucide-react';
+import { Upload, FileText, Trash2, Filter, BarChart3, LineChart, DollarSign, Package, PackageMinus } from 'lucide-react';
 import { Dataset, SalesRow } from './types';
 import { parseCSV } from './lib/parser';
-import { aggregateTotals, aggregateByPeriod, aggregateByTitle, aggregateByCountry } from './lib/aggregations';
+import { aggregateTotals, aggregateByPeriod, aggregateByTitle, aggregateByCountry, aggregateByPlatform } from './lib/aggregations';
 import {
   LineChart as RechartsLineChart,
   Line,
@@ -28,6 +28,7 @@ export default function App() {
   const [selectedPeriods, setSelectedPeriods] = useState<Set<string>>(new Set());
   const [selectedYears, setSelectedYears] = useState<Set<string>>(new Set());
   const [selectedCountries, setSelectedCountries] = useState<Set<string>>(new Set());
+  const [selectedPlatforms, setSelectedPlatforms] = useState<Set<string>>(new Set());
   const [revenueType, setRevenueType] = useState<'grossUSD' | 'netUSD'>('grossUSD');
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,6 +110,15 @@ export default function App() {
     });
   };
 
+  const togglePlatform = (platform: string) => {
+    setSelectedPlatforms(prev => {
+      const next = new Set(prev);
+      if (next.has(platform)) next.delete(platform);
+      else next.add(platform);
+      return next;
+    });
+  };
+
   // Combine rows from selected datasets
   const allSelectedRows = useMemo(() => {
     return datasets
@@ -133,6 +143,10 @@ export default function App() {
     return Array.from(new Set(allSelectedRows.map(r => r.country))).sort();
   }, [allSelectedRows]);
 
+  const availablePlatforms = useMemo(() => {
+    return Array.from(new Set(allSelectedRows.map(r => r.platform))).sort();
+  }, [allSelectedRows]);
+
   // Apply filters
   const filteredRows = useMemo(() => {
     return allSelectedRows.filter(row => {
@@ -140,15 +154,17 @@ export default function App() {
       const periodMatch = selectedPeriods.size === 0 || selectedPeriods.has(row.period);
       const yearMatch = selectedYears.size === 0 || selectedYears.has(row.period.substring(0, 4));
       const countryMatch = selectedCountries.size === 0 || selectedCountries.has(row.country);
-      return titleMatch && periodMatch && yearMatch && countryMatch;
+      const platformMatch = selectedPlatforms.size === 0 || selectedPlatforms.has(row.platform);
+      return titleMatch && periodMatch && yearMatch && countryMatch && platformMatch;
     });
-  }, [allSelectedRows, selectedTitles, selectedPeriods, selectedYears, selectedCountries]);
+  }, [allSelectedRows, selectedTitles, selectedPeriods, selectedYears, selectedCountries, selectedPlatforms]);
 
   // Compute aggregations
   const totals = useMemo(() => aggregateTotals(filteredRows), [filteredRows]);
   const periodData = useMemo(() => aggregateByPeriod(filteredRows), [filteredRows]);
   const titleData = useMemo(() => aggregateByTitle(filteredRows), [filteredRows]);
   const countryData = useMemo(() => aggregateByCountry(filteredRows), [filteredRows]);
+  const platformData = useMemo(() => aggregateByPlatform(filteredRows), [filteredRows]);
 
   const formatCurrency = (val: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
   const formatNumber = (val: number) => new Intl.NumberFormat('en-US').format(val);
@@ -208,14 +224,48 @@ export default function App() {
                 <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
                   <Filter className="w-4 h-4" /> Filters
                 </h3>
-                {(selectedTitles.size > 0 || selectedPeriods.size > 0 || selectedYears.size > 0 || selectedCountries.size > 0) && (
+                {(selectedTitles.size > 0 || selectedPeriods.size > 0 || selectedYears.size > 0 || selectedCountries.size > 0 || selectedPlatforms.size > 0) && (
                   <button 
-                    onClick={() => { setSelectedTitles(new Set()); setSelectedPeriods(new Set()); setSelectedYears(new Set()); setSelectedCountries(new Set()); }}
+                    onClick={() => { setSelectedTitles(new Set()); setSelectedPeriods(new Set()); setSelectedYears(new Set()); setSelectedCountries(new Set()); setSelectedPlatforms(new Set()); }}
                     className="text-xs text-neon-blue hover:underline"
                   >
                     Clear All
                   </button>
                 )}
+              </div>
+
+              <div>
+                <h4 className="text-xs text-gray-500 mb-2 font-medium">PRODUCT</h4>
+                <div className="flex flex-col gap-1 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
+                  {availableTitles.map(title => (
+                    <label key={title} className="flex items-center gap-2 cursor-pointer text-sm hover:bg-white/5 p-1 rounded">
+                      <input 
+                        type="checkbox" 
+                        checked={selectedTitles.has(title)}
+                        onChange={() => toggleTitle(title)}
+                        className="accent-neon-blue w-3.5 h-3.5"
+                      />
+                      <span className="truncate">{title}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-xs text-gray-500 mb-2 font-medium">PLATFORM</h4>
+                <div className="flex flex-col gap-1 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
+                  {availablePlatforms.map(platform => (
+                    <label key={platform} className="flex items-center gap-2 cursor-pointer text-sm hover:bg-white/5 p-1 rounded">
+                      <input 
+                        type="checkbox" 
+                        checked={selectedPlatforms.has(platform)}
+                        onChange={() => togglePlatform(platform)}
+                        className="accent-neon-purple w-3.5 h-3.5"
+                      />
+                      <span className="truncate">{platform}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
 
               <div>
@@ -227,26 +277,9 @@ export default function App() {
                         type="checkbox" 
                         checked={selectedYears.has(year)}
                         onChange={() => toggleYear(year)}
-                        className="accent-neon-blue w-3.5 h-3.5"
+                        className="accent-neon-green w-3.5 h-3.5"
                       />
                       <span className="truncate">{year}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-xs text-gray-500 mb-2 font-medium">GAME TITLE</h4>
-                <div className="flex flex-col gap-1 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
-                  {availableTitles.map(title => (
-                    <label key={title} className="flex items-center gap-2 cursor-pointer text-sm hover:bg-white/5 p-1 rounded">
-                      <input 
-                        type="checkbox" 
-                        checked={selectedTitles.has(title)}
-                        onChange={() => toggleTitle(title)}
-                        className="accent-neon-purple w-3.5 h-3.5"
-                      />
-                      <span className="truncate">{title}</span>
                     </label>
                   ))}
                 </div>
@@ -292,7 +325,7 @@ export default function App() {
               <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
                 <FileText className="w-4 h-4" /> Datasets
               </h3>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
                 {datasets.map(dataset => (
                   <div key={dataset.id} className="flex items-center justify-between bg-black/30 p-2 rounded border border-white/5">
                     <label className="flex items-center gap-2 cursor-pointer overflow-hidden">
@@ -321,13 +354,25 @@ export default function App() {
           <main className="flex-1 flex flex-col gap-6 w-full min-w-0">
             
             {/* KPI Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className={`grid grid-cols-2 ${totals.refundUnits > 0 ? 'md:grid-cols-6' : 'md:grid-cols-5'} gap-4`}>
               <div className="glass-panel p-5 flex flex-col">
                 <span className="text-gray-400 text-sm font-medium flex items-center gap-2 mb-2">
                   <Package className="w-4 h-4 text-neon-blue" /> Total Units
                 </span>
                 <span className="text-3xl font-bold neon-text-blue">{formatNumber(totals.units)}</span>
               </div>
+              
+              {totals.refundUnits > 0 && (
+                <div className="glass-panel p-5 flex flex-col">
+                  <span className="text-gray-400 text-sm font-medium flex items-center gap-2 mb-2">
+                    <PackageMinus className="w-4 h-4 text-red-400" /> Total Refunds
+                  </span>
+                  <span className="text-2xl font-bold text-red-400 drop-shadow-[0_0_8px_rgba(248,113,113,0.8)] leading-tight">
+                    {formatNumber(totals.refundUnits)} <span className="text-lg opacity-80">({formatCurrency(totals.refundUSD)})</span>
+                  </span>
+                </div>
+              )}
+
               <div className="glass-panel p-5 flex flex-col">
                 <span className="text-gray-400 text-sm font-medium flex items-center gap-2 mb-2">
                   <DollarSign className="w-4 h-4 text-neon-green" /> Gross Revenue
@@ -360,7 +405,7 @@ export default function App() {
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
               
               {/* Revenue Over Time */}
-              <div className="glass-panel p-5 flex flex-col min-h-[350px] xl:col-span-2">
+              <div className="glass-panel p-5 flex flex-col min-h-[350px]">
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-lg font-semibold">Revenue Over Time</h3>
                   <div className="flex bg-black/40 rounded-lg p-1 border border-white/10">
@@ -415,28 +460,28 @@ export default function App() {
                     <RechartsLineChart data={periodData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />
                       <XAxis dataKey="period" stroke="#888" tick={{fill: '#888'}} tickMargin={10} />
-                      <YAxis stroke="#888" tick={{fill: '#888'}} width={40} />
+                      <YAxis stroke="#888" tickFormatter={formatNumber} tick={{fill: '#888'}} width={60} />
                       <Tooltip 
-                        contentStyle={{ backgroundColor: '#151520', borderColor: 'rgba(0,255,156,0.3)', borderRadius: '8px', color: '#fff' }}
-                        itemStyle={{ color: '#00FF9C' }}
+                        contentStyle={{ backgroundColor: '#151520', borderColor: 'rgba(0,240,255,0.3)', borderRadius: '8px', color: '#fff' }}
                         formatter={(value: number) => [formatNumber(value), 'Units Sold']}
+                        labelStyle={{ color: '#888', marginBottom: '4px' }}
                       />
                       <Line 
                         type="monotone" 
                         dataKey="units" 
-                        stroke="#00FF9C" 
+                        stroke="#00F0FF" 
                         strokeWidth={3}
-                        dot={{ r: 4, fill: '#0A0A0F', strokeWidth: 2 }}
-                        activeDot={{ r: 6, fill: '#00FF9C' }}
+                        dot={{ fill: '#0A0A0F', strokeWidth: 2, r: 4, stroke: '#00F0FF' }}
+                        activeDot={{ r: 6, fill: '#00F0FF', stroke: '#fff' }}
                       />
                     </RechartsLineChart>
                   </ResponsiveContainer>
                 </div>
               </div>
 
-              {/* Revenue by Title */}
+              {/* Revenue by Product */}
               <div className="glass-panel p-5 flex flex-col min-h-[350px]">
-                <h3 className="text-lg font-semibold mb-6">Revenue by Title</h3>
+                <h3 className="text-lg font-semibold mb-6">Revenue by Product</h3>
                 <div className="flex-1 w-full min-h-[250px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={titleData} layout="vertical" margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
@@ -444,7 +489,57 @@ export default function App() {
                       <XAxis type="number" stroke="#888" tickFormatter={(value) => `$${value}`} />
                       <YAxis dataKey="title" type="category" stroke="#888" width={100} tick={{fill: '#ccc', fontSize: 12}} />
                       <Tooltip 
-                        contentStyle={{ backgroundColor: '#151520', borderColor: 'rgba(0,212,255,0.3)', borderRadius: '8px', color: '#fff' }}
+                        contentStyle={{ backgroundColor: '#151520', borderColor: revenueType === 'grossUSD' ? 'rgba(0,212,255,0.3)' : 'rgba(168,85,247,0.3)', borderRadius: '8px', color: '#fff' }}
+                        cursor={{fill: 'rgba(255,255,255,0.05)'}}
+                        formatter={(value: number) => [formatCurrency(value), revenueType === 'grossUSD' ? 'Gross Revenue' : 'Net Revenue']}
+                      />
+                      <Bar 
+                        dataKey={revenueType} 
+                        fill={revenueType === 'grossUSD' ? '#00D4FF' : '#A855F7'} 
+                        radius={[0, 4, 4, 0]}
+                        barSize={24}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Units by Product */}
+              <div className="glass-panel p-5 flex flex-col min-h-[350px]">
+                <h3 className="text-lg font-semibold mb-6">Units by Product</h3>
+                <div className="flex-1 w-full min-h-[250px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={titleData} layout="vertical" margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" horizontal={true} vertical={false} />
+                      <XAxis type="number" stroke="#888" tickFormatter={formatNumber} />
+                      <YAxis dataKey="title" type="category" stroke="#888" width={100} tick={{fill: '#ccc', fontSize: 12}} />
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: '#151520', borderColor: 'rgba(0,240,255,0.3)', borderRadius: '8px', color: '#fff' }}
+                        cursor={{fill: 'rgba(255,255,255,0.05)'}}
+                        formatter={(value: number) => [formatNumber(value), 'Units Sold']}
+                      />
+                      <Bar 
+                        dataKey="units" 
+                        fill="#00F0FF" 
+                        radius={[0, 4, 4, 0]}
+                        barSize={24}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Revenue by Platform */}
+              <div className="glass-panel p-5 flex flex-col min-h-[350px]">
+                <h3 className="text-lg font-semibold mb-6">Revenue by Platform</h3>
+                <div className="flex-1 w-full min-h-[250px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={platformData} layout="vertical" margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" horizontal={true} vertical={false} />
+                      <XAxis type="number" stroke="#888" tickFormatter={(value) => `$${value}`} />
+                      <YAxis dataKey="platform" type="category" stroke="#888" width={80} tick={{fill: '#ccc', fontSize: 12}} />
+                      <Tooltip 
+                        contentStyle={{ backgroundColor: '#151520', borderColor: revenueType === 'grossUSD' ? 'rgba(0,212,255,0.3)' : 'rgba(168,85,247,0.3)', borderRadius: '8px', color: '#fff' }}
                         cursor={{fill: 'rgba(255,255,255,0.05)'}}
                         formatter={(value: number) => [formatCurrency(value), revenueType === 'grossUSD' ? 'Gross Revenue' : 'Net Revenue']}
                       />
@@ -483,6 +578,35 @@ export default function App() {
                   </ResponsiveContainer>
                 </div>
               </div>
+
+              {/* Units Refunded Over Time */}
+              {totals.refundUnits > 0 && (
+                <div className="glass-panel p-5 flex flex-col min-h-[350px]">
+                  <h3 className="text-lg font-semibold mb-6">Units Refunded Over Time</h3>
+                  <div className="flex-1 w-full min-h-[250px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <RechartsLineChart data={periodData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />
+                        <XAxis dataKey="period" stroke="#888" tick={{fill: '#888'}} tickMargin={10} />
+                        <YAxis stroke="#888" tickFormatter={formatNumber} tick={{fill: '#888'}} width={60} />
+                        <Tooltip 
+                          contentStyle={{ backgroundColor: '#151520', borderColor: 'rgba(248,113,113,0.3)', borderRadius: '8px', color: '#fff' }}
+                          formatter={(value: number) => [formatNumber(value), 'Units Refunded']}
+                          labelStyle={{ color: '#888', marginBottom: '4px' }}
+                        />
+                        <Line 
+                          type="monotone" 
+                          dataKey="refundUnits" 
+                          stroke="#F87171" 
+                          strokeWidth={3}
+                          dot={{ fill: '#0A0A0F', strokeWidth: 2, r: 4, stroke: '#F87171' }}
+                          activeDot={{ r: 6, fill: '#F87171', stroke: '#fff' }}
+                        />
+                      </RechartsLineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              )}
 
             </div>
           </main>
