@@ -1,0 +1,5 @@
+{
+  "name": "Luna Ledger",
+  "description": "A modern web dashboard that ingests CSV files containing sales data and transforms them into a clean, interactive analytics interface.",
+  "requestFramePermissions": []
+}

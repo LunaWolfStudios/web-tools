@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-neon-bg: #0A0A0F;
+  --color-neon-blue: #00D4FF;
+  --color-neon-purple: #A855F7;
+  --color-neon-green: #00FF9C;
+  --color-neon-panel: rgba(20, 20, 30, 0.6);
+  --color-neon-border: rgba(0, 212, 255, 0.2);
+}
+
+@layer base {
+  body {
+    @apply bg-neon-bg text-white min-h-screen font-sans antialiased;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-neon-panel backdrop-blur-md border border-neon-border rounded-xl shadow-[0_0_15px_rgba(0,212,255,0.05)];
+  }
+  
+  .neon-text-blue {
+    @apply text-neon-blue drop-shadow-[0_0_8px_rgba(0,212,255,0.8)];
+  }
+  
+  .neon-text-green {
+    @apply text-neon-green drop-shadow-[0_0_8px_rgba(0,255,156,0.8)];
+  }
+  
+  .neon-text-purple {
+    @apply text-neon-purple drop-shadow-[0_0_8px_rgba(168,85,247,0.8)];
+  }
+
+  .neon-button {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-300 border;
+  }
+  
+  .neon-button-blue {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-300 border text-neon-blue border-neon-blue bg-[rgba(0,212,255,0.1)] hover:bg-[rgba(0,212,255,0.2)] hover:shadow-[0_0_15px_rgba(0,212,255,0.5)];
+  }
+  
+  .neon-button-purple {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-300 border text-neon-purple border-neon-purple bg-[rgba(168,85,247,0.1)] hover:bg-[rgba(168,85,247,0.2)] hover:shadow-[0_0_15px_rgba(168,85,247,0.5)];
+  }
+}
