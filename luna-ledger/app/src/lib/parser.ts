@@ -85,8 +85,9 @@ export const parseCSV = (file: File): Promise<Dataset> => {
       }
 
       const lines = text.split('\n');
-      const isSteam = lines[0].trim() === 'sep=,' || text.includes('Steam Sales by Country');
       const isUnity = lines[0].includes('Package name,Price,Qty,Refunds,Chargebacks');
+      const isSteamDetailed = lines.some(l => l.startsWith('Date, Bundle(ID#)'));
+      const isSteamCountry = lines.some(l => l.startsWith('Country,Sku,Platform'));
 
       if (isUnity) {
         Papa.parse(text, {
@@ -132,7 +133,69 @@ export const parseCSV = (file: File): Promise<Dataset> => {
           },
           error: (error) => reject(error),
         });
-      } else if (isSteam) {
+      } else if (isSteamDetailed) {
+        const headerIndex = lines.findIndex(l => l.startsWith('Date, Bundle(ID#)'));
+        if (headerIndex === -1) {
+          return reject(new Error("Could not find Steam Detailed CSV headers"));
+        }
+
+        const csvData = lines.slice(headerIndex).join('\n');
+        
+        Papa.parse(csvData, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (results) => {
+            try {
+              const rows: SalesRow[] = [];
+              for (const row of results.data as any[]) {
+                if (row['Type'] === 'Retail') continue;
+
+                const dateStr = row['Date'] || '';
+                const period = dateStr.length >= 7 ? dateStr.substring(0, 7) : 'Unknown';
+                
+                const title = row['Product Name'] || 'Unknown';
+                const country = getCountryCode(row['Country'] || 'Unknown');
+                const platform = row['Platform'] || 'Windows';
+                
+                const units = parseInt(row['Gross Units Sold'] || '0', 10);
+                const refundUnits = Math.abs(parseInt(row['Chargeback/Returns'] || '0', 10));
+                
+                const reportedGrossUSD = parseFloat(row['Gross Steam Sales (USD)'] || '0');
+                const grossUSD = reportedGrossUSD / 0.7; // Recover true gross before Steam's 30% cut
+                
+                const reportedRefundUSD = Math.abs(parseFloat(row['Chargeback/Returns (USD)'] || '0'));
+                const refundUSD = reportedRefundUSD / 0.7; // Scale refund to match true gross
+                
+                const netUSD = parseFloat(row['Net Steam Sales (USD)'] || '0');
+                const withholdingTaxUSD = Math.abs(parseFloat(row['VAT/Tax (USD)'] || '0'));
+
+                rows.push({
+                  title,
+                  country,
+                  units,
+                  grossUSD,
+                  netUSD,
+                  withholdingTaxUSD,
+                  period,
+                  platform,
+                  refundUnits,
+                  refundUSD,
+                });
+              }
+
+              resolve({
+                id: crypto.randomUUID(),
+                name: file.name,
+                uploadDate: Date.now(),
+                rows,
+              });
+            } catch (err) {
+              reject(err);
+            }
+          },
+          error: (error) => reject(error),
+        });
+      } else if (isSteamCountry) {
         // Find the period
         let period = 'Unknown';
         const periodLine = lines.find(l => l.includes('Steam Sales by Country for'));

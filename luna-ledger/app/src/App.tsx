@@ -30,31 +30,64 @@ export default function App() {
   const [selectedCountries, setSelectedCountries] = useState<Set<string>>(new Set());
   const [selectedPlatforms, setSelectedPlatforms] = useState<Set<string>>(new Set());
   const [revenueType, setRevenueType] = useState<'grossUSD' | 'netUSD'>('grossUSD');
+  const [isDragging, setIsDragging] = useState(false);
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files) return;
-
+  const processFiles = async (files: FileList | File[]) => {
     const newDatasets: Dataset[] = [];
     for (let i = 0; i < files.length; i++) {
-      try {
-        const dataset = await parseCSV(files[i]);
-        newDatasets.push(dataset);
-      } catch (err) {
-        console.error('Error parsing CSV:', err);
+      const file = files[i];
+      if (file.name.toLowerCase().endsWith('.csv')) {
+        try {
+          const dataset = await parseCSV(file);
+          newDatasets.push(dataset);
+        } catch (err) {
+          console.error('Error parsing CSV:', err);
+        }
       }
     }
 
-    setDatasets(prev => {
-      const combined = [...prev, ...newDatasets];
-      // Auto-select newly added datasets
-      setSelectedDatasetIds(new Set(combined.map(d => d.id)));
-      return combined;
-    });
-    
+    if (newDatasets.length > 0) {
+      setDatasets(prev => {
+        const combined = [...prev, ...newDatasets];
+        // Auto-select newly added datasets
+        setSelectedDatasetIds(new Set(combined.map(d => d.id)));
+        return combined;
+      });
+    }
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      processFiles(event.target.files);
+    }
     // Reset file input
     event.target.value = '';
   };
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Only set dragging to false if we're leaving the main container
+    if (e.currentTarget === e.target) {
+      setIsDragging(false);
+    }
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      processFiles(e.dataTransfer.files);
+    }
+  }, []);
 
   const removeDataset = (id: string) => {
     setDatasets(prev => prev.filter(d => d.id !== id));
@@ -170,7 +203,22 @@ export default function App() {
   const formatNumber = (val: number) => new Intl.NumberFormat('en-US').format(val);
 
   return (
-    <div className="min-h-screen p-4 md:p-8 max-w-[1600px] mx-auto flex flex-col gap-6">
+    <div 
+      className="min-h-screen p-4 md:p-8 max-w-[1600px] mx-auto flex flex-col gap-6 relative"
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
+      {isDragging && (
+        <div className="absolute inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center rounded-xl border-2 border-dashed border-neon-blue m-4 md:m-8 pointer-events-none">
+          <div className="text-center flex flex-col items-center">
+            <Upload className="w-16 h-16 text-neon-blue mb-4 animate-bounce" />
+            <h2 className="text-3xl font-bold text-white mb-2">Drop CSV files here</h2>
+            <p className="text-gray-300">Release to upload and analyze your sales data</p>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 glass-panel p-6">
         <div>
@@ -613,6 +661,16 @@ export default function App() {
         </div>
       )}
       
+      {/* Footer Disclaimer */}
+      <footer className="mt-8 text-center text-xs text-gray-500/80 max-w-4xl mx-auto pb-4 px-4">
+        <p>
+          <strong>Privacy & Accuracy Notice:</strong> All data processing occurs locally within your browser. 
+          No files or financial data are stored, transmitted, or saved to any external servers. 
+          The analytics and figures presented are for informational purposes only and may not reflect 100% accurate financial reporting. 
+          Please consult your official platform statements for exact figures.
+        </p>
+      </footer>
+
       <style dangerouslySetInnerHTML={{__html: `
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
