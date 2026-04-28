@@ -79,9 +79,10 @@ export const DATA = {
           "media": [
             "/anatomy-of-play/public/move-it_00.jpg",
             "/anatomy-of-play/public/move-it_01.mp4",
-            "/anatomy-of-play/public/move-it-02.jpg",
+            "/anatomy-of-play/public/move-it_02.jpg",
             "/anatomy-of-play/public/move-it_03.JPG",
-            "/anatomy-of-play/public/move-it_04.mp4"
+            "/anatomy-of-play/public/move-it_04.mp4",
+            "/anatomy-of-play/public/move-it_05.MOV"
           ]
         }
       ]
@@ -145,19 +146,20 @@ export const DATA = {
           "title": "NeuroSPARKS",
           "company": "Barron Associates",
           "category": "Education",
-          "summary": "An award-winning STEM learning platform that uses biosensors and gameplay to teach neuroscience and physical science concepts. Classroom evaluations showed measurable gains in student learning and engagement.",
+          "summary": "An award-winning STEM learning platform that uses electromyography (EMG) biosensors and interactive gameplay to teach neuroscience and physical science concepts. Using a wireless muscle sensor, students control games with their own movements while building understanding of core STEM principles through hands-on learning.",
           "highlights": [
-            "NIH-funded educational system",
-            "Teaches neuroscience through interaction",
-            "Integrates real muscle sensor input",
-            "Proven learning improvement in classrooms",
-            "2022 Award of Excellence winner"
+            "Control games using real muscle activity via EMG sensor",
+            "Includes Neurobots (Life Science) and Total Energy (Physical Science)",
+            "Aligned with Next Generation Science Standards for middle school",
+            "Bluetooth-enabled sensor with guided placement and calibration",
+            "2022 Tech & Learning Award of Excellence winner"
           ],
           "media": [
-            "/anatomy-of-play/public/neurosparks_00.jpg",
+            "/anatomy-of-play/public/neurosparks_00.png",
             "/anatomy-of-play/public/neurosparks_01.jpg",
             "/anatomy-of-play/public/neurosparks_02.jpg",
-            "/anatomy-of-play/public/neurosparks_03.jpg"
+            "/anatomy-of-play/public/neurosparks_03.jpg",
+            "/anatomy-of-play/public/neurosparks_04.jpg"
           ]
         },
         {
@@ -262,10 +264,10 @@ export const DATA = {
             "/anatomy-of-play/public/lanebreak_02.jpg",
             "/anatomy-of-play/public/lanebreak_03.jpg",
             "/anatomy-of-play/public/lanebreak_04.jpg",
-            "/anatomy-of-play/public/lanebreak_05.gif",
+            "/anatomy-of-play/public/lanebreak_05.jpg",
             "/anatomy-of-play/public/lanebreak_06.gif",
             "/anatomy-of-play/public/lanebreak_07.gif",
-            "/anatomy-of-play/public/lanebreak_08.jpg"
+            "/anatomy-of-play/public/lanebreak_08.gif"
           ]
         }
       ]
@@ -308,7 +310,7 @@ export const DATA = {
       },
       {
         "label": "NeuroSPARKS",
-        "url": "https://www.barron-associates.com/about/projects/neurosparks/"
+        "url": "https://www.barron-associates.com/products/neurosparks"
       },
       {
         "label": "iCare",
