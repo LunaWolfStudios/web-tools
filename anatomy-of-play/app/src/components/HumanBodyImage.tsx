@@ -11,7 +11,7 @@ export const HumanBodyImage = ({ className }: { className?: string }) => (
       3. Tweak the NODE_POSITIONS in BodyHub.tsx to align with your image's anatomy.
     */}
     <img 
-      src="/anatomy-of-play-silhouette.png" 
+      src="/anatomy-of-play/public/anatomy-of-play-silhouette.png" 
       alt="Human Body Silhouette" 
       className="w-full h-full object-contain"
     />

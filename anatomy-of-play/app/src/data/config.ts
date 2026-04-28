@@ -17,14 +17,14 @@ export const DATA = {
             "Based on perceptual learning principles"
           ],
           "media": [
-            "/icare_00.jpg",
-            "/icare_01.jpg",
-            "/icare_02.MOV",
-            "/icare_03.jpg",
-            "/icare_04.jpg",
-            "/icare_05.jpg",
-            "/icare_06.JPG",
-            "/icare_07.jpg"
+            "/anatomy-of-play/public/icare_00.jpg",
+            "/anatomy-of-play/public/icare_01.jpg",
+            "/anatomy-of-play/public/icare_02.MOV",
+            "/anatomy-of-play/public/icare_03.jpg",
+            "/anatomy-of-play/public/icare_04.jpg",
+            "/anatomy-of-play/public/icare_05.jpg",
+            "/anatomy-of-play/public/icare_06.JPG",
+            "/anatomy-of-play/public/icare_07.jpg"
           ]
         }
       ]
@@ -46,11 +46,11 @@ export const DATA = {
             "Low-cost and scalable solution"
           ],
           "media": [
-            "/move-it_00.jpg",
-            "/move-it_01.mp4",
-            "/move-it-02.jpg",
-            "/move-it_03.JPG",
-            "/move-it_04.mp4"
+            "/anatomy-of-play/public/move-it_00.jpg",
+            "/anatomy-of-play/public/move-it_01.mp4",
+            "/anatomy-of-play/public/move-it-02.jpg",
+            "/anatomy-of-play/public/move-it_03.JPG",
+            "/anatomy-of-play/public/move-it_04.mp4"
           ]
         }
       ]
@@ -72,9 +72,9 @@ export const DATA = {
             "Designed for home therapy"
           ],
           "media": [
-            "/kneebright_00.png",
-            "/kneebright_01.jpg",
-            "/kneebright_02.jpg"
+            "/anatomy-of-play/public/kneebright_00.png",
+            "/anatomy-of-play/public/kneebright_01.jpg",
+            "/anatomy-of-play/public/kneebright_02.jpg"
           ]
         }
       ]
@@ -96,10 +96,10 @@ export const DATA = {
             "2022 Award of Excellence winner"
           ],
           "media": [
-            "/neurosparks_00.jpg",
-            "/neurosparks_01.jpg",
-            "/neurosparks_02.jpg",
-            "/neurosparks_03.jpg"
+            "/anatomy-of-play/public/neurosparks_00.jpg",
+            "/anatomy-of-play/public/neurosparks_01.jpg",
+            "/anatomy-of-play/public/neurosparks_02.jpg",
+            "/anatomy-of-play/public/neurosparks_03.jpg"
           ]
         }
       ]
@@ -121,11 +121,11 @@ export const DATA = {
             "Successfully piloted with pediatric patients"
           ],
           "media": [
-            "/helix_00.jpg",
-            "/helix_01.jpg",
-            "/helix_02.jpg",
-            "/helix_03.mp4",
-            "/helix_04.mp4"
+            "/anatomy-of-play/public/helix_00.jpg",
+            "/anatomy-of-play/public/helix_01.jpg",
+            "/anatomy-of-play/public/helix_02.jpg",
+            "/anatomy-of-play/public/helix_03.mp4",
+            "/anatomy-of-play/public/helix_04.mp4"
           ]
         }
       ]
@@ -147,11 +147,11 @@ export const DATA = {
             "Data-driven progress tracking"
           ],
           "media": [
-            "/grasp_00.jpg",
-            "/grasp_01.png",
-            "/grasp_02.jpg",
-            "/grasp_03.jpg",
-            "/grasp_04.mp4"
+            "/anatomy-of-play/public/grasp_00.jpg",
+            "/anatomy-of-play/public/grasp_01.png",
+            "/anatomy-of-play/public/grasp_02.jpg",
+            "/anatomy-of-play/public/grasp_03.jpg",
+            "/anatomy-of-play/public/grasp_04.mp4"
           ]
         }
       ]
@@ -173,15 +173,15 @@ export const DATA = {
             "Instructor-free workout option"
           ],
           "media": [
-            "/lanebreak_00.jpg",
-            "/lanebreak_01.mp4",
-            "/lanebreak_02.jpg",
-            "/lanebreak_03.jpg",
-            "/lanebreak_04.jpg",
-            "/lanebreak_05.gif",
-            "/lanebreak_06.gif",
-            "/lanebreak_07.gif",
-            "/lanebreak_08.jpg"
+            "/anatomy-of-play/public/lanebreak_00.jpg",
+            "/anatomy-of-play/public/lanebreak_01.mp4",
+            "/anatomy-of-play/public/lanebreak_02.jpg",
+            "/anatomy-of-play/public/lanebreak_03.jpg",
+            "/anatomy-of-play/public/lanebreak_04.jpg",
+            "/anatomy-of-play/public/lanebreak_05.gif",
+            "/anatomy-of-play/public/lanebreak_06.gif",
+            "/anatomy-of-play/public/lanebreak_07.gif",
+            "/anatomy-of-play/public/lanebreak_08.jpg"
           ]
         }
       ]
