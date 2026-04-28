@@ -7,13 +7,15 @@ import { ProjectModal } from './ProjectModal';
 import { ResourcesModal } from './ResourcesModal';
 import { HelpCircle, X } from 'lucide-react';
 
-type BodyPartId = 'eyes' | 'arms' | 'knees' | 'brain' | 'ears' | 'hands' | 'legs';
+type BodyPartId = 'eyes' | 'arms' | 'knees' | 'brain' | 'ears' | 'hands' | 'legs' | 'face' | 'pancreas';
 
 const NODE_POSITIONS: Record<BodyPartId, { top: string; left: string }> = {
   brain: { top: '3.5%', left: '50%' },
   eyes: { top: '7%', left: '46%' },
   ears: { top: '9%', left: '41%' },
+  face: { top: '10%', left: '54%' },
   arms: { top: '29.5%', left: '26%' },
+  pancreas: { top: '35%', left: '53%' },
   hands: { top: '51.5%', left: '14.5%' },
   legs: { top: '53.5%', left: '65%' },
   knees: { top: '69%', left: '37%' },

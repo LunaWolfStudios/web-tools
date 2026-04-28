@@ -30,6 +30,37 @@ export const DATA = {
       ]
     },
     {
+      "id": "face",
+      "label": "Face",
+      "games": [
+        {
+          "title": "Expression Lab",
+          "company": "Relevate Health Games",
+          "category": "Education",
+          "summary": "An interactive experience to master facial anatomy by linking expressions to the underlying muscles, helping build clinical precision and anatomical understanding.",
+          "highlights": [
+            "Identify the facial muscles behind each expression",
+            "Explore muscle function and form in an interactive way",
+            "Use explore mode for a comprehensive overview",
+            "Zoom in on key facial muscles driving expressions",
+            "Build confidence in anatomical recognition and clinical application"
+          ],
+          "media": [
+            "/anatomy-of-play/public/expression-lab_00.jpg",
+            "/anatomy-of-play/public/expression-lab_01.jpg",
+            "/anatomy-of-play/public/expression-lab_02.jpg",
+            "/anatomy-of-play/public/expression-lab_03.jpg",
+            "/anatomy-of-play/public/expression-lab_04.jpg",
+            "/anatomy-of-play/public/expression-lab_05.jpg",
+            "/anatomy-of-play/public/expression-lab_06.jpg",
+            "/anatomy-of-play/public/expression-lab_07.jpg",
+            "/anatomy-of-play/public/expression-lab_08.jpg",
+            "/anatomy-of-play/public/expression-lab_09.mp4"
+          ]
+        }
+      ]
+    },
+    {
       "id": "arms",
       "label": "Upper Extremities",
       "games": [
@@ -51,6 +82,33 @@ export const DATA = {
             "/anatomy-of-play/public/move-it-02.jpg",
             "/anatomy-of-play/public/move-it_03.JPG",
             "/anatomy-of-play/public/move-it_04.mp4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pancreas",
+      "label": "Pancreas",
+      "games": [
+        {
+          "title": "Level One: A Diabetes Game",
+          "company": "Relevate Health Games",
+          "category": "Education",
+          "summary": "A free mobile game that helps people with Type 1 Diabetes and their support network quickly learn essential diabetes management skills through bite-sized, interactive levels.",
+          "highlights": [
+            "Learn insulin dosing and bolus calculations",
+            "Understand ISF, carb ratios, and carb counting",
+            "Explore CGM systems like Dexcom, Libre, and Medtronic",
+            "Manage hypoglycemia and hyperglycemia effectively",
+            "Master advanced concepts like ketones and exercise management"
+          ],
+          "media": [
+            "/anatomy-of-play/public/levelone_00.mp4",
+            "/anatomy-of-play/public/levelone_01.webp",
+            "/anatomy-of-play/public/levelone_02.webp",
+            "/anatomy-of-play/public/levelone_03.webp",
+            "/anatomy-of-play/public/levelone_04.webp",
+            "/anatomy-of-play/public/levelone_05.webp"
           ]
         }
       ]
@@ -100,6 +158,32 @@ export const DATA = {
             "/anatomy-of-play/public/neurosparks_01.jpg",
             "/anatomy-of-play/public/neurosparks_02.jpg",
             "/anatomy-of-play/public/neurosparks_03.jpg"
+          ]
+        },
+        {
+          "title": "Discover TD (Tardive Dyskinesia)",
+          "company": "Relevate Health Games",
+          "category": "Education",
+          "summary": "An educational experience that teaches clinicians how to identify and differentiate tardive dyskinesia and other drug-induced movement disorders through interactive case-based learning.",
+          "highlights": [
+            "Understand the Abnormal Involuntary Movement Scale (AIMS)",
+            "Identify movement patterns across different body regions",
+            "Work through simulated real-world diagnostic cases",
+            "Learn to distinguish TD from dystonia, akathisia, and drug-induced parkinsonism",
+            "Receive performance scoring on challenging case scenarios"
+          ],
+          "media": [
+            "/anatomy-of-play/public/dtd_00.png",
+            "/anatomy-of-play/public/dtd_01.png",
+            "/anatomy-of-play/public/dtd_02.png",
+            "/anatomy-of-play/public/dtd_03.png",
+            "/anatomy-of-play/public/dtd_04.png",
+            "/anatomy-of-play/public/dtd_05.png",
+            "/anatomy-of-play/public/dtd_06.png",
+            "/anatomy-of-play/public/dtd_07.png",
+            "/anatomy-of-play/public/dtd_08.png",
+            "/anatomy-of-play/public/dtd_09.png",
+            "https://showcase.lvlex.link/discover_td_medical"
           ]
         }
       ]
@@ -229,6 +313,18 @@ export const DATA = {
       {
         "label": "iCare",
         "url": "https://www.barron-associates.com/about/projects/vision-therapy-based-on-computer-gaming/"
+      },
+      {
+        "label": "Discover TD (Tardive Dyskinesia)",
+        "url": "https://www.mind-td.com/discover-td"
+      },
+      {
+        "label": "Level One: A Diabetes Game",
+        "url": "https://playlevelone.com"
+      },
+      {
+        "label": "Expression Lab",
+        "url": "https://www.instagram.com/p/DTOUkzcEv1V/"
       }
     ]
   }
