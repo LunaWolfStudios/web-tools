@@ -9,7 +9,46 @@ export const ProjectModal = ({ partId, onClose }: { partId: string, onClose: () 
   const partData = DATA.bodyParts.find(p => p.id === partId);
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
-  const [enlargedMedia, setEnlargedMedia] = useState<string | null>(null);
+  const [enlargedMedia, setEnlargedMedia] = useState<any>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const minSwipeDistance = 50;
+
+  const onTouchStartLocal = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMoveLocal = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEndLocal = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe || isRightSwipe) {
+      if (game?.media?.length) {
+        if (isLeftSwipe) {
+          setCurrentMediaIndex((prev) => {
+            const nextIdx = (prev + 1) % game.media.length;
+            setEnlargedMedia(game.media[nextIdx]);
+            return nextIdx;
+          });
+        }
+        if (isRightSwipe) {
+          setCurrentMediaIndex((prev) => {
+            const prevIdx = (prev - 1 + game.media.length) % game.media.length;
+            setEnlargedMedia(game.media[prevIdx]);
+            return prevIdx;
+          });
+        }
+      }
+    }
+  };
 
   const game = partData?.games[currentProjectIndex];
 
@@ -70,13 +109,36 @@ export const ProjectModal = ({ partId, onClose }: { partId: string, onClose: () 
     }
   };
 
-  const renderMedia = (src: string, isEnlarged: boolean = false) => {
-    const isVideo = src.toLowerCase().endsWith('.mp4') || src.toLowerCase().endsWith('.mov');
+  const renderMedia = (src: any, isEnlarged: boolean = false) => {
+    // Check if it's an iframe (via config object or just a bare url)
+    if ((typeof src === 'object' && src?.type === 'iframe') || (typeof src === 'string' && src.startsWith('http') && !src.match(/\.(jpeg|jpg|gif|png|mp4|mov|webp)$/i))) {
+      const url = typeof src === 'string' ? src : src.url;
+      return (
+        <div 
+          className={cn("relative flex items-center justify-center", isEnlarged ? "w-[90vw] h-[90vh] p-8 max-w-full max-h-full" : "w-full h-full p-4 cursor-pointer hover:scale-[1.02] transition-transform duration-500")}
+          onClick={() => !isEnlarged && setEnlargedMedia(src)}
+        >
+          <iframe 
+            src={url} 
+            className={cn("w-full h-full border-0 rounded-lg", isEnlarged ? "shadow-2xl" : "")}
+            allowFullScreen
+          />
+          {!isEnlarged && (
+             <div className="absolute inset-0 z-10" />
+          )}
+        </div>
+      );
+    }
+
+    const srcString = typeof src === 'string' ? src : src?.url;
+    if (!srcString) return null;
+
+    const isVideo = srcString.toLowerCase().endsWith('.mp4') || srcString.toLowerCase().endsWith('.mov');
     
     if (isVideo) {
       return (
         <video 
-          src={src} 
+          src={srcString} 
           autoPlay 
           loop 
           muted 
@@ -89,7 +151,7 @@ export const ProjectModal = ({ partId, onClose }: { partId: string, onClose: () 
     
     return (
       <img 
-        src={src} 
+        src={srcString} 
         alt={`${game.title} media`}
         className={cn("object-contain", isEnlarged ? "max-w-full max-h-full rounded-lg drop-shadow-[0_0_30px_rgba(0,0,0,0.5)]" : "w-full h-full p-4 cursor-pointer hover:scale-[1.02] transition-transform duration-500")}
         onClick={() => !isEnlarged && setEnlargedMedia(src)}
@@ -118,9 +180,17 @@ export const ProjectModal = ({ partId, onClose }: { partId: string, onClose: () 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[60] flex items-center justify-center bg-black/95 p-4"
-            onClick={() => setEnlargedMedia(null)}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setEnlargedMedia(null);
+            }}
+            onTouchStart={onTouchStartLocal}
+            onTouchMove={onTouchMoveLocal}
+            onTouchEnd={onTouchEndLocal}
           >
-            <button className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10">
+            <button 
+              className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
+              onClick={() => setEnlargedMedia(null)}
+            >
               <X className="w-6 h-6" />
             </button>
             {renderMedia(enlargedMedia, true)}
