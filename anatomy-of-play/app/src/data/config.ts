@@ -289,7 +289,7 @@ export const DATA = {
     ],
     "projects": [
       {
-        "label": "HELIX",
+        "label": "HELIX (Hearing EvaLuation using Immersive eXtended reality)",
         "url": "https://lunawolfstudios.com/helix/"
       },
       {
@@ -297,15 +297,15 @@ export const DATA = {
         "url": "https://www.onepeloton.com/blog/lanebreak"
       },
       {
-        "label": "MOVE-IT",
+        "label": "MOVE-IT (Motivating Occupational Virtual Experiences In Therapy)",
         "url": "https://www.barron-associates.com/research-updates/barron-associates-completes-pilot-testing-of-smart-toy-system-for-children-with-cerebral-palsy/"
       },
       {
-        "label": "GRASP",
+        "label": "GRASP (Glove Rehabilitation Application for Stroke Patients)",
         "url": "https://www.barron-associates.com/general/journal-paper-published-on-glove-rehabilitation-application-for-stroke-patients-grasp-fast-track-sbir-phase-i-results/"
       },
       {
-        "label": "KneeBRIGHT",
+        "label": "KneeBRIGHT (Knee Biofeedback Rehabilitation Game for Osteoarthritis Therapy)",
         "url": "https://www.barron-associates.com/about/projects/kneebright/"
       },
       {
