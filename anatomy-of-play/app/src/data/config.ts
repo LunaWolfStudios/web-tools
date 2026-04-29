@@ -14,7 +14,7 @@ export const DATA = {
             "20 minutes/day vs hours of traditional therapy",
             "Designed for children (ages 5–18)",
             "Improves adherence through gamification",
-            "Based on perceptual learning principles"
+            "Dragon-themed open-world RPG experience that's tied to therapy progression"
           ],
           "media": [
             "/anatomy-of-play/public/icare_00.jpg",
