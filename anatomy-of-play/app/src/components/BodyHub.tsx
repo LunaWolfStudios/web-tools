@@ -5,20 +5,20 @@ import { HumanBodyImage } from './HumanBodyImage';
 import { cn } from '../lib/utils';
 import { ProjectModal } from './ProjectModal';
 import { ResourcesModal } from './ResourcesModal';
-import { HelpCircle, X } from 'lucide-react';
+import { HelpCircle, X, Eye, EyeOff } from 'lucide-react';
 
 type BodyPartId = 'eyes' | 'arms' | 'knees' | 'brain' | 'ears' | 'hands' | 'legs' | 'face' | 'pancreas';
 
-const NODE_POSITIONS: Record<BodyPartId, { top: string; left: string }> = {
-  brain: { top: '3.5%', left: '50%' },
-  eyes: { top: '7%', left: '46%' },
-  ears: { top: '9%', left: '41%' },
-  face: { top: '10%', left: '54%' },
-  arms: { top: '29.5%', left: '26%' },
-  pancreas: { top: '35%', left: '53%' },
-  hands: { top: '51.5%', left: '14.5%' },
-  legs: { top: '53.5%', left: '65%' },
-  knees: { top: '69%', left: '37%' },
+const NODE_POSITIONS: Record<BodyPartId, { node: { x: number, y: number }, label: { x: number, y: number }, mid: { x: number, y: number }, align: 'left' | 'right' }> = {
+  brain: { node: { x: 50, y: 3.5 }, label: { x: 70, y: 1 }, mid: { x: 60, y: 1 }, align: 'left' },
+  eyes: { node: { x: 46.5, y: 7 }, label: { x: 25, y: 3 }, mid: { x: 35, y: 3 }, align: 'right' },
+  face: { node: { x: 54, y: 10 }, label: { x: 75, y: 16 }, mid: { x: 65, y: 16 }, align: 'left' },
+  ears: { node: { x: 40.5, y: 9 }, label: { x: 20, y: 17 }, mid: { x: 30, y: 17 }, align: 'right' },
+  arms: { node: { x: 26, y: 29.5 }, label: { x: 10, y: 34 }, mid: { x: 18, y: 34 }, align: 'right' },
+  pancreas: { node: { x: 63, y: 35 }, label: { x: 85, y: 32 }, mid: { x: 65, y: 32 }, align: 'left' },
+  hands: { node: { x: 14.5, y: 51.5 }, label: { x: 0, y: 48 }, mid: { x: 5, y: 48 }, align: 'right' },
+  legs: { node: { x: 65, y: 53.5 }, label: { x: 80, y: 62 }, mid: { x: 72, y: 62 }, align: 'left' },
+  knees: { node: { x: 37, y: 69 }, label: { x: 15, y: 76 }, mid: { x: 25, y: 76 }, align: 'right' },
 };
 
 export const CATEGORY_COLORS: Record<string, string> = {
@@ -29,9 +29,10 @@ export const CATEGORY_COLORS: Record<string, string> = {
 
 export const BodyHub = () => {
   const [hoveredNode, setHoveredNode] = useState<BodyPartId | null>(null);
-  const [selectedPart, setSelectedPart] = useState<BodyPartId | null>(null);
+  const [selectedPart, setSelectedPart] = useState<{ partId: BodyPartId, gameIndex?: number } | null>(null);
   const [showResources, setShowResources] = useState(false);
   const [showLegend, setShowLegend] = useState(false);
+  const [showAnnotations, setShowAnnotations] = useState(true);
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-[var(--color-bg)] text-white flex items-center justify-center">
@@ -63,19 +64,70 @@ export const BodyHub = () => {
           <span className="hidden sm:inline">Additional Resources</span>
           <span className="sm:hidden">Resources</span>
         </button>
-        <button
-          onClick={() => setShowLegend(true)}
-          className="w-8 h-8 sm:w-10 sm:h-10 border border-white/20 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white bg-[#0A0A0F]/50 backdrop-blur-sm"
-          title="Legend"
-        >
-          <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5" />
-        </button>
+        <div className="flex gap-2 sm:gap-3">
+          <button
+            onClick={() => setShowAnnotations(!showAnnotations)}
+            className="w-8 h-8 sm:w-10 sm:h-10 border border-white/20 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white bg-[#0A0A0F]/50 backdrop-blur-sm"
+            title="Toggle Annotations"
+          >
+            {showAnnotations ? <Eye className="w-4 h-4 sm:w-5 sm:h-5" /> : <EyeOff className="w-4 h-4 sm:w-5 sm:h-5" />}
+          </button>
+          <button
+            onClick={() => setShowLegend(true)}
+            className="w-8 h-8 sm:w-10 sm:h-10 border border-white/20 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors text-white/80 hover:text-white bg-[#0A0A0F]/50 backdrop-blur-sm"
+            title="Legend"
+          >
+            <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+        </div>
       </div>
 
       {/* Body Container */}
       <div className="relative h-[70vh] sm:h-[85vh] max-h-[1000px] aspect-[1/2] mt-16 sm:mt-0">
         <HumanBodyImage className="w-full h-full" />
         
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full pointer-events-none z-0">
+          {DATA.bodyParts.map(part => {
+             const pos = NODE_POSITIONS[part.id as BodyPartId];
+             if (!pos) return null;
+             const isHovered = hoveredNode === part.id;
+             if (!showAnnotations && !isHovered) return null;
+             const posColor = CATEGORY_COLORS[part.games[0]?.category || 'Health'] || CATEGORY_COLORS.Health;
+             return (
+               <g key={`line-${part.id}`}>
+                 <polyline
+                   points={`${pos.node.x},${pos.node.y} ${pos.mid.x},${pos.mid.y} ${pos.label.x},${pos.label.y}`}
+                   fill="none"
+                   stroke={posColor}
+                   strokeWidth="1"
+                   vectorEffect="non-scaling-stroke"
+                   opacity={0.3}
+                   strokeDasharray="1 2"
+                 />
+                 <AnimatePresence>
+                   {isHovered && (
+                     <motion.polyline
+                       initial={{ strokeDasharray: "2 4", strokeDashoffset: 6, opacity: 0 }}
+                       animate={{ strokeDashoffset: 0, opacity: 1 }}
+                       transition={{ 
+                         strokeDashoffset: { repeat: Infinity, duration: 1, ease: "linear" },
+                         opacity: { duration: 0.3 }
+                       }}
+                       exit={{ opacity: 0 }}
+                       points={`${pos.node.x},${pos.node.y} ${pos.mid.x},${pos.mid.y} ${pos.label.x},${pos.label.y}`}
+                       fill="none"
+                       stroke={posColor}
+                       strokeWidth="2"
+                       vectorEffect="non-scaling-stroke"
+                       style={{ filter: `drop-shadow(0 0 5px ${posColor})` }}
+                     />
+                   )}
+                 </AnimatePresence>
+               </g>
+             );
+          })}
+        </svg>
+
         {DATA.bodyParts.map((part) => {
           const pos = NODE_POSITIONS[part.id as BodyPartId];
           if (!pos) return null;
@@ -85,16 +137,15 @@ export const BodyHub = () => {
           const posColor = CATEGORY_COLORS[category] || CATEGORY_COLORS.Health;
           
           return (
-            <div
-              key={part.id}
-              className="absolute group"
-              style={{ top: pos.top, left: pos.left, transform: 'translate(-50%, -50%)' }}
-              onMouseEnter={() => setHoveredNode(part.id as BodyPartId)}
-              onMouseLeave={() => setHoveredNode(null)}
-              onClick={() => setSelectedPart(part.id as BodyPartId)}
-            >
+            <React.Fragment key={part.id}>
               {/* Interaction Target */}
-              <div className="relative flex items-center justify-center w-12 h-12 cursor-pointer z-10">
+              <div
+                className="absolute flex items-center justify-center w-12 h-12 cursor-pointer z-10 group"
+                style={{ top: `${pos.node.y}%`, left: `${pos.node.x}%`, transform: 'translate(-50%, -50%)' }}
+                onMouseEnter={() => setHoveredNode(part.id as BodyPartId)}
+                onMouseLeave={() => setHoveredNode(null)}
+                onClick={() => setSelectedPart({ partId: part.id as BodyPartId, gameIndex: 0 })}
+              >
                 <div 
                   className="absolute w-3 h-3 rounded-full transition-all duration-300 pointer-events-none"
                   style={{ 
@@ -113,25 +164,62 @@ export const BodyHub = () => {
                 />
               </div>
 
-              {/* Tooltip */}
-              <AnimatePresence>
-                {isHovered && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    className="absolute left-1/2 -translate-x-1/2 top-14 whitespace-nowrap bg-black/80 backdrop-blur-md border border-white/20 px-4 py-2 rounded pointer-events-none z-20"
+              {/* Callout Annotation Label */}
+              {(showAnnotations || isHovered) && (
+                <div 
+                  className="absolute pointer-events-auto z-20 group text-left max-w-[35vw] sm:max-w-none"
+                  style={{ 
+                    left: `${pos.label.x}%`, 
+                    top: `${pos.label.y}%`,
+                    transform: pos.align === 'left' ? 'translate(0%, -100%)' : 'translate(-100%, -100%)',
+                  }}
+                  onMouseEnter={() => setHoveredNode(part.id as BodyPartId)}
+                  onMouseLeave={() => setHoveredNode(null)}
+                  onClick={() => setSelectedPart({ partId: part.id as BodyPartId, gameIndex: 0 })}
+                >
+                  <motion.div 
+                     layout
+                     className="border backdrop-blur-md flex flex-col overflow-hidden w-auto origin-bottom cursor-pointer hover:bg-white/5 transition-colors"
+                     style={{ 
+                       backgroundColor: `color-mix(in srgb, ${posColor} ${isHovered ? '25%' : '10%'}, transparent)`,
+                       borderColor: posColor,
+                       color: posColor,
+                       boxShadow: isHovered ? `0 0 15px color-mix(in srgb, ${posColor} 40%, transparent)` : `0 0 5px color-mix(in srgb, ${posColor} 20%, transparent)`
+                     }}
                   >
-                    <div className="font-display text-sm tracking-wider uppercase text-white" style={{ color: posColor }}>
+                    <div className="px-2 sm:px-3 py-1.5 font-display text-[10px] sm:text-[11px] tracking-wider uppercase whitespace-normal sm:whitespace-nowrap break-words sm:break-normal leading-tight">
                       {part.label}
                     </div>
-                    <div className="font-sans text-xs tracking-wide text-neutral-400 mt-1 uppercase">
-                      {part.games.length} Project{part.games.length !== 1 ? 's' : ''}
-                    </div>
+                    <AnimatePresence>
+                      {isHovered && (
+                        <motion.div
+                           initial={{ height: 0, opacity: 0 }}
+                           animate={{ height: 'auto', opacity: 1 }}
+                           exit={{ height: 0, opacity: 0 }}
+                           className="px-2 sm:px-3 text-[8px] sm:text-[9px] font-sans text-neutral-300 whitespace-normal sm:whitespace-nowrap break-words sm:break-normal flex flex-col"
+                        >
+                          <div className="w-full h-px bg-white/20 mb-2" />
+                          <div className="pb-2 flex flex-col gap-1.5 min-w-0">
+                            {part.games.map((g, idx) => (
+                               <div 
+                                 key={idx} 
+                                 className="hover:text-white transition-colors leading-tight"
+                                 onClick={(e) => {
+                                   e.stopPropagation();
+                                   setSelectedPart({ partId: part.id as BodyPartId, gameIndex: idx });
+                                 }}
+                               >
+                                 {g.title}
+                               </div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                </div>
+              )}
+            </React.Fragment>
           );
         })}
       </div>
@@ -140,7 +228,8 @@ export const BodyHub = () => {
       <AnimatePresence>
         {selectedPart && (
           <ProjectModal 
-            partId={selectedPart} 
+            partId={selectedPart.partId} 
+            initialGameIndex={selectedPart.gameIndex}
             onClose={() => setSelectedPart(null)} 
           />
         )}

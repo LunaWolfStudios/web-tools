@@ -5,13 +5,18 @@ import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { CATEGORY_COLORS } from './BodyHub';
 
-export const ProjectModal = ({ partId, onClose }: { partId: string, onClose: () => void }) => {
+export const ProjectModal = ({ partId, initialGameIndex = 0, onClose }: { partId: string, initialGameIndex?: number, onClose: () => void }) => {
   const partData = DATA.bodyParts.find(p => p.id === partId);
-  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+  const [currentProjectIndex, setCurrentProjectIndex] = useState(initialGameIndex);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   const [enlargedMedia, setEnlargedMedia] = useState<any>(null);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  useEffect(() => {
+    setCurrentProjectIndex(initialGameIndex);
+    setCurrentMediaIndex(0);
+  }, [initialGameIndex]);
 
   const minSwipeDistance = 50;
 
@@ -143,6 +148,7 @@ export const ProjectModal = ({ partId, onClose }: { partId: string, onClose: () 
           loop 
           muted 
           playsInline
+          controls
           className={cn("object-contain", isEnlarged ? "max-w-full max-h-full rounded-lg drop-shadow-[0_0_30px_rgba(0,0,0,0.5)]" : "w-full h-full p-4 cursor-pointer hover:scale-[1.02] transition-transform duration-500")}
           onClick={() => !isEnlarged && setEnlargedMedia(src)}
         />
@@ -253,13 +259,27 @@ export const ProjectModal = ({ partId, onClose }: { partId: string, onClose: () 
         {/* Content Section */}
         <div className="w-full md:w-1/2 flex flex-col overflow-hidden">
           <div className="p-8 md:p-12 overflow-y-auto flex-grow custom-scrollbar">
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4">
               <span 
                 className="px-3 py-1 bg-white/10 border border-white/20 rounded-full text-[10px] uppercase tracking-widest"
                 style={{ color: categoryColor, borderColor: categoryColor }}
               >
                 {game.category}
               </span>
+              <span 
+                className="px-3 py-1 bg-white/10 border border-white/20 rounded-full text-[10px] uppercase tracking-widest"
+                style={{ color: categoryColor, borderColor: categoryColor }}
+              >
+                {partData.label}
+              </span>
+              {(game as any).year && (
+                <span 
+                  className="px-3 py-1 bg-white/10 border border-white/20 rounded-full text-[10px] uppercase tracking-widest"
+                  style={{ color: categoryColor, borderColor: categoryColor }}
+                >
+                  {(game as any).year}
+                </span>
+              )}
             </div>
             
             <h2 className="font-display text-3xl md:text-4xl mb-2 tracking-wide uppercase text-white leading-tight">{game.title}</h2>

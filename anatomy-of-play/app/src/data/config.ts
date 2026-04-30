@@ -8,6 +8,7 @@ export const DATA = {
           "title": "iCare",
           "company": "Barron Associates",
           "category": "Health",
+          "year": "2018",
           "summary": "iCare is a video gaming system designed to provide vision therapy for children with non-strabismic amblyopia or convergence insufficiency (CI). The system uses video games to present vision therapy exercises intended to improve visual acuity in patients with amblyopia and positive fusional vergence in patients with CI. The iCare software uses a webcam to track special red-cyan anaglyph glasses that are worn by the patient. This enables the system to know the patient’s distance from the screen and provide a consistent visual challenge level during therapy game play. Patient assessment and approval by the medical professional is required prior to use.",
           "highlights": [
             "Equivalent clinical effectiveness to patching therapy",
@@ -37,6 +38,7 @@ export const DATA = {
           "title": "Expression Lab",
           "company": "Relevate Health Games",
           "category": "Education",
+          "year": "2025",
           "summary": "An interactive experience to master facial anatomy by linking expressions to the underlying muscles, helping build clinical precision and anatomical understanding.",
           "highlights": [
             "Identify the facial muscles behind each expression",
@@ -68,6 +70,7 @@ export const DATA = {
           "title": "MOVE-IT",
           "company": "Barron Associates",
           "category": "Health",
+          "year": "2018",
           "summary": "An interactive rehabilitation platform for children with hemiplegic cerebral palsy that uses gameplay and motion capture to assess and improve upper limb function. In-game performance metrics strongly correlate with clinical motor assessments.\n\nThe platform integrates a custom-designed smart toy featuring LED visual cues and haptic feedback to guide and reinforce targeted movements, including pronation and supination training, enabling more precise and engaging upper limb rehabilitation.",
           "highlights": [
             "Motion capture-based therapy system",
@@ -95,6 +98,7 @@ export const DATA = {
           "title": "Level One: A Diabetes Game",
           "company": "Relevate Health Games",
           "category": "Education",
+          "year": "2025",
           "summary": "A free mobile game that helps people with Type 1 Diabetes and their support network quickly learn essential diabetes management skills through bite-sized, interactive levels.",
           "highlights": [
             "Learn insulin dosing and bolus calculations",
@@ -122,6 +126,7 @@ export const DATA = {
           "title": "KneeBRIGHT",
           "company": "Barron Associates",
           "category": "Health",
+          "year": "2019",
           "summary": "A biofeedback-driven rehabilitation game for knee osteoarthritis that integrates electromyography (EMG) to guide strength training. Patients demonstrated increased muscle activation and engagement compared to traditional therapy systems.",
           "highlights": [
             "EMG-controlled gameplay",
@@ -146,6 +151,7 @@ export const DATA = {
           "title": "NeuroSPARKS",
           "company": "Barron Associates",
           "category": "Education",
+          "year": "2021",
           "summary": "An award-winning STEM learning platform that uses electromyography (EMG) biosensors and interactive gameplay to teach neuroscience and physical science concepts. Using a wireless muscle sensor, students control games with their own movements while building understanding of core STEM principles through hands-on learning.",
           "highlights": [
             "Control games using real muscle activity via EMG sensor",
@@ -166,6 +172,7 @@ export const DATA = {
           "title": "Discover TD (Tardive Dyskinesia)",
           "company": "Relevate Health Games",
           "category": "Education",
+          "year": "2026",
           "summary": "An educational experience that teaches clinicians how to identify and differentiate tardive dyskinesia and other drug-induced movement disorders through interactive case-based learning.",
           "highlights": [
             "Understand the Abnormal Involuntary Movement Scale (AIMS)",
@@ -198,6 +205,7 @@ export const DATA = {
           "title": "HELIX",
           "company": "Luna Wolf Studios",
           "category": "Health",
+          "year": "2023",
           "summary": "A virtual reality hearing assessment platform that gamifies traditional auditory tests to improve engagement and diagnostic accuracy for auditory processing disorders.",
           "highlights": [
             "VR-based diagnostic experience",
@@ -224,6 +232,7 @@ export const DATA = {
           "title": "GRASP",
           "company": "Barron Associates",
           "category": "Health",
+          "year": "2020",
           "summary": "A virtual rehabilitation system for stroke patients that uses sensor-enabled gloves to simulate real-world tasks. In-game performance metrics provide reliable indicators of motor recovery.",
           "highlights": [
             "Glove-based motion tracking",
@@ -250,6 +259,7 @@ export const DATA = {
           "title": "Lanebreak",
           "company": "Peloton",
           "category": "Fitness",
+          "year": "2022",
           "summary": "A game-inspired fitness experience that transforms cardio workouts into a rhythm-based challenge using resistance and cadence mechanics, offering an engaging alternative to instructor-led training.",
           "highlights": [
             "Lane-based gameplay system",
