@@ -22,9 +22,9 @@ const NODE_POSITIONS: Record<BodyPartId, { node: { x: number, y: number }, label
 };
 
 export const CATEGORY_COLORS: Record<string, string> = {
-  Health: 'var(--color-neon-cyan)',
-  Fitness: 'var(--color-neon-green)',
-  Education: 'var(--color-neon-purple)'
+  Clinical: 'var(--color-neon-cyan)',
+  Education: 'var(--color-neon-purple)',
+  Fitness: 'var(--color-neon-green)'
 };
 
 export const BodyHub = () => {
@@ -92,7 +92,7 @@ export const BodyHub = () => {
              if (!pos) return null;
              const isHovered = hoveredNode === part.id;
              if (!showAnnotations && !isHovered) return null;
-             const posColor = CATEGORY_COLORS[part.games[0]?.category || 'Health'] || CATEGORY_COLORS.Health;
+             const posColor = CATEGORY_COLORS[part.games[0]?.category || 'Clinical'] || CATEGORY_COLORS.Clinical;
              return (
                <g key={`line-${part.id}`}>
                  <polyline
@@ -133,8 +133,8 @@ export const BodyHub = () => {
           if (!pos) return null;
           
           const isHovered = hoveredNode === part.id;
-          const category = part.games[0]?.category || 'Health';
-          const posColor = CATEGORY_COLORS[category] || CATEGORY_COLORS.Health;
+          const category = part.games[0]?.category || 'Clinical';
+          const posColor = CATEGORY_COLORS[category] || CATEGORY_COLORS.Clinical;
           
           return (
             <React.Fragment key={part.id}>
@@ -267,25 +267,39 @@ export const BodyHub = () => {
               
               <h2 className="font-display text-2xl mb-6 tracking-wide uppercase text-white">Legend</h2>
               <div className="space-y-6">
-                {Object.entries(CATEGORY_COLORS).map(([category, color]) => (
-                  <div key={category} className="flex items-center gap-4">
-                    <div 
-                      className="w-4 h-4 rounded-full relative"
-                      style={{ 
-                        backgroundColor: color,
-                        boxShadow: `0 0 15px ${color}`
-                      }}
-                    >
-                      <div 
-                        className="absolute inset-0 border rounded-full opacity-50 animate-ping"
-                        style={{ borderColor: color }}
-                      />
+                {Object.entries(CATEGORY_COLORS).map(([category, color]) => {
+                  const descriptions: Record<string, string> = {
+                    Clinical: "Interactive games designed to support health through assessment, rehabilitation, and therapy",
+                    Education: "Immersive games that teach concepts through gameplay and exploration",
+                    Fitness: "High-energy games that promote physical activity, performance, and training"
+                  };
+                  return (
+                    <div key={category} className="flex gap-4">
+                      <div className="flex-shrink-0 mt-1">
+                        <div 
+                          className="w-4 h-4 rounded-full relative"
+                          style={{ 
+                            backgroundColor: color,
+                            boxShadow: `0 0 15px ${color}`
+                          }}
+                        >
+                          <div 
+                            className="absolute inset-0 border rounded-full opacity-50 animate-ping"
+                            style={{ borderColor: color }}
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="font-sans text-sm tracking-widest uppercase text-white mb-1">
+                          {category}
+                        </span>
+                        <span className="font-sans text-xs text-neutral-400 leading-relaxed">
+                          {descriptions[category]}
+                        </span>
+                      </div>
                     </div>
-                    <span className="font-sans text-sm tracking-widest uppercase text-neutral-300">
-                      {category}
-                    </span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </motion.div>
           </div>
