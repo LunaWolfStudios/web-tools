@@ -226,7 +226,7 @@ export const DATA = {
     },
     {
       "id": "hands",
-      "label": "Hands / Grip",
+      "label": "Hands (Grip)",
       "games": [
         {
           "title": "GRASP",

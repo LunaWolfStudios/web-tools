@@ -14,11 +14,11 @@ const NODE_POSITIONS: Record<BodyPartId, { node: { x: number, y: number }, label
   eyes: { node: { x: 46.5, y: 7 }, label: { x: 25, y: 3 }, mid: { x: 35, y: 3 }, align: 'right' },
   face: { node: { x: 54, y: 10 }, label: { x: 75, y: 16 }, mid: { x: 65, y: 16 }, align: 'left' },
   ears: { node: { x: 40.5, y: 9 }, label: { x: 20, y: 17 }, mid: { x: 30, y: 17 }, align: 'right' },
-  arms: { node: { x: 26, y: 29.5 }, label: { x: 10, y: 34 }, mid: { x: 18, y: 34 }, align: 'right' },
+  arms: { node: { x: 26, y: 29.5 }, label: { x: 15, y: 34 }, mid: { x: 20, y: 34 }, align: 'right' },
   pancreas: { node: { x: 63, y: 35 }, label: { x: 85, y: 32 }, mid: { x: 65, y: 32 }, align: 'left' },
-  hands: { node: { x: 14.5, y: 51.5 }, label: { x: 0, y: 48 }, mid: { x: 5, y: 48 }, align: 'right' },
+  hands: { node: { x: 14.5, y: 51.5 }, label: { x: 10, y: 48 }, mid: { x: 11, y: 48 }, align: 'right' },
   legs: { node: { x: 65, y: 53.5 }, label: { x: 80, y: 62 }, mid: { x: 72, y: 62 }, align: 'left' },
-  knees: { node: { x: 37, y: 69 }, label: { x: 15, y: 76 }, mid: { x: 25, y: 76 }, align: 'right' },
+  knees: { node: { x: 37, y: 69 }, label: { x: 20, y: 76 }, mid: { x: 28, y: 76 }, align: 'right' },
 };
 
 export const CATEGORY_COLORS: Record<string, string> = {
@@ -167,7 +167,7 @@ export const BodyHub = () => {
               {/* Callout Annotation Label */}
               {(showAnnotations || isHovered) && (
                 <div 
-                  className="absolute pointer-events-auto z-20 group text-left max-w-[35vw] sm:max-w-none"
+                  className="absolute pointer-events-auto z-20 group text-left w-max max-w-[28vw] sm:max-w-none sm:w-auto"
                   style={{ 
                     left: `${pos.label.x}%`, 
                     top: `${pos.label.y}%`,
