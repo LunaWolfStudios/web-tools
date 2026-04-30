@@ -25,7 +25,11 @@ export const DATA = {
             "/anatomy-of-play/public/icare_04.jpg",
             "/anatomy-of-play/public/icare_05.jpg",
             "/anatomy-of-play/public/icare_06.JPG",
-            "/anatomy-of-play/public/icare_07.jpg"
+            "/anatomy-of-play/public/icare_07.jpg",
+            "/anatomy-of-play/public/icare_08.jpg",
+            "/anatomy-of-play/public/icare_09.jpg",
+            "/anatomy-of-play/public/icare_10.jpg",
+            "/anatomy-of-play/public/icare_11.jpg"
           ]
         }
       ]
@@ -138,7 +142,12 @@ export const DATA = {
           "media": [
             "/anatomy-of-play/public/kneebright_00.png",
             "/anatomy-of-play/public/kneebright_01.jpg",
-            "/anatomy-of-play/public/kneebright_02.jpg"
+            "/anatomy-of-play/public/kneebright_02.jpg",
+            "/anatomy-of-play/public/kneebright_03.jpg",
+            "/anatomy-of-play/public/kneebright_04.jpg",
+            "/anatomy-of-play/public/kneebright_05.gif",
+            "/anatomy-of-play/public/kneebright_06.gif",
+            "/anatomy-of-play/public/kneebright_07.gif"
           ]
         }
       ]
@@ -218,8 +227,13 @@ export const DATA = {
             "/anatomy-of-play/public/helix_00.jpg",
             "/anatomy-of-play/public/helix_01.jpg",
             "/anatomy-of-play/public/helix_02.jpg",
-            "/anatomy-of-play/public/helix_03.mp4",
-            "/anatomy-of-play/public/helix_04.mp4"
+            "/anatomy-of-play/public/helix_03.jpg",
+            "/anatomy-of-play/public/helix_04.jpg",
+            "/anatomy-of-play/public/helix_05.jpg",
+            "/anatomy-of-play/public/helix_06.mp4",
+            "/anatomy-of-play/public/helix_07.jpg",
+            "/anatomy-of-play/public/helix_08.jpg",
+            "/anatomy-of-play/public/helix_09.mp4"
           ]
         }
       ]
@@ -246,7 +260,11 @@ export const DATA = {
             "/anatomy-of-play/public/grasp_01.png",
             "/anatomy-of-play/public/grasp_02.jpg",
             "/anatomy-of-play/public/grasp_03.jpg",
-            "/anatomy-of-play/public/grasp_04.mp4"
+            "/anatomy-of-play/public/grasp_04.jpg",
+            "/anatomy-of-play/public/grasp_05.jpg",
+            "/anatomy-of-play/public/grasp_06.jpg",
+            "/anatomy-of-play/public/grasp_07.jpg",
+            "/anatomy-of-play/public/grasp_08.mp4"
           ]
         }
       ]
