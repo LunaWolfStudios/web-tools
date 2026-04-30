@@ -288,7 +288,7 @@ export const DATA = {
       {
         "label": "Luna Wolf Studios",
         "type": "website",
-        "url": "https://lunawolfstudios.com/"
+        "url": "https://lunawolfstudios.com"
       },
       {
         "label": "Support Email",
