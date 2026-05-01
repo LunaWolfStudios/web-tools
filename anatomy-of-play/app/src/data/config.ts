@@ -9,7 +9,7 @@ export const DATA = {
           "company": "Barron Associates",
           "category": "Clinical",
           "year": "2018",
-          "summary": "iCare is a video gaming system designed to provide vision therapy for children with non-strabismic amblyopia or convergence insufficiency (CI). The system uses video games to present vision therapy exercises intended to improve visual acuity in patients with amblyopia and positive fusional vergence in patients with CI. The iCare software uses a webcam to track special red-cyan anaglyph glasses that are worn by the patient. This enables the system to know the patient’s distance from the screen and provide a consistent visual challenge level during therapy game play. Patient assessment and approval by the medical professional is required prior to use.",
+          "summary": "iCare is a video gaming system designed to provide vision therapy for children with non-strabismic amblyopia or convergence insufficiency (CI). The system uses video games to present vision therapy exercises intended to improve visual acuity in patients with amblyopia and positive fusional vergence in patients with CI.\n\nThe iCare software uses a webcam to track special red-cyan anaglyph glasses that are worn by the patient. This enables the system to know the patient’s distance from the screen and provide a consistent visual challenge level during therapy game play.",
           "highlights": [
             "Equivalent clinical effectiveness to patching therapy",
             "20 minutes/day vs hours of traditional therapy",
@@ -75,13 +75,13 @@ export const DATA = {
           "company": "Barron Associates",
           "category": "Clinical",
           "year": "2018",
-          "summary": "An interactive rehabilitation platform for children with hemiplegic cerebral palsy that uses gameplay and motion capture to assess and improve upper limb function. In-game performance metrics strongly correlate with clinical motor assessments.\n\nThe platform integrates a custom-designed smart toy featuring LED visual cues and haptic feedback to guide and reinforce targeted movements, including pronation and supination training, enabling more precise and engaging upper limb rehabilitation.",
+          "summary": "An interactive rehabilitation platform for children with hemiplegic cerebral palsy that uses gameplay and motion capture to assess and improve upper limb function. In-game performance metrics strongly correlate with clinical motor assessments.\n\nThe platform integrates a custom-designed smart toy, enabling patients to interact with game in ways traditional controllers cannot support. By making play accessible, the system guides and reinforces targeted movements, creating a more inclusive and effective approach to upper limb rehabilitation.",
           "highlights": [
-            "Motion capture-based therapy system",
-            "Validated against gold-standard clinical tests",
-            "Tracks speed, smoothness, and coordination",
-            "Enables continuous progress monitoring",
-            "Low-cost and scalable solution"
+            "Custom smart toy with 9-axis sensor (accelerometer, gyroscope, magnetometer)",
+            "LED visual cues and haptic feedback for guided movement",
+            "Dragon Feeding mode targets arm abduction and adduction",
+            "Flight School mode trains pronation and supination",
+            "Validated against gold-standard clinical assessments"
           ],
           "media": [
             "/anatomy-of-play/public/move-it_00.jpg",
@@ -131,7 +131,7 @@ export const DATA = {
           "company": "Barron Associates",
           "category": "Clinical",
           "year": "2019",
-          "summary": "A biofeedback-driven rehabilitation game for knee osteoarthritis that integrates electromyography (EMG) to guide strength training. Patients demonstrated increased muscle activation and engagement compared to traditional therapy systems.",
+          "summary": "A biofeedback-driven rehabilitation game for knee osteoarthritis that integrates electromyography (EMG) to guide strength training. Patients demonstrated increased muscle activation and engagement compared to traditional therapy systems.\n\nPlayers are immersed in a recovery-driven island setting following a natural disaster, where restoring the environment parallels their own rehabilitation journey. Through activities like transporting emergency cargo via hot air balloon, biking, horseback riding, and kayaking, as well as debris cleanup and cave rescue missions, players engage in meaningful, goal-oriented tasks. Each activity is powered by therapeutic exercises such as leg raises, extensions, and lunges, performed either seated or standing, translating physical rehabilitation into interactive gameplay.",
           "highlights": [
             "EMG-controlled gameplay",
             "+25% increase in knee torque vs control",
@@ -161,7 +161,7 @@ export const DATA = {
           "company": "Barron Associates",
           "category": "Education",
           "year": "2021",
-          "summary": "An award-winning STEM learning platform that uses electromyography (EMG) biosensors and interactive gameplay to teach neuroscience and physical science concepts. Using a wireless muscle sensor, students control games with their own movements while building understanding of core STEM principles through hands-on learning.",
+          "summary": "An award-winning STEM learning platform that uses electromyography (EMG) biosensors and interactive gameplay to teach life science and physical science concepts. Using a wireless muscle sensor, students control games with their own movements while building understanding of core STEM principles through hands-on learning.",
           "highlights": [
             "Control games using real muscle activity via EMG sensor",
             "Includes Neurobots (Life Science) and Total Energy (Physical Science)",
@@ -215,7 +215,7 @@ export const DATA = {
           "company": "Luna Wolf Studios",
           "category": "Clinical",
           "year": "2023",
-          "summary": "A virtual reality hearing assessment platform that gamifies traditional auditory tests to improve engagement and diagnostic accuracy for auditory processing disorders.",
+          "summary": "A virtual reality hearing assessment platform that gamifies traditional auditory tests to improve engagement and diagnostic accuracy for auditory processing disorders.\n\nPlayers engage with a suite of immersive VR experiences designed to assess different aspects of hearing. In an escape room-style environment, users navigate through a series of surreal worlds by unlocking portals using spoken digit sequences presented under varying levels of background noise, enabling precise measurement of speech-in-noise comprehension. Additional rhythm-based interactions place players in a vibrant jungle setting, where they respond to ear-specific tones by performing on virtual instruments, measuring pure tone thresholds for each ear.",
           "highlights": [
             "VR-based diagnostic experience",
             "Includes digits-in-noise and pure tone tests",
@@ -247,12 +247,12 @@ export const DATA = {
           "company": "Barron Associates",
           "category": "Clinical",
           "year": "2020",
-          "summary": "A virtual rehabilitation system for stroke patients that uses sensor-enabled gloves to simulate real-world tasks. In-game performance metrics provide reliable indicators of motor recovery.",
+          "summary": "A virtual rehabilitation system for stroke patients that uses sensor-enabled gloves and motion tracking to simulate real-world tasks while capturing detailed upper extremity movement data. In-game performance metrics, including grip, coordination, and movement paths, provide reliable and clinically relevant indicators of motor recovery.\n\nPlayers progress through a series of immersive activities of daily living that emphasize functional hand use and grip, including preparing meals, gardening, shopping, caring for animals, and completing household tasks. These scenarios transform everyday actions into engaging, goal-oriented gameplay that supports rehabilitation through meaningful interaction.",
           "highlights": [
             "Glove-based motion tracking",
             "Simulates activities of daily living",
             "Strong correlation with clinical assessments",
-            "Enables functional rehabilitation",
+            "Supports real-world functional recovery",
             "Data-driven progress tracking"
           ],
           "media": [
@@ -284,7 +284,7 @@ export const DATA = {
             "Real-time resistance + cadence control",
             "Multiple difficulty levels",
             "Music-driven engagement",
-            "Instructor-free workout option"
+            "Instructor-free workout"
           ],
           "media": [
             "/anatomy-of-play/public/lanebreak_00.jpg",
