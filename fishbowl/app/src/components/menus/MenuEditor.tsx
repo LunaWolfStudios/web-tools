@@ -45,14 +45,15 @@ export function MenuEditor({ menuId, onBack }: { menuId: string | null; onBack: 
     onBack();
   };
 
-  const availableCocktails = cocktails.filter(c => !selectedCocktails.includes(c.id));
+  const validSelectedCocktails = selectedCocktails.filter(id => cocktails.some(c => c.id === id));
+  const availableCocktails = cocktails.filter(c => !validSelectedCocktails.includes(c.id));
   const filteredAvailable = availableCocktails.filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase()));
-  const menuCocktailDetails = cocktails.filter(c => selectedCocktails.includes(c.id));
+  const menuCocktailDetails = cocktails.filter(c => validSelectedCocktails.includes(c.id));
 
   const stats = calculateMenuStats(currentMenu, cocktails);
 
   return (
-    <div className="flex flex-col h-full gap-6">
+    <div className="flex flex-col gap-6 pb-12">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" onClick={onBack}>
           <ArrowLeft className="h-5 w-5" />
@@ -128,7 +129,7 @@ export function MenuEditor({ menuId, onBack }: { menuId: string | null; onBack: 
           <Card className="bg-card/40 backdrop-blur-md border-border flex-1 border-t-4 border-t-primary">
             <CardContent className="pt-6 h-full flex flex-col">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-heading text-xl">Selected Cocktails ({selectedCocktails.length})</h3>
+                <h3 className="font-heading text-xl">Selected Cocktails ({menuCocktailDetails.length})</h3>
               </div>
               <ScrollArea className="flex-1 h-[250px] pr-4">
                 <div className="space-y-3">

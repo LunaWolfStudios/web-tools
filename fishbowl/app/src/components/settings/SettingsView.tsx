@@ -107,7 +107,7 @@ export function SettingsView() {
               onClick={() => {
                 if (window.confirm("Are you sure? This cannot be undone.")) {
                   resetApp();
-                  navigate('/fishbowl/dashboard');
+                  navigate('/fishbowl');
                 }
               }} 
               variant="destructive"

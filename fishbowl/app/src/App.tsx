@@ -46,7 +46,7 @@ export default function App() {
         
         <ScrollArea className="flex-1 px-4">
           <div className="space-y-1">
-            <NavItem icon={<Home className="w-4 h-4 mr-3" />} label="Dashboard" active={currentPath.startsWith('/fishbowl/dashboard')} onClick={() => navigate('/fishbowl/dashboard')} />
+            <NavItem icon={<Home className="w-4 h-4 mr-3" />} label="Dashboard" active={currentPath === '/fishbowl'} onClick={() => navigate('/fishbowl')} />
             <NavItem icon={<Wine className="w-4 h-4 mr-3" />} label="Catalogue" active={currentPath.startsWith('/fishbowl/catalogue')} onClick={() => navigate('/fishbowl/catalogue')} />
             <NavItem icon={<MenuIcon className="w-4 h-4 mr-3" />} label="Menus & Forecasts" active={currentPath.startsWith('/fishbowl/menus')} onClick={() => navigate('/fishbowl/menus')} />
             <NavItem icon={<ShoppingCart className="w-4 h-4 mr-3" />} label="Shopping List" active={currentPath.startsWith('/fishbowl/shopping')} onClick={() => navigate('/fishbowl/shopping')} />
@@ -66,15 +66,15 @@ export default function App() {
           <h1 className="text-xl font-heading font-bold tracking-widest uppercase">FishBowl</h1>
         </div>
 
-        <ScrollArea className="flex-1 p-6 md:p-10">
-          <div className="max-w-7xl mx-auto pb-20">
+        <ScrollArea className="flex-1 w-full">
+          <div className="p-6 md:p-10 max-w-7xl mx-auto pb-24">
             <Routes>
-              <Route path="/fishbowl/dashboard" element={<DashboardView />} />
+              <Route path="/fishbowl" element={<DashboardView />} />
               <Route path="/fishbowl/catalogue" element={<CatalogueView />} />
               <Route path="/fishbowl/menus" element={<MenusView />} />
               <Route path="/fishbowl/shopping" element={<ShoppingListView />} />
               <Route path="/fishbowl/settings" element={<SettingsView />} />
-              <Route path="*" element={<Navigate to="/fishbowl/dashboard" replace />} />
+              <Route path="*" element={<Navigate to="/fishbowl" replace />} />
             </Routes>
           </div>
         </ScrollArea>
@@ -82,7 +82,7 @@ export default function App() {
       
       {/* Mobile Nav */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-card/90 backdrop-blur-lg border-t border-border flex justify-around p-2 z-20">
-         <MobileNavItem icon={<Home />} active={currentPath.startsWith('/fishbowl/dashboard')} onClick={() => navigate('/fishbowl/dashboard')} />
+         <MobileNavItem icon={<Home />} active={currentPath === '/fishbowl'} onClick={() => navigate('/fishbowl')} />
          <MobileNavItem icon={<Wine />} active={currentPath.startsWith('/fishbowl/catalogue')} onClick={() => navigate('/fishbowl/catalogue')} />
          <MobileNavItem icon={<MenuIcon />} active={currentPath.startsWith('/fishbowl/menus')} onClick={() => navigate('/fishbowl/menus')} />
          <MobileNavItem icon={<ShoppingCart />} active={currentPath.startsWith('/fishbowl/shopping')} onClick={() => navigate('/fishbowl/shopping')} />

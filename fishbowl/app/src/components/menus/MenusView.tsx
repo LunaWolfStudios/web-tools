@@ -17,8 +17,8 @@ export function MenusView() {
   }
 
   return (
-    <div className="flex flex-col h-full gap-6">
-      <div className="flex justify-between items-center">
+    <div className="flex flex-col h-full gap-6 max-h-[calc(100vh-2rem)] overflow-hidden">
+      <div className="flex justify-between items-center shrink-0">
         <div>
           <h2 className="text-3xl font-heading text-secondary">Menus</h2>
           <p className="text-muted-foreground">Build and analyze menu performance</p>
@@ -50,55 +50,57 @@ export function MenusView() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {menus.map(menu => {
-            const stats = calculateMenuStats(menu, cocktails);
-            return (
-              <Card key={menu.id} className="bg-card/40 backdrop-blur-sm border-secondary/20 hover:border-secondary transition-colors">
-                <CardHeader>
-                  <CardTitle>{menu.name}</CardTitle>
-                  <CardDescription>{menu.venueType} • {menu.cocktailIds.length} Cocktails</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-xs text-muted-foreground uppercase tracking-wider">Est. Revenue</p>
-                        <p className="text-xl font-mono text-emerald-400">${stats.grossRevenue.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
+        <div className="flex-1 overflow-y-auto pr-2 pb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {menus.map(menu => {
+              const stats = calculateMenuStats(menu, cocktails);
+              return (
+                <Card key={menu.id} className="bg-card/40 backdrop-blur-sm border-secondary/20 hover:border-secondary transition-colors">
+                  <CardHeader>
+                    <CardTitle>{menu.name}</CardTitle>
+                    <CardDescription>{menu.venueType} • {menu.cocktailIds.length} Cocktails</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <p className="text-xs text-muted-foreground uppercase tracking-wider">Est. Revenue</p>
+                          <p className="text-xl font-mono text-emerald-400">${stats.grossRevenue.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-muted-foreground uppercase tracking-wider">Margin</p>
+                          <p className="text-xl font-mono">{stats.profitMargin.toFixed(1)}%</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground uppercase tracking-wider">Margin</p>
-                        <p className="text-xl font-mono">{stats.profitMargin.toFixed(1)}%</p>
+                      
+                      <div className="pt-4 border-t border-border flex justify-between">
+                        <Button variant="outline" size="sm" onClick={() => { setEditId(menu.id); setIsEditing(true); }}>
+                          Edit Menu
+                        </Button>
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm" onClick={() => {
+                            const newMenu = { ...menu, id: crypto.randomUUID(), name: `${menu.name} (Copy)` };
+                            useAppStore.getState().addMenu(newMenu);
+                          }}>
+                            Copy
+                          </Button>
+                          <Button variant="secondary" size="sm" onClick={() => {
+                            setActiveMenu(menu.id);
+                            navigate('/fishbowl/shopping');
+                          }}>
+                            Shopping List
+                          </Button>
+                          <Button variant="destructive" size="sm" onClick={() => {
+                             if(window.confirm('Delete menu?')) { useAppStore.getState().deleteMenu(menu.id); }
+                          }}>Delete</Button>
+                        </div>
                       </div>
                     </div>
-                    
-                    <div className="pt-4 border-t border-border flex justify-between">
-                      <Button variant="outline" size="sm" onClick={() => { setEditId(menu.id); setIsEditing(true); }}>
-                        Edit Menu
-                      </Button>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={() => {
-                          const newMenu = { ...menu, id: crypto.randomUUID(), name: `${menu.name} (Copy)` };
-                          useAppStore.getState().addMenu(newMenu);
-                        }}>
-                          Copy
-                        </Button>
-                        <Button variant="secondary" size="sm" onClick={() => {
-                          setActiveMenu(menu.id);
-                          navigate('/fishbowl/shopping');
-                        }}>
-                          Shopping List
-                        </Button>
-                        <Button variant="destructive" size="sm" onClick={() => {
-                           if(window.confirm('Delete menu?')) { useAppStore.getState().deleteMenu(menu.id); }
-                        }}>Delete</Button>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
