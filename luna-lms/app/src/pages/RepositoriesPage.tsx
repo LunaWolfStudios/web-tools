@@ -2,9 +2,9 @@ import { Github, ExternalLink, GitBranch, Terminal } from 'lucide-react';
 
 export default function RepositoriesPage() {
   const repos = [
-    { name: 'web-arch-final', course: 'CS 410', status: 'passing', commits: 42, lastActive: '2h ago' },
-    { name: 'physics-sim-engine', course: 'ENG 302', status: 'failing', commits: 15, lastActive: '1d ago' },
-    { name: 'linear-solver-py', course: 'MATH 220', status: 'passing', commits: 8, lastActive: '3d ago' },
+    { name: 'railbound-prototype', course: 'GAME 410', status: 'passing', commits: 42, lastActive: '2h ago' },
+    { name: 'coppervalle-rush', course: 'DES 220', status: 'failing', commits: 15, lastActive: '1d ago' },
+    { name: 'unity-custom-shaders', course: 'ART 302', status: 'passing', commits: 8, lastActive: '3d ago' },
   ];
 
   return (

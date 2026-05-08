@@ -2,10 +2,10 @@ import { Search, Filter, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const ALL_COURSES = [
-  { id: 'c1', title: 'CS 410: Advanced Web Architecture', instructor: 'Dr. Sarah Lin', status: 'Active', term: 'Fall 2026' },
-  { id: 'c2', title: 'ENG 302: Interactive Physics Sims', instructor: 'Prof. Marcus Vance', status: 'Active', term: 'Fall 2026' },
-  { id: 'c3', title: 'MATH 220: Linear Algebra', instructor: 'Dr. Evelyn Sato', status: 'Active', term: 'Fall 2026' },
-  { id: 'c4', title: 'CS 350: Introduction to Databases', instructor: 'Dr. Alan Turing', status: 'Completed', term: 'Spring 2026' },
+  { id: 'c1', title: 'GAME 410: Unity Game Architecture', instructor: 'Dr. Sarah Lin', status: 'Active', term: 'Fall 2026' },
+  { id: 'c2', title: 'ART 302: 3D Modeling & Animation', instructor: 'Prof. Marcus Vance', status: 'Active', term: 'Fall 2026' },
+  { id: 'c3', title: 'DES 220: Level Design Patterns', instructor: 'Dr. Evelyn Sato', status: 'Active', term: 'Fall 2026' },
+  { id: 'c4', title: 'GAME 350: Applied Game Physics', instructor: 'Dr. Alan Turing', status: 'Completed', term: 'Spring 2026' },
 ];
 
 export default function CoursesPage() {

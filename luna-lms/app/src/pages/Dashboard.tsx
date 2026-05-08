@@ -2,15 +2,15 @@ import { Code, BookOpen, Clock, Activity, ArrowRight, CheckCircle2 } from 'lucid
 import { Link } from 'react-router-dom';
 
 const MOCK_COURSES = [
-  { id: 'c1', title: 'CS 410: Advanced Web Architecture', instructor: 'Dr. Sarah Lin', progress: 75, nextDue: 'Tomorrow, 11:59PM', tasks: 2, image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=400&h=200' },
-  { id: 'c2', title: 'ENG 302: Interactive Physics Sims', instructor: 'Prof. Marcus Vance', progress: 40, nextDue: 'Friday, 5:00PM', tasks: 1, image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=400&h=200' },
-  { id: 'c3', title: 'MATH 220: Linear Algebra', instructor: 'Dr. Evelyn Sato', progress: 90, nextDue: 'Next Week', tasks: 0, image: 'https://images.unsplash.com/photo-1632516643736-2245d8b88d22?auto=format&fit=crop&q=80&w=400&h=200' },
+  { id: 'c1', title: 'GAME 410: Unity Game Architecture', instructor: 'Dr. Sarah Lin', progress: 75, nextDue: 'Tomorrow, 11:59PM', tasks: 2, image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=400&h=200' },
+  { id: 'c2', title: 'ART 302: 3D Modeling & Animation', instructor: 'Prof. Marcus Vance', progress: 40, nextDue: 'Friday, 5:00PM', tasks: 1, image: 'https://images.unsplash.com/photo-1618666012174-83b441c0bc76?auto=format&fit=crop&q=80&w=400&h=200' },
+  { id: 'c3', title: 'DES 220: Level Design Patterns', instructor: 'Dr. Evelyn Sato', progress: 90, nextDue: 'Next Week', tasks: 0, image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=400&h=200' },
 ];
 
 const RECENT_ACTIVITY = [
-  { id: 1, type: 'grade', text: 'Grade posted for React Performance Lab', score: '98/100', time: '2 hours ago' },
-  { id: 2, type: 'assignment', text: 'New assignment: WebGL Shader Basics', time: '5 hours ago' },
-  { id: 3, type: 'review', text: 'Pull Request comment by TA regarding memory leak', time: 'Yesterday' },
+  { id: 1, type: 'grade', text: 'Grade posted for Railbound Prototype', score: '98/100', time: '2 hours ago' },
+  { id: 2, type: 'assignment', text: 'New assignment: Implement NavMesh in Unity', time: '5 hours ago' },
+  { id: 3, type: 'review', text: 'Pull Request comment by TA regarding Coppervalle Rush optimization', time: 'Yesterday' },
 ];
 
 export default function Dashboard() {
@@ -106,7 +106,7 @@ export default function Dashboard() {
              <div className="space-y-3">
                <div className="bg-white/5 border border-white/10 rounded p-3 flex justify-between items-center group cursor-pointer hover:border-amber-400/50 transition-colors">
                  <div>
-                   <p className="text-sm text-gray-200 group-hover:text-amber-400 transition-colors">Physics Engine Core</p>
+                   <p className="text-sm text-gray-200 group-hover:text-amber-400 transition-colors">Coppervalle Rush - UI Scaling</p>
                    <p className="text-xs text-gray-500 font-mono mt-1">#42 opened 2 days ago</p>
                  </div>
                  <span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_5px_rgba(251,191,36,0.6)] animate-pulse" />

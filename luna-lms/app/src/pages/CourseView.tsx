@@ -4,31 +4,31 @@ import { Link, useParams } from 'react-router-dom';
 const MODULES = [
   {
     id: 'm1',
-    title: 'Week 1: Fundamentals of Advanced Web',
+    title: 'Week 1: Fundamentals of Unity 3D',
     status: 'completed',
     items: [
-      { id: 'i1', type: 'lecture', title: 'Course Introduction & Syllabus', time: '15m' },
-      { id: 'i2', type: 'reading', title: 'The DOM and Virtual DOM', time: '45m' },
-      { id: 'i3', type: 'assignment', title: 'Setup GitHub & Initial Vite Project', time: '2h', points: 10, status: 'graded', score: '10/10' },
+      { id: 'i1', type: 'lecture', title: 'Course Intro & Unity Editor', time: '15m' },
+      { id: 'i2', type: 'reading', title: 'GameObjects and MonoBehaviours', time: '45m' },
+      { id: 'i3', type: 'assignment', title: 'Setup GitHub & Unity Project', time: '2h', points: 10, status: 'graded', score: '10/10' },
     ]
   },
   {
     id: 'm2',
-    title: 'Week 2: React Core & Reconciliation',
+    title: 'Week 2: Input & Physics Core',
     status: 'active',
     items: [
-      { id: 'i4', type: 'lecture', title: 'Deep dive: React Fiber', time: '1h 20m' },
-      { id: 'i5', type: 'reading', title: 'Understanding Hooks internally', time: '30m' },
-      { id: 'i6', type: 'coding', title: 'Build a custom useState hook', time: '4h', points: 50, status: 'pending', due: 'Tomorrow, 11:59PM' },
+      { id: 'i4', type: 'lecture', title: 'Deep dive: Rigidbodies', time: '1h 20m' },
+      { id: 'i5', type: 'reading', title: 'The new Input System', time: '30m' },
+      { id: 'i6', type: 'coding', title: 'Implement Player Controller', time: '4h', points: 50, status: 'pending', due: 'Tomorrow, 11:59PM' },
     ]
   },
   {
     id: 'm3',
-    title: 'Week 3: State Management Patterns',
+    title: 'Week 3: AI & NavMesh Pathfinding',
     status: 'locked',
     items: [
-      { id: 'i7', type: 'lecture', title: 'Zustand vs Redux', time: '1h' },
-      { id: 'i8', type: 'coding', title: 'Refactor App State', time: '5h', points: 100, status: 'locked' }
+      { id: 'i7', type: 'lecture', title: 'State Machines for AI', time: '1h' },
+      { id: 'i8', type: 'coding', title: 'Implement NavMesh in Unity', time: '5h', points: 100, status: 'locked' }
     ]
   }
 ];
@@ -44,7 +44,7 @@ export default function CourseView() {
           <ArrowLeft size={14} /> Back to Dashboard
         </Link>
         <span>/</span>
-        <span className="text-[var(--color-neon-cyan)]">CS 410</span>
+        <span className="text-[var(--color-neon-cyan)]">GAME 410</span>
       </div>
 
       <header className="glass-panel relative overflow-hidden p-8 flex flex-col md:flex-row gap-8 items-start md:items-center justify-between">
@@ -52,11 +52,11 @@ export default function CourseView() {
         
         <div className="space-y-3 flex-1 relative z-10">
           <div className="flex gap-2 text-xs font-mono text-[var(--color-neon-cyan)]">
-            <span className="bg-[var(--color-neon-cyan)]/10 px-2 py-1 rounded">CS 410</span>
+            <span className="bg-[var(--color-neon-cyan)]/10 px-2 py-1 rounded">GAME 410</span>
             <span className="bg-white/5 py-1 px-2 rounded">Fall 2026</span>
           </div>
-          <h1 className="text-4xl font-display font-bold text-white">Advanced Web Architecture</h1>
-          <p className="text-gray-400 max-w-2xl">Explore the internals of modern web frameworks, state management patterns at scale, and performance profiling in React/Next.js.</p>
+          <h1 className="text-4xl font-display font-bold text-white">Unity Game Architecture</h1>
+          <p className="text-gray-400 max-w-2xl">Explore advanced C# patterns in Unity, game physics with Rigidbodies, and artificial intelligence for NPCs.</p>
         </div>
 
         <div className="flex flex-col gap-4 min-w-[200px] relative z-10">
@@ -155,7 +155,7 @@ export default function CourseView() {
                     <span className="text-lg font-mono text-white">24</span>
                   </div>
                   <div>
-                    <Link to="/assignment/i6" className="text-sm font-medium text-[var(--color-neon-cyan)] hover:underline">Custom useState hook</Link>
+                    <Link to="/assignment/i6" className="text-sm font-medium text-[var(--color-neon-cyan)] hover:underline">Player Controller</Link>
                     <p className="text-xs text-gray-400">11:59 PM</p>
                   </div>
                 </div>

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 // Current time starts at 2026-05-08 based on metadata
 const INITIAL_DATE = new Date(2026, 4, 8); // May 8, 2026
 
-type EventType = 'assignment' | 'lecture' | 'exam';
+type EventType = 'assignment' | 'lecture' | 'exam' | 'event';
 
 interface CalendarEvent {
   id: string;
@@ -18,12 +18,12 @@ interface CalendarEvent {
 }
 
 const ALL_EVENTS: CalendarEvent[] = [
-  { id: 'e1', date: new Date(2026, 4, 9), title: 'Custom useState hook', course: 'CS 410', type: 'assignment', time: '11:59 PM', assignmentId: 'i6' },
-  { id: 'e2', date: new Date(2026, 4, 12), title: 'React Performance Lab', course: 'CS 410', type: 'assignment', time: '11:59 PM', assignmentId: 'i6' },
-  { id: 'e3', date: new Date(2026, 4, 14), title: 'Physics Engine Checkpoint', course: 'ENG 302', type: 'lecture', time: '5:00 PM' },
-  { id: 'e4', date: new Date(2026, 4, 20), title: 'Linear Algebra Midterm', course: 'MATH 220', type: 'exam', time: '10:00 AM' },
-  { id: 'e5', date: new Date(2026, 4, 25), title: 'WebGL Shader Basics', course: 'CS 410', type: 'assignment', time: '11:59 PM', assignmentId: 'i6' },
-  { id: 'e6', date: new Date(2026, 5, 2), title: 'Final Project Draft', course: 'ENG 302', type: 'assignment', time: '11:59 PM' },
+  { id: 'e1', date: new Date(2026, 4, 9), title: 'Player Controller Setup', course: 'GAME 410', type: 'assignment', time: '11:59 PM', assignmentId: 'i6' },
+  { id: 'e2', date: new Date(2026, 4, 12), title: 'Railbound Prototype Milestone', course: 'GAME 410', type: 'assignment', time: '11:59 PM', assignmentId: 'i6' },
+  { id: 'e3', date: new Date(2026, 4, 14), title: 'Coppervalle Rush Level Review', course: 'DES 220', type: 'lecture', time: '5:00 PM' },
+  { id: 'e4', date: new Date(2026, 4, 16), title: 'WuHu Game Jam 2026', course: 'University Wide', type: 'event', time: '8:00 AM' },
+  { id: 'e5', date: new Date(2026, 4, 20), title: '3D Asset Pipeline Midterm', course: 'ART 302', type: 'exam', time: '10:00 AM' },
+  { id: 'e6', date: new Date(2026, 4, 25), title: 'Implement NavMesh in Unity', course: 'GAME 410', type: 'assignment', time: '11:59 PM', assignmentId: 'i6' },
 ];
 
 const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -118,6 +118,7 @@ export default function CalendarPage() {
                 className={`text-[10px] truncate px-1.5 py-0.5 rounded cursor-pointer transition-colors
                   ${event.type === 'assignment' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20' : 
                     event.type === 'exam' ? 'bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20' : 
+                    event.type === 'event' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20 hover:bg-purple-500/20' :
                     'bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20'}
                 `}
                 title={event.title}
@@ -140,6 +141,7 @@ export default function CalendarPage() {
     switch (type) {
       case 'assignment': return <Code size={16} className="text-amber-400" />;
       case 'exam': return <AlertCircle size={16} className="text-red-400" />;
+      case 'event': return <CalendarIcon size={16} className="text-purple-400" />;
       case 'lecture': return <BookOpen size={16} className="text-blue-400" />;
     }
   };
@@ -148,6 +150,7 @@ export default function CalendarPage() {
     switch (type) {
       case 'assignment': return 'border-amber-500/30';
       case 'exam': return 'border-red-500/30';
+      case 'event': return 'border-purple-500/30';
       case 'lecture': return 'border-blue-500/30';
     }
   };
