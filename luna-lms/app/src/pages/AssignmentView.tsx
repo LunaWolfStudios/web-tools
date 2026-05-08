@@ -10,7 +10,7 @@ export default function AssignmentView() {
       
       <div className="flex items-center justify-between mb-4 shrink-0">
         <div className="flex items-center gap-4 text-sm text-gray-400">
-          <Link to="/course/c1" className="hover:text-white transition-colors flex items-center gap-1">
+          <Link to="/luna-lms/course/c1" className="hover:text-white transition-colors flex items-center gap-1">
             <ArrowLeft size={14} /> Back to GAME 410
           </Link>
           <span>/</span>

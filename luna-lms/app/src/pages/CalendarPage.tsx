@@ -231,7 +231,7 @@ export default function CalendarPage() {
                       {event.time && <span className="flex items-center gap-1"><Clock size={12}/> {event.time}</span>}
                     </div>
                     {event.type === 'assignment' && event.assignmentId && (
-                      <Link to={`/assignment/${event.assignmentId}`} className="mt-3 block text-center w-full bg-white/5 hover:bg-white/10 text-gray-300 text-xs py-1.5 rounded transition-colors border border-white/5">
+                      <Link to={`/luna-lms/assignment/${event.assignmentId}`} className="mt-3 block text-center w-full bg-white/5 hover:bg-white/10 text-gray-300 text-xs py-1.5 rounded transition-colors border border-white/5">
                         View Assignment
                       </Link>
                     )}
@@ -264,7 +264,7 @@ export default function CalendarPage() {
                     </div>
                     <div className="flex-1">
                       {event.type === 'assignment' && event.assignmentId ? (
-                        <Link to={`/assignment/${event.assignmentId}`} className="text-sm font-medium text-[var(--color-neon-cyan)] hover:underline line-clamp-1">
+                        <Link to={`/luna-lms/assignment/${event.assignmentId}`} className="text-sm font-medium text-[var(--color-neon-cyan)] hover:underline line-clamp-1">
                           {event.title}
                         </Link>
                       ) : (
@@ -279,7 +279,7 @@ export default function CalendarPage() {
                 );
               })}
             </div>
-            <Link to="/courses" className="mt-4 block text-center text-xs text-gray-500 hover:text-white uppercase tracking-widest transition-colors pt-3 border-t border-white/5">
+            <Link to="/luna-lms/courses" className="mt-4 block text-center text-xs text-gray-500 hover:text-white uppercase tracking-widest transition-colors pt-3 border-t border-white/5">
               View All Timeline &rarr;
             </Link>
           </div>

@@ -40,7 +40,7 @@ export default function CourseView() {
     <div className="space-y-6 animate-in fade-in duration-500 pb-20">
       
       <div className="flex items-center gap-4 text-sm text-gray-400">
-        <Link to="/" className="hover:text-white transition-colors flex items-center gap-1">
+        <Link to="/luna-lms/dashboard" className="hover:text-white transition-colors flex items-center gap-1">
           <ArrowLeft size={14} /> Back to Dashboard
         </Link>
         <span>/</span>
@@ -110,7 +110,7 @@ export default function CourseView() {
                             {module.status === 'locked' ? (
                               <span className="text-gray-400">{item.title}</span>
                             ) : item.type === 'coding' ? (
-                              <Link to={`/assignment/${item.id}`} className="text-gray-200 group-hover:text-[var(--color-neon-cyan)] transition-colors inline-block">{item.title}</Link>
+                              <Link to={`/luna-lms/assignment/${item.id}`} className="text-gray-200 group-hover:text-[var(--color-neon-cyan)] transition-colors inline-block">{item.title}</Link>
                             ) : (
                               <span className="text-gray-200 cursor-pointer">{item.title}</span>
                             )}
@@ -122,7 +122,7 @@ export default function CourseView() {
                           {item.points && <span className="text-gray-400 text-xs w-16 text-right">{item.points} pts</span>}
                           {item.status === 'graded' && <span className="bg-emerald-500/10 text-emerald-400 text-xs font-mono px-2 py-0.5 rounded border border-emerald-500/20">{item.score}</span>}
                           {item.status === 'pending' && <span className="w-16 flex justify-end">
-                             <Link to={`/assignment/${item.id}`} className="bg-[var(--color-neon-cyan)]/10 text-[var(--color-neon-cyan)] border border-[var(--color-neon-cyan)]/30 text-xs px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">Start</Link>
+                             <Link to={`/luna-lms/assignment/${item.id}`} className="bg-[var(--color-neon-cyan)]/10 text-[var(--color-neon-cyan)] border border-[var(--color-neon-cyan)]/30 text-xs px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">Start</Link>
                           </span>}
                           {item.status === 'locked' && <Lock size={14} className="text-gray-600 w-16" />}
                         </div>
@@ -155,7 +155,7 @@ export default function CourseView() {
                     <span className="text-lg font-mono text-white">24</span>
                   </div>
                   <div>
-                    <Link to="/assignment/i6" className="text-sm font-medium text-[var(--color-neon-cyan)] hover:underline">Player Controller</Link>
+                    <Link to="/luna-lms/assignment/i6" className="text-sm font-medium text-[var(--color-neon-cyan)] hover:underline">Player Controller</Link>
                     <p className="text-xs text-gray-400">11:59 PM</p>
                   </div>
                 </div>

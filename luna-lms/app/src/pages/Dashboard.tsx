@@ -31,7 +31,7 @@ export default function Dashboard() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {MOCK_COURSES.map(course => (
-              <Link to={`/course/${course.id}`} key={course.id} className="glass-panel group block overflow-hidden">
+              <Link to={`/luna-lms/course/${course.id}`} key={course.id} className="glass-panel group block overflow-hidden">
                 <div className="h-24 overflow-hidden relative">
                   <div className="absolute inset-0 bg-gradient-to-t from-[#111827] to-transparent z-10" />
                   <img src={course.image} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />

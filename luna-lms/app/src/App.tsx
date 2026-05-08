@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, NavLink, useLocation, Navigate } from 'react-router-dom';
 import { LayoutDashboard, BookOpen, Calendar, Settings, GitBranch, Github } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import CourseView from './pages/CourseView';
@@ -23,19 +23,19 @@ export default function App() {
           
           <nav className="flex-1 px-4 space-y-1">
             <div className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-4 mt-4 px-4 overflow-hidden">Menu</div>
-            <NavLink to="/" end className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
+            <NavLink to="/luna-lms/dashboard" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
               <LayoutDashboard size={20} />
               <span>Dashboard</span>
             </NavLink>
-            <NavLink to="/courses" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
+            <NavLink to="/luna-lms/courses" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
               <BookOpen size={20} />
               <span>Courses</span>
             </NavLink>
-            <NavLink to="/calendar" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
+            <NavLink to="/luna-lms/calendar" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
               <Calendar size={20} />
               <span>Calendar</span>
             </NavLink>
-            <NavLink to="/repositories" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
+            <NavLink to="/luna-lms/repositories" className={({isActive}) => `nav-item ${isActive ? 'active' : ''}`}>
               <Github size={20} />
               <span>Repositories</span>
             </NavLink>
@@ -67,12 +67,14 @@ export default function App() {
           <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
             <div className="max-w-7xl mx-auto w-full h-full">
               <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/courses" element={<CoursesPage />} />
-                <Route path="/course/:id" element={<CourseView />} />
-                <Route path="/assignment/:id" element={<AssignmentView />} />
-                <Route path="/calendar" element={<CalendarPage />} />
-                <Route path="/repositories" element={<RepositoriesPage />} />
+                <Route path="/" element={<Navigate to="/luna-lms/dashboard" replace />} />
+                <Route path="/luna-lms" element={<Navigate to="/luna-lms/dashboard" replace />} />
+                <Route path="/luna-lms/dashboard" element={<Dashboard />} />
+                <Route path="/luna-lms/courses" element={<CoursesPage />} />
+                <Route path="/luna-lms/course/:id" element={<CourseView />} />
+                <Route path="/luna-lms/assignment/:id" element={<AssignmentView />} />
+                <Route path="/luna-lms/calendar" element={<CalendarPage />} />
+                <Route path="/luna-lms/repositories" element={<RepositoriesPage />} />
               </Routes>
             </div>
           </div>

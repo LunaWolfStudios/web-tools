@@ -33,7 +33,7 @@ export default function CoursesPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {ALL_COURSES.map(course => (
-          <Link to={`/course/${course.id}`} key={course.id} className="glass-panel p-5 group flex flex-col h-full hover:-translate-y-1 transition-all duration-300">
+          <Link to={`/luna-lms/course/${course.id}`} key={course.id} className="glass-panel p-5 group flex flex-col h-full hover:-translate-y-1 transition-all duration-300">
              <div className="flex justify-between items-start mb-4">
                <div className="p-3 rounded-xl bg-[var(--color-neon-cyan)]/10 text-[var(--color-neon-cyan)] group-hover:scale-110 transition-transform">
                  <BookOpen size={24} />
