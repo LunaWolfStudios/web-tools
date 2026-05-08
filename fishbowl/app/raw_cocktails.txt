@@ -1,0 +1,248 @@
+# Raw Cocktail List
+- Old Fashioned
+- Wisconsin Old Fashioned
+- Brandy Old Fashioned
+- Rum Old Fashioned
+- Oaxaca Old Fashioned
+- Smoked Old Fashioned
+- Maple Old Fashioned
+- Black Walnut Old Fashioned
+- Dry Martini
+- Dirty Martini
+- Vodka Martini
+- Gibson
+- Vesper Martini
+- Espresso Martini
+- Chocolate Martini
+- French Martini
+- Pornstar Martini
+- Appletini
+- Lemon Drop Martini
+- Lychee Martini
+- Cucumber Martini
+- Pomegranate Martini
+- Saketini
+- Manhattan
+- Perfect Manhattan
+- Black Manhattan
+- Rob Roy
+- Brooklyn
+- Red Hook
+- Negroni
+- Boulevardier
+- White Negroni
+- Americano
+- Sbagliato
+- Mezcal Negroni
+- Whiskey Sour
+- Amaretto Sour
+- Pisco Sour
+- Gin Sour
+- Rum Sour
+- New York Sour
+- Boston Sour
+- Tequila Sour
+- Aperol Sour
+- Margarita
+- Tommy’s Margarita
+- Cadillac Margarita
+- Frozen Margarita
+- Strawberry Margarita
+- Mango Margarita
+- Jalapeño Margarita
+- Mezcal Margarita
+- Skinny Margarita
+- Italian Margarita
+- Coconut Margarita
+- Watermelon Margarita
+- Tom Collins
+- Vodka Collins
+- John Collins
+- Gin Fizz
+- Ramos Gin Fizz
+- Silver Fizz
+- Golden Fizz
+- Moscow Mule
+- Kentucky Mule
+- Mexican Mule
+- London Mule
+- Irish Mule
+- Dark and Stormy
+- Scotch & Soda
+- Whiskey Highball
+- Gin & Tonic
+- Vodka Soda
+- Rum & Coke
+- Cuba Libre
+- Jack & Coke
+- Seven & Seven
+- Ranch Water
+- Paloma
+- Mai Tai
+- Zombie
+- Painkiller
+- Hurricane
+- Piña Colada
+- Blue Hawaiian
+- Blue Hawaii
+- Navy Grog
+- Jungle Bird
+- Planter’s Punch
+- Rum Runner
+- Bahama Mama
+- Saturn
+- Scorpion
+- Singapore Sling
+- Fog Cutter
+- Pearl Diver
+- Cobra’s Fang
+- Classic Daiquiri
+- Frozen Daiquiri
+- Strawberry Daiquiri
+- Hemingway Daiquiri
+- Banana Daiquiri
+- Mojito
+- Strawberry Mojito
+- Coconut Mojito
+- Mango Mojito
+- Blackberry Mojito
+- Aperol Spritz
+- Hugo Spritz
+- Campari Spritz
+- Limoncello Spritz
+- Cynar Spritz
+- Flip
+- Porto Flip
+- Coffee Flip
+- Whiskey Flip
+- Hot Toddy
+- Irish Coffee
+- Hot Buttered Rum
+- Mulled Wine
+- Spiked Hot Chocolate
+- Penicillin
+- Paper Plane
+- Naked and Famous
+- Last Word
+- Final Word
+- Aviation
+- Bee’s Knees
+- Corpse Reviver No. 2
+- Sidecar
+- French 75
+- Caipirinha
+- Caipiroska
+- Clover Club
+- Southside
+- Bramble
+- Basil Smash
+- Gold Rush
+- Rusty Nail
+- Sazerac
+- Mint Julep
+- Vieux Carré
+- El Presidente
+- Bijou
+- Martinez
+- Blood and Sand
+- Hanky Panky
+- Widow’s Kiss
+- Greenpoint
+- Toronto
+- Revolver
+- Monte Carlo
+- Godfather
+- Godmother
+- Rusty Compass
+- Trinidad Sour
+- Long Island Iced Tea
+- Adios Motherfucker
+- Tokyo Tea
+- Blue Motorcycle
+- Electric Lemonade
+- Sex on the Beach
+- Tequila Sunrise
+- Malibu Bay Breeze
+- Bay Breeze
+- Sea Breeze
+- Cape Codder
+- Screwdriver
+- Fuzzy Navel
+- Hairy Navel
+- Woo Woo
+- Cosmopolitan
+- Kamikaze
+- Midori Sour
+- Alabama Slammer
+- Dirty Shirley
+- Shirley Temple with Vodka
+- Green Tea Shot
+- Vegas Bomb
+- Jäger Bomb
+- Irish Trash Can
+- Trash Can Punch
+- Fishbowl
+- Jungle Juice
+- Sangria
+- White Sangria
+- Rosé Sangria
+- Mimosa
+- Bellini
+- Kir Royale
+- Rossini
+- Spritz Veneziano
+- Tinto de Verano
+- Kalimotxo
+- Michelada
+- Chelada
+- Black and Tan
+- Snakebite
+- Boilermaker
+- Shandy
+- Radler
+- Bloody Mary
+- Bloody Maria
+- Caesar
+- Frozen Mudslide
+- Frozen Miami Vice
+- Frosé
+- White Russian
+- Black Russian
+- Mudslide
+- Grasshopper
+- Brandy Alexander
+- Golden Cadillac
+- Toasted Almond
+- Nutty Irishman
+- B-52
+- Bushwacker
+- Batida
+- Chilcano
+- Cantarito
+- Pimm’s Cup
+- Japanese Highball
+- Chu-Hai
+- Soju Yakult Cocktail
+- Carajillo
+- Caramel Espresso Martini
+- Lemon Drop Shot
+- Kamikaze Shot
+- Washington Apple
+- Blow Job Shot
+- Irish Car Bomb
+- Pickleback
+- Mexican Candy Shot
+- Birthday Cake Shot
+- Scooby Snack Shot
+- Whiskey Ginger
+- Whiskey Soda
+- Vodka Cranberry
+- Vodka Red Bull
+- Gin Buck
+- Gin Rickey
+- Tequila Soda
+- Clarified Milk Punch
+- Fat-Washed Old Fashioned
+- Barrel-Aged Negroni
+- Nitro Espresso Martini
+- Clarified Jungle Bird
