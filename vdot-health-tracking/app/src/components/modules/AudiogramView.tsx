@@ -80,8 +80,8 @@ export default function AudiogramView() {
             </div>
             <Badge variant="outline" className="bg-background">OSHA 1910.95 Mode</Badge>
           </CardHeader>
-          <CardContent className="p-0 overflow-auto flex-1">
-            <table className="w-full text-left text-sm whitespace-nowrap border-collapse">
+          <CardContent className="p-0 overflow-x-auto flex-1 w-full">
+            <table className="w-full text-left text-sm whitespace-nowrap border-collapse min-w-[700px]">
               <thead className="bg-muted/50 text-muted-foreground sticky top-0 z-10 border-b border-border">
                 <tr>
                   <th className="px-6 py-4 font-medium">Employee</th>

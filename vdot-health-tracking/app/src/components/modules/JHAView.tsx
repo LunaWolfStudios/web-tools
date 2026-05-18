@@ -19,8 +19,8 @@ export default function JHAView() {
          <CardHeader className="border-b border-border bg-muted/20 pb-4">
           <CardTitle>Role-to-Hazard Matrix (Mock)</CardTitle>
         </CardHeader>
-        <CardContent className="p-0 overflow-auto flex-1">
-          <table className="w-full text-left text-sm">
+        <CardContent className="p-0 overflow-x-auto flex-1 w-full">
+          <table className="w-full text-left text-sm table-auto min-w-[800px]">
             <thead className="bg-muted/50 sticky top-0 z-10 border-b border-border">
               <tr>
                 <th className="px-6 py-4 font-medium text-muted-foreground w-1/4">Job Code / Role</th>

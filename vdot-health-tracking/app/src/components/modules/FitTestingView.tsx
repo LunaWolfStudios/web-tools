@@ -62,8 +62,8 @@ export default function FitTestingView() {
           <CardTitle>Recent Fit Testing Reports</CardTitle>
           <CardDescription>Records track respirator assignment and OSHA compliant annual re-testing.</CardDescription>
         </CardHeader>
-        <CardContent className="p-0 overflow-auto flex-1">
-          <table className="w-full text-left text-sm whitespace-nowrap">
+        <CardContent className="p-0 overflow-x-auto w-full flex-1">
+          <table className="w-full text-left text-sm whitespace-nowrap min-w-[900px]">
             <thead className="bg-muted/50 text-muted-foreground sticky top-0 z-10 border-b border-border">
               <tr>
                 <th className="px-6 py-4 font-medium">Employee</th>

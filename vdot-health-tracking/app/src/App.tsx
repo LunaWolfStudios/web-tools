@@ -103,7 +103,7 @@ export default function App() {
           <div className="flex items-center">
             <button 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-2 -ml-2 mr-2 text-muted-foreground hover:text-foreground rounded-md focus:outline-none lg:hidden"
+              className="p-2 -ml-2 mr-2 text-muted-foreground hover:text-foreground rounded-md focus:outline-none"
             >
               <Menu className="w-5 h-5" />
             </button>
