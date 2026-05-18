@@ -1,18 +1,40 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/src/components/ui/card';
 import { Badge } from '@/src/components/ui/badge';
 import { mockExposures } from '@/src/lib/mockData';
 import { Flame, Ear, Droplets, Wind, Plus, Activity, Filter, MapPin } from 'lucide-react';
 import { format } from 'date-fns';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 const exposureStats = [
-  { district: 'Bristol', events: 12 },
-  { district: 'Salem', events: 5 },
-  { district: 'Richmond', events: 24 },
-  { district: 'Lynchburg', events: 3 },
-  { district: 'Hampton', events: 18 },
+  { district: 'Bristol', Low: 7, Medium: 3, High: 2 },
+  { district: 'Salem', Low: 3, Medium: 2, High: 0 },
+  { district: 'Richmond', Low: 10, Medium: 8, High: 6 },
+  { district: 'Lynchburg', Low: 2, Medium: 1, High: 0 },
+  { district: 'Hampton', Low: 8, Medium: 6, High: 4 },
 ];
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-card border border-border p-3 rounded-lg shadow-xl shrink-0">
+        <p className="font-semibold text-sm mb-2">{label}</p>
+        {payload.map((entry: any, index: number) => (
+          <div key={`item-${index}`} className="flex items-center gap-2 text-xs mb-1">
+             <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
+             <span className="text-muted-foreground">{entry.name}:</span>
+             <span className="font-medium text-foreground">{entry.value}</span>
+          </div>
+        ))}
+        <div className="mt-2 pt-2 border-t border-border flex items-center justify-between text-xs font-semibold">
+           <span>Total:</span>
+           <span>{payload.reduce((sum: number, entry: any) => sum + entry.value, 0)}</span>
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
 
 export default function ExposureView() {
   return (
@@ -81,22 +103,22 @@ export default function ExposureView() {
 
         {/* Right Col: Analytics & Heatmap */}
         <div className="col-span-1 flex flex-col gap-6">
-          <Card className="bg-card border-border shadow-sm flex-1 min-h-[300px]">
+          <Card className="bg-card border-border shadow-sm flex-1 min-h-[300px] flex flex-col">
              <CardHeader className="border-b border-border py-4 px-6 shrink-0 bg-muted/20">
               <CardTitle>Severity Distribution (YTD)</CardTitle>
+              <CardDescription>Exposure events by district and severity level</CardDescription>
             </CardHeader>
-            <CardContent className="p-6 h-[250px] relative">
+            <CardContent className="p-6 flex-1 min-h-[250px] relative">
                <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={exposureStats} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="opacity-10" />
                   <XAxis dataKey="district" stroke="currentColor" className="opacity-50 text-[10px]" axisLine={false} tickLine={false} />
                   <YAxis stroke="currentColor" className="opacity-50 text-[10px]" axisLine={false} tickLine={false} />
-                  <Tooltip cursor={{ fill: 'currentColor', opacity: 0.05 }} contentStyle={{ backgroundColor: 'var(--color-bg-elevated)', borderColor: 'var(--color-border)', borderRadius: '8px' }} />
-                  <Bar dataKey="events" radius={[4, 4, 0, 0]}>
-                    {exposureStats.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={'var(--color-brand-cyan)'} opacity={entry.events > 15 ? 1 : 0.6} />
-                    ))}
-                  </Bar>
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'currentColor', opacity: 0.05 }} />
+                  <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
+                  <Bar dataKey="Low" stackId="a" fill="#10b981" radius={[0, 0, 4, 4]} />
+                  <Bar dataKey="Medium" stackId="a" fill="#f97316" radius={[0, 0, 0, 0]} />
+                  <Bar dataKey="High" stackId="a" fill="#ef4444" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>

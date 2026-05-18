@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/src/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/src/components/ui/card';
 import { Badge } from '@/src/components/ui/badge';
-import { Ear, CheckCircle2, AlertTriangle, Activity, Info } from 'lucide-react';
+import { Ear, CheckCircle2, AlertTriangle, Activity, Info, Download, Upload } from 'lucide-react';
 import { BarChart, Bar, ResponsiveContainer, XAxis, Tooltip as RechartsTooltip, Cell } from 'recharts';
 
-const recentResults = [
+const initialRecentResults = [
   { id: 'AUD-001', name: 'John Miller', date: 'Oct 14, 2026', leftShift: 5, rightShift: 5, status: 'Pass', sts: false },
   { id: 'AUD-002', name: 'Sarah Connor', date: 'Oct 13, 2026', leftShift: 15, rightShift: 5, status: 'Retest', sts: true },
   { id: 'AUD-003', name: 'Michael Chang', date: 'Oct 12, 2026', leftShift: 0, rightShift: 0, status: 'Pass', sts: false },
@@ -21,14 +21,53 @@ const mockShiftData = [
 ];
 
 export default function AudiogramView() {
+  const [recentResults, setRecentResults] = useState(initialRecentResults);
+
+  const handleExportCSV = () => {
+    const headers = "ID,Name,Date,Left Shift,Right Shift,Status,STS\n";
+    const csvContent = recentResults.map(r => `${r.id},${r.name},${r.date},${r.leftShift},${r.rightShift},${r.status},${r.sts}`).join("\n");
+    const blob = new Blob([headers + csvContent], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'audiogram_results.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportCSV = () => {
+    // Fake importing a CSV
+    const newRecord = {
+      id: `AUD-${Math.floor(100 + Math.random() * 900)}`,
+      name: 'New Imported User',
+      date: 'Oct 15, 2026',
+      leftShift: 0,
+      rightShift: 0,
+      status: 'Pass',
+      sts: false
+    };
+    setRecentResults([newRecord, ...recentResults]);
+  };
+
   return (
     <div className="p-6 h-full flex flex-col space-y-6">
-      <div className="flex justify-between items-center shrink-0">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shrink-0">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Audiogram Tracking</h2>
           <p className="text-muted-foreground mt-1">Hearing conservation program compliance and threshold shifts.</p>
         </div>
-        <Button className="bg-primary text-primary-foreground">Import Results CSV</Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handleExportCSV} className="bg-card border-border text-foreground hover:bg-muted">
+            <Download className="w-4 h-4 mr-2" />
+            Export CSV
+          </Button>
+          <Button onClick={handleImportCSV} className="bg-primary text-primary-foreground">
+            <Upload className="w-4 h-4 mr-2" />
+            Import Results CSV
+          </Button>
+        </div>
       </div>
 
       {/* KPI Cards */}
@@ -37,7 +76,7 @@ export default function AudiogramView() {
           <CardContent className="p-6 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground mb-1">Total Screened (YTD)</p>
-              <h3 className="text-3xl font-bold text-foreground">842</h3>
+              <h3 className="text-3xl font-bold text-foreground">{837 + recentResults.length}</h3>
             </div>
             <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
               <Activity className="w-6 h-6" />
@@ -49,7 +88,7 @@ export default function AudiogramView() {
           <CardContent className="p-6 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground mb-1">STS Detected</p>
-              <h3 className="text-3xl font-bold text-destructive">16</h3>
+              <h3 className="text-3xl font-bold text-destructive">{recentResults.filter(r => r.sts).length + 14}</h3>
             </div>
             <div className="w-12 h-12 bg-destructive/10 rounded-full flex items-center justify-center text-destructive">
               <AlertTriangle className="w-6 h-6" />
@@ -61,7 +100,7 @@ export default function AudiogramView() {
           <CardContent className="p-6 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground mb-1">Passed Standards</p>
-              <h3 className="text-3xl font-bold text-emerald-500">826</h3>
+              <h3 className="text-3xl font-bold text-emerald-500">{recentResults.filter(r => !r.sts).length + 823}</h3>
             </div>
             <div className="w-12 h-12 bg-emerald-500/10 rounded-full flex items-center justify-center text-emerald-500">
               <CheckCircle2 className="w-6 h-6" />

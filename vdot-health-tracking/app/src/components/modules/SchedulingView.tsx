@@ -3,6 +3,9 @@ import { Button } from '@/src/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
 import { Badge } from '@/src/components/ui/badge';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock, MapPin, Users, Send, UserPlus, Filter } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/src/components/ui/dialog';
+import { Input } from '@/src/components/ui/input';
+import { Label } from '@/src/components/ui/label';
 
 const mockAppointments = [
   { id: 1, type: 'Audiogram', name: 'John Miller', time: '09:00 AM', day: 14, district: 'Richmond' },
@@ -13,7 +16,31 @@ const mockAppointments = [
 ];
 
 export default function SchedulingView() {
+  const [appointments, setAppointments] = useState(mockAppointments);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newAp, setNewAp] = useState({ name: '', type: 'Audiogram', time: '09:00 AM', day: 14, district: 'Richmond' });
+  const [currentMonth, setCurrentMonth] = useState(10);
+  const [viewType, setViewType] = useState('Month');
+
   const daysInMonth = Array.from({ length: 30 }, (_, i) => i + 1);
+
+  const handleCreate = () => {
+    if (!newAp.name) return;
+    setAppointments([
+      ...appointments,
+      {
+        id: Math.random(),
+        ...newAp
+      }
+    ]);
+    setIsDialogOpen(false);
+    setNewAp({ name: '', type: 'Audiogram', time: '09:00 AM', day: 14, district: 'Richmond' });
+  };
+
+  const handlePrev = () => setCurrentMonth(prev => prev === 1 ? 12 : prev - 1);
+  const handleNext = () => setCurrentMonth(prev => prev === 12 ? 1 : prev + 1);
+
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   return (
     <div className="p-6 h-full flex flex-col space-y-6">
@@ -26,9 +53,49 @@ export default function SchedulingView() {
           <Button variant="outline" className="text-muted-foreground bg-card border-border">
             <Filter className="w-4 h-4 mr-2" /> Filter
           </Button>
-          <Button className="bg-primary text-primary-foreground">
-            <UserPlus className="w-4 h-4 mr-2" /> New Appointment
-          </Button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-primary text-primary-foreground">
+                <UserPlus className="w-4 h-4 mr-2" /> New Appointment
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>New Appointment</DialogTitle>
+                <DialogDescription>Schedule a new occupational health exam.</DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="space-y-2">
+                  <Label>Employee Name</Label>
+                  <Input value={newAp.name} onChange={e => setNewAp({...newAp, name: e.target.value})} placeholder="e.g. John Doe" />
+                </div>
+                <div className="space-y-2">
+                  <Label>Exam Type</Label>
+                  <select 
+                    className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    value={newAp.type} 
+                    onChange={e => setNewAp({...newAp, type: e.target.value})}
+                  >
+                    <option value="Audiogram">Audiogram</option>
+                    <option value="Fit Test">Fit Test</option>
+                    <option value="Physical">Physical</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Date (Day 1-30)</Label>
+                  <Input type="number" min="1" max="30" value={newAp.day} onChange={e => setNewAp({...newAp, day: parseInt(e.target.value) || 14})} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Time</Label>
+                  <Input value={newAp.time} onChange={e => setNewAp({...newAp, time: e.target.value})} placeholder="e.g. 09:00 AM" />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+                <Button onClick={handleCreate}>Schedule</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
@@ -38,54 +105,64 @@ export default function SchedulingView() {
         <Card className="col-span-1 lg:col-span-3 shadow-sm rounded-2xl bg-card border-border flex flex-col min-h-0">
           <CardHeader className="border-b border-border bg-muted/20 py-4 flex flex-row items-center justify-between shrink-0">
             <div className="flex items-center gap-4">
-              <h3 className="font-bold text-lg">October 2026</h3>
+              <h3 className="font-bold text-lg">{monthNames[currentMonth - 1]} 2026</h3>
               <div className="flex gap-1">
-                <Button variant="outline" size="icon" className="h-8 w-8 bg-background border-border text-foreground"><ChevronLeft className="w-4 h-4" /></Button>
-                <Button variant="outline" size="icon" className="h-8 w-8 bg-background border-border text-foreground"><ChevronRight className="w-4 h-4" /></Button>
+                <Button variant="outline" size="icon" onClick={handlePrev} className="h-8 w-8 bg-background border-border text-foreground"><ChevronLeft className="w-4 h-4" /></Button>
+                <Button variant="outline" size="icon" onClick={handleNext} className="h-8 w-8 bg-background border-border text-foreground"><ChevronRight className="w-4 h-4" /></Button>
               </div>
             </div>
             <div className="flex items-center gap-2 bg-background p-1 rounded-lg border border-border">
-              <button className="px-3 py-1 text-xs font-semibold rounded-md bg-muted text-foreground">Month</button>
-              <button className="px-3 py-1 text-xs font-semibold rounded-md text-muted-foreground hover:text-foreground">Week</button>
-              <button className="px-3 py-1 text-xs font-semibold rounded-md text-muted-foreground hover:text-foreground">Day</button>
+              <button onClick={() => setViewType('Month')} className={`px-3 py-1 text-xs font-semibold rounded-md ${viewType === 'Month' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>Month</button>
+              <button onClick={() => setViewType('Week')} className={`px-3 py-1 text-xs font-semibold rounded-md ${viewType === 'Week' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>Week</button>
+              <button onClick={() => setViewType('Day')} className={`px-3 py-1 text-xs font-semibold rounded-md ${viewType === 'Day' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:text-foreground'}`}>Day</button>
             </div>
           </CardHeader>
           <CardContent className="p-0 flex-1 overflow-auto bg-muted/10">
-            <div className="grid grid-cols-7 border-b border-border text-center text-xs font-semibold text-muted-foreground bg-background sticky top-0 z-10">
-              {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(d => (
-                <div key={d} className="py-2 border-r border-border last:border-0">{d}</div>
-              ))}
-            </div>
-            <div className="grid grid-cols-7 h-[800px] sm:h-full auto-rows-fr">
-              {/* Padding offset */}
-              {Array.from({ length: 4 }).map((_, i) => (
-                <div key={`offset-${i}`} className="border-r border-b border-border bg-muted/5 p-2"></div>
-              ))}
-              
-              {daysInMonth.map(day => {
-                const dayAppointments = mockAppointments.filter(a => a.day === day);
-                return (
-                  <div key={day} className="border-r border-b border-border p-2 min-h-[100px] bg-card hover:bg-muted/10 transition-colors">
-                    <span className="text-xs font-medium text-muted-foreground mb-1 block">{day}</span>
-                    <div className="space-y-1">
-                      {dayAppointments.map(app => (
-                        <div 
-                          key={app.id} 
-                          className="px-2 py-1.5 text-[10px] rounded border shadow-sm cursor-move flex flex-col gap-1 bg-background"
-                          style={{ borderColor: app.type === 'Audiogram' ? 'var(--color-primary)' : app.type === 'Fit Test' ? 'var(--color-chart-2)' : 'var(--color-chart-3)' }}
-                        >
-                          <div className="font-semibold text-foreground truncate">{app.name}</div>
-                          <div className="flex items-center justify-between text-muted-foreground opacity-80">
-                            <span>{app.time}</span>
-                            <span className="truncate max-w-[50px]">{app.type}</span>
-                          </div>
+            {viewType === 'Month' && (
+              <>
+                <div className="grid grid-cols-7 border-b border-border text-center text-xs font-semibold text-muted-foreground bg-background sticky top-0 z-10">
+                  {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map(d => (
+                    <div key={d} className="py-2 border-r border-border last:border-0">{d}</div>
+                  ))}
+                </div>
+                <div className="grid grid-cols-7 h-[800px] sm:h-full auto-rows-fr">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={`offset-${i}`} className="border-r border-b border-border bg-muted/5 p-2"></div>
+                  ))}
+                  
+                  {daysInMonth.map(day => {
+                    const dayAppointments = appointments.filter(a => a.day === day);
+                    return (
+                      <div key={day} className="border-r border-b border-border p-2 min-h-[100px] bg-card hover:bg-muted/10 transition-colors">
+                        <span className="text-xs font-medium text-muted-foreground mb-1 block">{day}</span>
+                        <div className="space-y-1">
+                          {dayAppointments.map(app => (
+                            <div 
+                              key={app.id} 
+                              className="px-2 py-1.5 text-[10px] rounded border shadow-sm cursor-move flex flex-col gap-1 bg-background"
+                              style={{ borderColor: app.type === 'Audiogram' ? 'var(--color-primary)' : app.type === 'Fit Test' ? 'var(--color-chart-2)' : 'var(--color-chart-3)' }}
+                            >
+                              <div className="font-semibold text-foreground truncate">{app.name}</div>
+                              <div className="flex items-center justify-between text-muted-foreground opacity-80">
+                                <span>{app.time}</span>
+                                <span className="truncate max-w-[50px]">{app.type}</span>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+            {viewType !== 'Month' && (
+               <div className="p-8 flex items-center justify-center h-full text-muted-foreground flex-col">
+                 <CalendarIcon className="w-12 h-12 mb-4 opacity-20" />
+                 <p>The {viewType} view is currently simplified for this demo.</p>
+                 <p className="text-xs mt-2 text-center max-w-sm">Please switch back to Month view to see all {appointments.length} appointments.</p>
+               </div>
+            )}
           </CardContent>
         </Card>
 

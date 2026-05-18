@@ -51,7 +51,7 @@ export default function App() {
     <div className="flex h-screen overflow-hidden bg-background">
       {/* Sidebar Navigation */}
       <aside className={cn(
-        "flex flex-col w-64 border-r border-border bg-background transition-all duration-300 z-10 shrink-0",
+        "flex flex-col w-64 border-r border-border bg-background transition-all duration-300 z-10 shrink-0 relative",
         !isSidebarOpen && "-ml-64 lg:-ml-0 lg:w-20"
       )}>
         <div className="flex h-16 items-center flex-shrink-0 px-6 border-b border-border bg-card">
@@ -94,6 +94,13 @@ export default function App() {
             </div>
           </div>
         </div>
+        
+        <button 
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="absolute -right-3 top-[6.5rem] bg-card border border-border rounded-full p-1 text-muted-foreground hover:text-foreground hover:bg-muted focus:outline-none hidden lg:block z-50 shadow-sm"
+        >
+          {isSidebarOpen ? <ChevronRight className="w-4 h-4 rotate-180" /> : <ChevronRight className="w-4 h-4" />}
+        </button>
       </aside>
 
       {/* Main Content Area */}
@@ -103,7 +110,7 @@ export default function App() {
           <div className="flex items-center">
             <button 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-2 -ml-2 mr-2 text-muted-foreground hover:text-foreground rounded-md focus:outline-none"
+              className="p-2 -ml-2 mr-2 text-muted-foreground hover:text-foreground rounded-md focus:outline-none lg:hidden"
             >
               <Menu className="w-5 h-5" />
             </button>
