@@ -16,8 +16,8 @@ interface InfoTooltipProps {
 
 export function InfoTooltip({ title, description, oshaRef, aiNote }: InfoTooltipProps) {
   return (
-    <TooltipProvider>
-      <Tooltip delayDuration={300}>
+    <TooltipProvider delay={300}>
+      <Tooltip>
         <TooltipTrigger asChild>
           <button className="text-muted-foreground hover:text-foreground transition-colors outline-none ml-1">
             <Info className="w-3.5 h-3.5" />

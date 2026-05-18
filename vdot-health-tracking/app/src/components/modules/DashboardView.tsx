@@ -2,8 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/src/components/ui/card';
 import { Badge } from '@/src/components/ui/badge';
 import { AlertCircle, CheckCircle2, Search, TrendingUp, Calendar, Info } from 'lucide-react';
-import { mockAlerts, mockComplianceData, mockUpcomingExams, mockEmployees } from '@/src/lib/mockData';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Cell } from 'recharts';
+import { mockAlerts, mockUpcomingExams } from '@/src/lib/mockData';
 import { format } from 'date-fns';
 import { InfoTooltip } from '@/src/components/InfoTooltip';
 
@@ -94,27 +93,67 @@ export default function DashboardView() {
         
         {/* Left Column: Charts and Heatmap */}
         <div className="col-span-4 space-y-4">
-          <Card className="bg-card/50 border-border shadow-sm h-96 flex flex-col rounded-2xl">
-            <CardHeader className="px-6 py-4 border-b border-border">
-              <CardTitle>District Compliance Heatmap</CardTitle>
-              <CardDescription>Percentage of compliant records by district</CardDescription>
+          <Card className="bg-card/50 border-border shadow-sm h-[400px] flex flex-col rounded-2xl">
+            <CardHeader className="px-6 py-4 border-b border-border flex flex-row items-center justify-between pb-3">
+              <div>
+                <CardTitle>District Compliance Heatmap</CardTitle>
+                <CardDescription>Percentage of compliant records across key categories</CardDescription>
+              </div>
+              <div className="flex gap-3 text-[10px] uppercase font-bold tracking-wider items-center bg-card p-2 rounded-lg border border-border/50">
+                 <div className="flex items-center gap-1.5 opacity-90"><div className="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div> &ge;95%</div>
+                 <div className="flex items-center gap-1.5 opacity-90"><div className="w-3 h-3 rounded-full bg-lime-400 shadow-[0_0_8px_rgba(163,230,53,0.5)]"></div> 90-94%</div>
+                 <div className="flex items-center gap-1.5 opacity-90"><div className="w-3 h-3 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.5)]"></div> 80-89%</div>
+                 <div className="flex items-center gap-1.5 opacity-90"><div className="w-3 h-3 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]"></div> &lt;80%</div>
+              </div>
             </CardHeader>
-            <CardContent className="p-6 flex-1">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={mockComplianceData} layout="vertical" margin={{ top: 0, right: 30, left: 20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="currentColor" className="opacity-10" />
-                  <XAxis type="number" domain={[0, 100]} stroke="currentColor" className="opacity-50 text-xs" />
-                  <YAxis dataKey="name" type="category" stroke="currentColor" className="opacity-50 text-xs font-medium" />
-                  <RechartsTooltip cursor={{ fill: 'currentColor', opacity: 0.05 }} contentStyle={{ backgroundColor: 'var(--color-bg-elevated)', borderColor: 'var(--color-border)', color: 'var(--color-text-primary)' }} />
-                  <Bar dataKey="compliance" radius={[0, 4, 4, 0]}>
-                    {
-                      mockComplianceData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.compliance > 90 ? 'var(--color-brand-teal)' : entry.compliance > 80 ? 'var(--color-brand-blue)' : 'var(--color-destructive)' } />
-                      ))
-                    }
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+            <CardContent className="p-0 flex-1 overflow-x-auto min-w-0">
+              <div className="min-w-[500px] h-full flex flex-col p-6">
+                <div className="grid grid-cols-5 gap-2 mb-2">
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">District</div>
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide text-center">Overall</div>
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide text-center">Medical Exams</div>
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide text-center">Fit Testing</div>
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide text-center">Training</div>
+                </div>
+                <div className="flex flex-col gap-2 flex-1 overflow-y-auto pr-2 pb-2">
+                  {[
+                    { district: 'Bristol', overall: 82, exams: 85, fitTest: 81, training: 88 },
+                    { district: 'Salem', overall: 96, exams: 98, fitTest: 95, training: 99 },
+                    { district: 'Lynchburg', overall: 88, exams: 85, fitTest: 88, training: 91 },
+                    { district: 'Richmond', overall: 91, exams: 94, fitTest: 90, training: 92 },
+                    { district: 'Hampton', overall: 78, exams: 80, fitTest: 70, training: 82 },
+                    { district: 'Fredericksburg', overall: 90, exams: 91, fitTest: 88, training: 94 },
+                    { district: 'Culpeper', overall: 85, exams: 86, fitTest: 81, training: 88 },
+                    { district: 'Staunton', overall: 93, exams: 95, fitTest: 89, training: 96 },
+                    { district: 'NOVA', overall: 81, exams: 82, fitTest: 78, training: 85 },
+                  ].map((row, i) => {
+                    const getColor = (val: number) => {
+                      if (val >= 95) return 'bg-emerald-500 text-white shadow-[inset_0_1px_2px_rgba(255,255,255,0.2),0_1px_3px_rgba(16,185,129,0.3)] hover:brightness-110';
+                      if (val >= 90) return 'bg-lime-400 text-lime-950 shadow-[inset_0_1px_2px_rgba(255,255,255,0.4),0_1px_3px_rgba(163,230,53,0.3)] hover:brightness-105';
+                      if (val >= 80) return 'bg-orange-500 text-white shadow-[inset_0_1px_2px_rgba(255,255,255,0.2),0_1px_3px_rgba(249,115,22,0.3)] hover:brightness-110';
+                      return 'bg-rose-500 text-white shadow-[inset_0_1px_2px_rgba(255,255,255,0.2),0_1px_3px_rgba(244,63,94,0.3)] hover:brightness-110';
+                    };
+                    
+                    return (
+                      <div key={i} className="grid grid-cols-5 gap-2 items-center group">
+                        <div className="text-sm font-medium pl-1">{row.district}</div>
+                        <div className={`rounded-xl py-2.5 px-2 text-center text-sm font-bold transition-all cursor-pointer ${getColor(row.overall)}`}>
+                          {row.overall}%
+                        </div>
+                        <div className={`rounded-xl py-2.5 px-2 text-center text-sm font-bold transition-all cursor-pointer ${getColor(row.exams)}`}>
+                          {row.exams}%
+                        </div>
+                        <div className={`rounded-xl py-2.5 px-2 text-center text-sm font-bold transition-all cursor-pointer ${getColor(row.fitTest)}`}>
+                          {row.fitTest}%
+                        </div>
+                        <div className={`rounded-xl py-2.5 px-2 text-center text-sm font-bold transition-all cursor-pointer ${getColor(row.training)}`}>
+                          {row.training}%
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
